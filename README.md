@@ -17,6 +17,12 @@
    - nieco co nikto neriesil
    - preco je to zlozite a tazko riesitelne
 5. ciel -- niektore, idealne vsetky z tychto:
+   - model checking
    - explicitna synteza parametrov
    - symbolicky pristup
    - staticka analyza ako alternativny pristup
+6. co je urobene
+   - vyvoj CMP (CMSB16 ecyano publikacia?)
+   - definicia jazyka (SASB18)
+   - vybrane staticke analyzy (SASB18)
+   - rozsirenie o kvantitativnu zlozku (neopublikovane)
