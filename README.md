@@ -12,6 +12,7 @@
    - existujuce jazyky (aj ten nas, neriesit ze je niecim speci)
    - problem ich abstrakcie a preco sa tazko analyzuju
    - naco je dobra statica analyza
+   - model checking simulacnym/statistickym sposobom, preco nedostatocna
 4. problem parametrickej syntezy
    - nieco nikto neriesil
    - preco je to komplikovane
