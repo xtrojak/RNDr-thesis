@@ -1,4 +1,6 @@
-# RNDr thesis
+# RNDr thesi
+
+- diza o Chromare
 
 1. intro
    - vysvetlit sysbio veci
