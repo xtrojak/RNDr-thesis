@@ -23,6 +23,6 @@
    - staticka analyza ako alternativny pristup
 6. co je urobene
    - vyvoj CMP (CMSB16 ecyano publikacia?)
-   - definicia jazyka (SASB18)
+   - definicia jazyka (SASB18 - preco sme ho robili? ina abstrakcia vhodna na nieco, co sa musi ukazat ze dava zmysel
    - vybrane staticke analyzy (SASB18)
    - rozsirenie o kvantitativnu zlozku (neopublikovane)
