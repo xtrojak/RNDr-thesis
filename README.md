@@ -10,7 +10,7 @@
    - obecne co to je, v com su vyhody
    - definovat semantiku ako nieco explicitne (asi DTMC/CTMC/cokolvek chceme)
 3. state of the art
-   - existujuce jazyky (aj ten nas)
+   - existujuce jazyky (aj ten nas) - moja DP
    - vyzdvihnut nas jazyk, ale riesime veci obecne
    - problem ich abstrakcie a preco sa tazko analyzuju
    - naco je dobra staticka analyza
