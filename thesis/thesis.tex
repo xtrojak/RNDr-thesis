@@ -83,6 +83,7 @@ efficient static analysis and consistency checking; \emph{universality} -- princ
 We propose a scalable approach based on formal methods to analysis of rule-based models. The emphasis is placed on parameter synthesis using a symbolic method and static analysis enabled by unique level of abstraction enabled by rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
 
 \chapter{Rule-based modelling}
+\label{formal}
 
 First we define \emph{reaction-based system}.  
 
@@ -90,26 +91,28 @@ First we define \emph{reaction-based system}.
 \emph{Multiset} $\mathtt{M}$ is a pair $(\mathcal{A}, \mathtt{m})$ where $\mathcal{A}$ is a set and $ \mathtt{m} : \mathcal{A} \rightarrow \mathbb{N} $ is a function from $\mathcal{A}$ to the set of natural numbers. The set $\mathcal{A}$ is called the \emph{reference set} of elements. For each element $\mathit{a}$ in $\mathcal{A}$ the \emph{multiplicity} (that is, number of occurrences) of $\mathit{a}$ is the number $\mathtt{M}(\mathit{a})$.
 \end{definition}
 
-The elements of the multiset are often referenced as \emph{species}. We denote with $\mathbb{M}$ the set of all multisets. With $\Gamma$ we denote the set of all arbitrary rational functions over the domain of objects. The notation $\varrho(\mathtt{M})$ with $\varrho \in \Gamma$ and $\mathtt{M} \in \mathbb{M}$ denotes the evaluation of function $\varrho$ to a rational number by substituting each variable $\mathit{a}$ by its corresponding value $\mathtt{M}(\mathit{a})$.
+The elements of the multiset are often referenced as \emph{species}. We denote with $\mathbb{M}$ the set of all multisets. With $\Gamma$ we denote the set of all arbitrary rational functions over the domain of objects. The notation $\nu(\mathtt{M})$ with $\nu \in \Gamma$ and $\mathtt{M} \in \mathbb{M}$ denotes the evaluation of function $\nu$ to a rational number by substituting each variable $\mathit{a}$ by its corresponding value $\mathtt{M}(\mathit{a})$.
 
 \begin{definition}{Reaction}
-A reaction $\mathtt{react}$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \varrho) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\varrho$ is a rate function.
+A reaction $\mathtt{react}$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \nu) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\nu$ is a rate function.
 \end{definition}
 
-Informally, a reaction states how different species interact to change the number of objects of the corresponding species in the state of the system. The state of the system is an unstructured collection (multiset) of copies of each species. 
+Informally, a reaction states how different species interact to change the number of objects of the corresponding species in the state of the system. The state of the system is an unstructured collection (multiset) of copies of each species. By $\Omega$ we denote the set of all reactions.
 
 \begin{definition}{Reaction application}
-Let $\mathtt{react} = (\mathtt{lhs}, \mathtt{rhs}, \varrho)$ be a reaction and $\mathtt{M}$ a multiset (state). The \emph{reaction application} $\mathtt{react}(\mathtt{M})$ is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \varrho(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$, $(\mathtt{M}, 0)$ otherwise.
+Let $\mathtt{react} = (\mathtt{lhs}, \mathtt{rhs}, \nu)$ be a reaction and $\mathtt{M}$ be a multiset. The \emph{reaction application} on the multiset $\mathtt{M}$, written $\mathtt{react}(\mathtt{M})$, is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \nu(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$; $(\mathtt{M}, 0)$ otherwise.
 \end{definition}
 
 Qualitatively, applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side of the reaction and adding the elements that appear on the right-hand side of the reaction. Additionally, the \emph{rate function} is evaluated in the process and provides reaction rate, i.e. at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible.
 
 \begin{definition}{Rule}
-bla
+A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\mathtt{react}_i \in \mathcal{D}(\rho)$ we denote a reaction from the domain $\mathcal{D}$ of rule $\rho$ with index $i \in \mathbb{N}$. $\mathtt{I}_\rho$ denotes the set of all reaction indices from the domain $\mathcal{D}(\rho)$.
 \end{definition}
 
+A rule is a generalisation of multiple reactions. Instead of a single possible way of application as in the case of reaction, there are multiple outcomes of the application on a given multiset. 
+
 \begin{definition}{Rule application}
-bla
+Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} on the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \mathtt{react}_i(\mathtt{M}) ~|~ i \in \mathtt{I}_\rho \}$ of all reaction applications from the domain of the rule.
 \end{definition}
 
 \begin{definition}{Rule-based system}
@@ -120,10 +123,6 @@ bla
 bla
 \end{definition}
 
-
-
-$\mathtt{rule}$
-
 \chapter{State of the Art} \label{chap:state}
  bla
 
@@ -132,7 +131,7 @@ $\mathtt{rule}$
 \section{Rule-based languages}
 \label{rule_based_languages}
 
-There are several rule-based languages dedicated for modelling of the biological systems. Each of them uses different features and abstractions. In this chapter, we will highlight the key features of some of the representatives.
+There are several rule-based languages dedicated for modelling of the biological systems. Each of them uses different features and abstractions. In this chapter, we will highlight the key features of some of the representatives. It is important to note that generally, they can be always formulated in terms defined in Chapter~\ref{formal}. A specificity of individual languages resides in the level of abstraction the use and the way how they handle the encoding of a rule such that they can avoid the explicit reaction representation.
 
 \subsection{Kappa language}
 \label{kappa}
