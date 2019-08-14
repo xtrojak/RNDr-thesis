@@ -94,34 +94,54 @@ First we define \emph{reaction-based system}.
 The elements of the multiset are often referenced as \emph{species}. We denote with $\mathbb{M}$ the set of all multisets. With $\Gamma$ we denote the set of all arbitrary rational functions over the domain of objects. The notation $\nu(\mathtt{M})$ with $\nu \in \Gamma$ and $\mathtt{M} \in \mathbb{M}$ denotes the evaluation of function $\nu$ to a rational number by substituting each variable $\mathit{a}$ by its corresponding value $\mathtt{M}(\mathit{a})$.
 
 \begin{definition}{Reaction}
-A reaction $\mathtt{react}$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \nu) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\nu$ is a rate function.
+A reaction $\omega$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \nu) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\nu$ is a rate function.
 \end{definition}
 
 Informally, a reaction states how different species interact to change the number of objects of the corresponding species in the state of the system. The state of the system is an unstructured collection (multiset) of copies of each species. By $\Omega$ we denote the set of all reactions.
 
 \begin{definition}{Reaction application}
-Let $\mathtt{react} = (\mathtt{lhs}, \mathtt{rhs}, \nu)$ be a reaction and $\mathtt{M}$ be a multiset. The \emph{reaction application} on the multiset $\mathtt{M}$, written $\mathtt{react}(\mathtt{M})$, is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \nu(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$; $(\mathtt{M}, 0)$ otherwise.
+Let $\omega = (\mathtt{lhs}, \mathtt{rhs}, \nu)$ be a reaction and $\mathtt{M}$ be a multiset. The \emph{reaction application} on the multiset $\mathtt{M}$, written $\omega(\mathtt{M})$, is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \nu(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$; $(\mathtt{M}, 0)$ otherwise.
 \end{definition}
 
 Qualitatively, applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side of the reaction and adding the elements that appear on the right-hand side of the reaction. Additionally, the \emph{rate function} is evaluated in the process and provides reaction rate, i.e. at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible.
 
 \begin{definition}{Rule}
-A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\mathtt{react}_i \in \mathcal{D}(\rho)$ we denote a reaction from the domain $\mathcal{D}$ of rule $\rho$ with index $i \in \mathbb{N}$. $\mathtt{I}_\rho$ denotes the set of all reaction indices from the domain $\mathcal{D}(\rho)$.
+A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\omega_i \in \mathcal{D}(\rho)$ we denote a reaction from the domain $\mathcal{D}$ of rule $\rho$ with index $i \in \mathbb{N}$. $\mathtt{I}_\rho$ denotes the set of all reaction indices from the domain $\mathcal{D}(\rho)$.
 \end{definition}
 
-A rule is a generalisation of multiple reactions. Instead of a single possible way of application as in the case of reaction, there are multiple outcomes of the application on a given multiset. 
+A rule is a generalisation of multiple reactions. Instead of a single possible way of application as in the case of reaction, there are multiple outcomes of the application on a given multiset. By $\Sigma$ we denote the set of all rules.
 
 \begin{definition}{Rule application}
-Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} on the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \mathtt{react}_i(\mathtt{M}) ~|~ i \in \mathtt{I}_\rho \}$ of all reaction applications from the domain of the rule.
+Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} on the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \omega_i(\mathtt{M}) ~|~ i \in \mathtt{I}_\rho \}$ of all reaction applications from the domain of the rule.
 \end{definition}
 
-\begin{definition}{Rule-based system}
-bla
+Given a multiset, applying a rule on it produces a set of \emph{multiset-rate} pairs. This is caused by the fact all possible reactions represented by the rule can possible produce a different outcome (some of them cannot be applied due to non-negative number of repetitions law in multisets).
+
+\begin{definition}{Rule-based model}
+A rule-based model $\mu$ is a pair $(\mathcal{R}, \mathtt{M}_0) \in 2^\Sigma \times \mathbb{M}$ where $\mathcal{R}$ is a set of rules and $\mathtt{M}_0$ is an initial state (multiset) of the model.
 \end{definition}
+
+A rule-based model is composed from two parts -- the initial state, describing the number of occurrences of individual species in the default situation, and the set of rules which defines how the species can interact.
 
 \begin{definition}{Rule-based system semantics}
+transition system, how it is created
+\end{definition}
+
+\begin{definition}{Stochastic simulation}
 bla
 \end{definition}
+
+\begin{definition}{Model checking}
+bla
+\end{definition}
+
+\begin{definition}{Parameter synthesis}
+bla
+\end{definition}
+
+problematic parts:
+
+- domain of the reaction/rule
 
 \chapter{State of the Art} \label{chap:state}
  bla
