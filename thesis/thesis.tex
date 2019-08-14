@@ -48,9 +48,29 @@ Keyword1, keyword2, keyword3...
 
 \chapter{Introduction} \label{chap:intro}
 
+Modelling complex systems in systems biology has to be conducted at several levels of abstraction that reflect well the known information~\cite{Kitano}. At every level, the system has to be described rigorously in a formal language that allows to avoid
+misunderstanding and ambiguous interpretations. The more complex the system is, the harder it is to describe it rigorously while not losing human-readability and compactness of the description at the same time.
 
+Traditional approaches used to describe biochemical systems are: a \emph{chemistry approach} employing ``mechanical'' descriptions by chemical reactions or a \emph{mathematical approach} using ordinary differential equations or other mathematical formalisms. An advantage of chemical reactions over mathematical equations is the fact that chemical reactions are composable to some extent, human-readable and well-understood across disciplines while still having an executable semantics. 
+Moreover, there are methods automatising the generation of mathematical models from chemical equations.
+
+The problem of both approaches is the \emph{scalability} which is understood at two
+different levels: scalability of the model description (avoiding combinatorial explosion at the syntactic level) and scalability of the model execution (avoiding combinatorial explosion at the semantics level). Even when the formulation of a model does not run into syntactic scalability problems, the execution or simulation might be infeasible~\cite{Romers107136}. 
+
+The so-called \emph{computational approach}~\cite{Cardelli,Henzinger} offers scalable model description by abstracting the information about individual model components and interactions. The scalability at the semantics level still remains to be a challenge. A promising computational approach is provided by \emph{rule-based modelling}~\cite{kappa_formal, BNGL} and process-algebraic frameworks~\cite{Cardelli,BioPEPA,BioSPI}. Rule-based models make a natural extension of the mechanical reaction-based models used in chemistry. Instead of operating with \emph{objects}, rule-based frameworks operate with \emph{types} that allow to avoid the combinatorial explosion that occurs when underlying objects are specified directly. The semantics of the model is given in terms of \emph{rules} defined on given types. An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, PDEs~\cite{Smoldyn}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}, reaction-diffusion systems~\cite{So2013}, etc.). 
+
+The long-term aim of our research is the development of Comprehensive Modelling Platform~\cite{cs2bio2013,BCS} -- a general modelling framework that combines model building, model analysis, and annotation tasks in a single public site related to a single system. It respects the need for maintaining existing ODE models (which is still a typical scenario in systems biology) but allows to align them with a mechanistic rule-based description that is understandable by biologists, compact in size, and executable in terms of allowing basic analysis tasks ensuring consistency of the description. Such a comprehensive solution allows to support modellers effort in building mathematical models that have clear biochemical meaning and can be
+easily integrated. Moreover, mechanistic descriptions can be later used as standalone computational models having all advantages of rule-based modelling. 
+
+To that end, we have pioneered an idea of combining advantages of rule-based modelling with the simplicity of chemical reactions by introducing a rule-based language called \emph{Biochemical Space Language} (BCSL), introduced in~\cite{Ded201627}. It has the following key aspects: \emph{human-readability} -- easy to read, write, and maintain;
+\emph{executability} -- formal executable semantics is defined allowing
+efficient static analysis and consistency checking; \emph{universality} -- principally different cellular processes can be sufficiently combined in a single specification; and \emph{syntactic scalability} -- combinatorial explosion of the description is avoided. However, similarly as in any other rule-based language, the problem of the \emph{model execution scalability} is not covered efficiently.
+
+We propose a scalable approach based on formal methods to analysis of rule-based models. The emphasis is placed on parameter synthesis using a symbolic method and static analysis enabled by unique level of abstraction enabled by rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
 
 \chapter{Rule-based modelling}
+
+- add LBS
 
 \chapter{State of the Art} \label{chap:state}
  bla
