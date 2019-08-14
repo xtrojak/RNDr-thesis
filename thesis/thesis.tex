@@ -1,0 +1,275 @@
+\documentclass[11pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage{amsmath}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{url} 
+
+\usepackage{pdfpages}
+\usepackage{pdflscape}
+\usepackage{pythonhighlight}
+
+\usepackage[resetlabels,labeled]{multibib}
+\newcites{Rel}{MyPublications}
+\newcites{Poster}{Posters}
+
+\begin{document}
+
+%---------preamble generated from fithesis template
+\includepdf[pages={2}]{preamble/pre.pdf}
+
+\pagestyle{plain}
+\pagenumbering{roman}
+
+~\vfill
+
+\section*{Acknowledgements}
+I would like to thank ...
+
+
+\newpage
+%~\vfill
+\section*{Abstract}
+My abstract is as follow
+
+\newpage
+\section*{Keywords}
+Keyword1, keyword2, keyword3...
+
+\tableofcontents
+\newpage
+
+\setcounter{page}{0}
+\pagenumbering{arabic}
+
+%--------------------------------------------------------
+
+\chapter{Introduction} \label{chap:intro}
+
+
+
+\chapter{Rule-based modelling}
+
+\chapter{State of the Art} \label{chap:state}
+ bla
+
+\section{Rule-based languages}
+\label{rule_based_languages}
+
+There are several rule-based languages dedicated for modelling of the biological systems. Each of them uses different features and abstractions. In this chapter, we will highlight the key features of some of the representatives.
+
+\subsection{Kappa language}
+\label{kappa}
+
+The Kappa language~\cite{kappa_formal} was primary developed for the modelling of protein interactions. The key structures used in the language are \emph{agents} with \emph{binding sites}, which allow formation of \emph{bonds} between the agents. Each binding site must be unique with at most one bond. Each site can occur in one of several pre-defined states.
+
+The Kappa \emph{rules} are changing properties of the agents. Particularly, the rule might add, delete, or change a bond or a state of one or multiple agents at once. The rules are patterns with two sides where each of them is a sequence of agents delimited by a comma. Same as all the other rule-based languages, when some context is not relevant, it is omitted. Example of a rule is in Figure~\ref{kappa-rule}.
+
+\begin{figure}[!h]
+\begin{center}
+\begin{tabular}{c l}
+(a) & A(bsa$\sim$\{ u, p \}) ; B(bsb$\sim$\{ a, i \}) \\
+(b) & A(bsa), B(bsb$\sim$a) $\rightarrow$ A(bsa!1), B(bsb$\sim$a!1) \\
+\end{tabular}
+\end{center}
+\caption{Example of a Kappa rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. It defines creation of bond on the sites of agents A and B such that site of agent B must be in an active state. Note the context with no importance for the interaction is omitted.}\label{kappa-rule}
+\end{figure}
+
+The general problem present in the Kappa language is too detailed description. For biological systems as defined in Chapter~\ref{Rule-based basics}, it might be often difficult to deal with all the bonds, especially in cases when we do not need such details.
+
+\subsection{BioNetGen Language}
+\label{bngl}
+
+The BioNetGen Language (BNGL) \cite{BNGL} is very similar to the Kappa language and also has similar disadvantages. There are, however, a few general differences: 
+
+\begin{enumerate}
+	\item it is allowed to define multiple binding sites with same name for an agent,
+	\item one binding site is allowed to have multiple bonds,
+	\item in the rules, BNGL uses `+' and `.' for expressing reaction complex and complex of agents respectively.
+\end{enumerate}
+
+Example of a rule is given in Figure~\ref{bngl-rule}.
+
+\begin{figure}[!h]
+\begin{center}
+\begin{tabular}{c l}
+(a) & A(bsa$\sim$u$\sim$p) \\
+  & B(bsb$\sim$a$\sim$i) \\
+(b) & A(bsa) + B(bsb$\sim$a) $\rightarrow$ A(bsa!1).B(bsb$\sim$a!1) \\
+\end{tabular}
+\end{center}
+\caption{Example of a BNGL rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. Note that the agents A and B must first create \emph{reaction complex} denoted by `+' (i.e., they must be close to each other) and then they create \emph{complex of agents} denoted by `.' (i.e., they are physically connected).}\label{bngl-rule}
+\end{figure}
+
+\subsection{Chromar}
+
+The Chromar language~\cite{honorato2017chromar} allows to define attributes for agents and range them over pre-defined domains. The qualitative semantics are given by rule match on multisets composed of these agents producing a reaction. It is followed by standard application of the reaction (in the manner of multiset operations). The language is very useful when creating a model where we need to create new distinct objects and control population of these objects.
+
+Embedding this language into the functional programming language Haskell increases its expressive power while making the ability of some analysis more expensive. Moreover, a user needs to understand Haskell (at least its basics) in order to use Chromar.
+
+It is important to highlight a feature which the stochastic semantics of this language offers. Compared to the other rule-based languages, it is capable of specifying the rates for individual reactions inherited from the rule (Figure~\ref{chromar_rule}). It is allowed by variable value bindings and type-determination between left and right-hand side of the rule.
+
+\begin{figure}[!h]
+\begin{center}
+A(a = x), A(a = y) $\xrightarrow[]{\text{f(x,y)}}$ A(a = x + y), A(a = y - 1) [g(x, y)]
+\end{center}
+\caption{Example of a Chromar rule. Arithmetic operations can be used in order to change properties of individual agents. Moreover, a rate function $f$ and conditional function $g$ increase applicability and practical use of the rule.}\label{chromar-rule}\label{chromar_rule}
+\end{figure}
+
+However, when it comes to readability and presentation to the user, the language is not the best choice. All the biologically relevant terms such as states have to be encoded in natural numbers.
+
+\subsection{PySB}
+
+The PySB language~\cite{Lopez646} works as a package in the Python programming language. The definition of the models directly in the code allows the usage of the full syntax of Python, what significantly increases the expression power of PySB. On the other hand, it might be hard to follow abstractions which are possible this way and models themselves are hard to analyse. Moreover, the core of the language is defined by translating to BNGL (Section~\ref{bngl}). An example of a rule is given in Figure~\ref{pysb_rule}.
+
+\begin{figure}[!h]
+\begin{center}
+\begin{python}
+# Declare the monomers
+Monomer('L', ['s'])
+Monomer('R', ['s'])
+
+# Declare the binding rule
+Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
+\end{python}
+\end{center}
+\caption{Example of a PySB rule. The rule describes creation of a bond between agents $\mathtt{R}$ and $\mathtt{L}$.}\label{PySB-rule}\label{pysb_rule}
+\end{figure}
+
+\begin{figure}[!h]
+\lstset{language=XML}
+\begin{lstlisting}[basicstyle=\scriptsize, frame=single]
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="true" multi:isType="true" />
+      <compartment id="cc" constant="true" multi:isType="true">
+        <multi:listOfCompartmentReferences>
+          <multi:compartmentReference multi:id="cr1" multi:compartment="c" />
+          <multi:compartmentReference multi:id="cr2" multi:compartment="c" />
+        </multi:listOfCompartmentReferences>
+      </compartment>
+    </listOfCompartments>
+    <multi:listOfSpeciesTypes>
+      <multi:bindingSiteSpeciesType multi:id="stA" multi:compartment="c" />
+      <multi:speciesType multi:id="stAA" multi:compartment="cc">
+        <multi:listOfSpeciesTypeInstances>
+          <multi:speciesTypeInstance multi:id="stiA1" multi:speciesType="stA"
+            multi:compartmentReference="cr1" />
+          <multi:speciesTypeInstance multi:id="stiA2" multi:speciesType="stA"
+            multi:compartmentReference="cr2" />
+        </multi:listOfSpeciesTypeInstances>
+        <multi:listOfInSpeciesTypeBonds>
+          <multi:inSpeciesTypeBond multi:bindingSite1="stiA1" multi:bindingSite2="stiA2" />
+        </multi:listOfInSpeciesTypeBonds>
+      </multi:speciesType>
+    </multi:listOfSpeciesTypes>
+    <listOfSpecies>
+      <species id="spA" multi:speciesType="stA" compartment="c" ... />
+      <species id="spAA" multi:speciesType="stAA" compartment="cc" ... />
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="reaction" ...>
+        <listOfReactants>
+          <speciesReference id="r1" species="spA" multi:compartmentReference="cr1" ... />
+          <speciesReference id="r2" species="spA" multi:compartmentReference="cr2" ... />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="spAA" ... />
+        </listOfProducts>
+        ...
+      </reaction>
+      ...
+    </listOfReactions>
+  </model>
+</sbml>
+\end{lstlisting}
+\caption{Example of a simple SBML-multi model. The model requires specification of language level (version). In the definition, there are included SpeciesTypes, Species which belong to these types, and Reactions where those species are interacting. Additionally, all processes are encapsulated in the compartments.}\label{SBML_example}
+\end{figure}
+
+\subsection{SBML-multi package}
+
+Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard established for systems biology. A SBML-multi package~\cite{zhang2015sbml} is able to describe all the necessary rule-based features and therefore it is possible to export each model in a rule-based language in this format. It is the most suitable format for exchange and storage of the models but less for analysis and direct representation to the users (it is an XML format). It serves as an intermediate language. For an example see Figure~\ref{SBML_example}.
+
+
+\chapter{Aim of the Thesis} \label{chap:aim}
+
+\section{Objectives and expected results}
+
+The aim of the PhD thesis is to apply ...
+The specific steps that are to be done in order to follow this aim are
+following.
+\begin{itemize}
+\item 
+\item 
+\item 
+\item
+\end{itemize}
+
+\section{Expected outputs}
+Besides the TOPIC incorporating results of
+all the above objectives, I would like to provide the following outputs.
+\begin{itemize}
+\item 
+\item 
+\item
+\item 
+\end{itemize}
+
+\section{Progression schedule}
+The plan of my future study and research activities, besides attending
+courses and teaching, is following.
+\begin{itemize}
+\item Doctoral exam and defence of this thesis proposal -- January 20XY
+\item Research on the  -- from now until January 20XY+2
+\item A~version of the tool incorporating -- June 20XY
+\item Implementing new methods in the tool -- June 20XY+1 till January 20XY+2
+\item Final version of the tool -- January 20XY+2
+\item Writing of the PhD thesis -- January 20XY+2 till June 20XY+2
+\item Final version of the thesis -- June 20XY+2
+\end{itemize}
+
+% ------------------------------- bibliography
+
+\newpage
+\stepcounter{chapter}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\bibliographystyle{splncs03}
+\bibliography{all}
+
+% ------------------------------- appendix
+
+\appendix
+
+\chapter{Summary of Present Study Results}\label{app:results}
+
+\section{Courses and Summer Schools}
+I have attended the following courses.
+\begin{itemize}
+\item 
+\item 
+\item 
+\item 
+\end{itemize}
+
+I have also participated in summer schools ...
+
+\section{Research Results}
+
+I have participated  SOME research project of the QW Laboratory supported by grants
+GRANT NUMBER. As a~member of this team, I have ...
+
+ My publications and presentations related
+to the topic of my PhD thesis are listed below.
+
+\subsection*{Publications}
+
+\bibliographystyleRel{splncs03}
+\bibliographyRel{all}
+
+\end{document}
+
