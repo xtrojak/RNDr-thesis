@@ -10,10 +10,24 @@
 \usepackage{pdfpages}
 \usepackage{pdflscape}
 \usepackage{pythonhighlight}
+\usepackage{amssymb}
 
 \usepackage[resetlabels,labeled]{multibib}
-\newcites{Rel}{MyPublications}
-\newcites{Poster}{Posters}
+
+\newcounter{counter}[section]
+\renewcommand{\thecounter}{\thesection.\arabic{counter}}
+
+\newenvironment{definition}[1]{\bigskip\refstepcounter{counter}\noindent\textbf{Definition \thecounter } \emph{#1} \par\nopagebreak\noindent \begin{itshape}}{\end{itshape}\bigskip}
+
+\newenvironment{example}[1]{\bigskip\refstepcounter{counter}\noindent\textbf{Example \thecounter} \emph{#1} \par\nopagebreak}{\bigskip}
+
+\newenvironment{notation}{\bigskip\refstepcounter{counter}\noindent\textbf{Notation \thecounter~}\nopagebreak \begin{itshape}}{\end{itshape}\bigskip}
+
+\newenvironment{theorem}{\bigskip\refstepcounter{counter}\noindent\textbf{Theorem \thecounter }\nopagebreak \begin{itshape}}{\end{itshape}\medskip}
+
+\newenvironment{lemma}{\bigskip\refstepcounter{counter}\noindent\textbf{Lemma \thecounter }\nopagebreak \begin{itshape}}{\end{itshape}\bigskip}
+
+\newenvironment{remark}{\bigskip\refstepcounter{counter}\noindent\textbf{Remark \thecounter~ }\nopagebreak \begin{itshape}}{\end{itshape}\bigskip}
 
 \begin{document}
 
@@ -70,10 +84,50 @@ We propose a scalable approach based on formal methods to analysis of rule-based
 
 \chapter{Rule-based modelling}
 
-- add LBS
+First we define \emph{reaction-based system}.  
+
+\begin{definition}{Multiset}
+\emph{Multiset} $\mathtt{M}$ is a pair $(\mathcal{A}, \mathtt{m})$ where $\mathcal{A}$ is a set and $ \mathtt{m} : \mathcal{A} \rightarrow \mathbb{N} $ is a function from $\mathcal{A}$ to the set of natural numbers. The set $\mathcal{A}$ is called the \emph{reference set} of elements. For each element $\mathit{a}$ in $\mathcal{A}$ the \emph{multiplicity} (that is, number of occurrences) of $\mathit{a}$ is the number $\mathtt{M}(\mathit{a})$.
+\end{definition}
+
+The elements of the multiset are often referenced as \emph{species}. We denote with $\mathbb{M}$ the set of all multisets. With $\Gamma$ we denote the set of all arbitrary rational functions over the domain of objects. The notation $\varrho(\mathtt{M})$ with $\varrho \in \Gamma$ and $\mathtt{M} \in \mathbb{M}$ denotes the evaluation of function $\varrho$ to a rational number by substituting each variable $\mathit{a}$ by its corresponding value $\mathtt{M}(\mathit{a})$.
+
+\begin{definition}{Reaction}
+A reaction $\mathtt{react}$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \varrho) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\varrho$ is a rate function.
+\end{definition}
+
+Informally, a reaction states how different species interact to change the number of objects of the corresponding species in the state of the system. The state of the system is an unstructured collection (multiset) of copies of each species. 
+
+\begin{definition}{Reaction application}
+Let $\mathtt{react} = (\mathtt{lhs}, \mathtt{rhs}, \varrho)$ be a reaction and $\mathtt{M}$ a multiset (state). The \emph{reaction application} $\mathtt{react}(\mathtt{M})$ is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \varrho(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$, $(\mathtt{M}, 0)$ otherwise.
+\end{definition}
+
+Qualitatively, applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side of the reaction and adding the elements that appear on the right-hand side of the reaction. Additionally, the \emph{rate function} is evaluated in the process and provides reaction rate, i.e. at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible.
+
+\begin{definition}{Rule}
+bla
+\end{definition}
+
+\begin{definition}{Rule application}
+bla
+\end{definition}
+
+\begin{definition}{Rule-based system}
+bla
+\end{definition}
+
+\begin{definition}{Rule-based system semantics}
+bla
+\end{definition}
+
+
+
+$\mathtt{rule}$
 
 \chapter{State of the Art} \label{chap:state}
  bla
+
+ - add LBS
 
 \section{Rule-based languages}
 \label{rule_based_languages}
@@ -287,9 +341,6 @@ GRANT NUMBER. As a~member of this team, I have ...
 to the topic of my PhD thesis are listed below.
 
 \subsection*{Publications}
-
-\bibliographystyleRel{splncs03}
-\bibliographyRel{all}
 
 \end{document}
 
