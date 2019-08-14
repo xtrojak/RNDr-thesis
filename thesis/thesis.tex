@@ -83,9 +83,7 @@ efficient static analysis and consistency checking; \emph{universality} -- princ
 We propose a scalable approach based on formal methods to analysis of rule-based models. The emphasis is placed on parameter synthesis using a symbolic method and static analysis enabled by unique level of abstraction enabled by rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
 
 \chapter{Rule-based modelling}
-\label{formal}
-
-First we define \emph{reaction-based system}.  
+\label{formal}  
 
 \begin{definition}{Multiset}
 \emph{Multiset} $\mathtt{M}$ is a pair $(\mathcal{A}, \mathtt{m})$ where $\mathcal{A}$ is a set and $ \mathtt{m} : \mathcal{A} \rightarrow \mathbb{N} $ is a function from $\mathcal{A}$ to the set of natural numbers. The set $\mathcal{A}$ is called the \emph{reference set} of elements. For each element $\mathit{a}$ in $\mathcal{A}$ the \emph{multiplicity} (that is, number of occurrences) of $\mathit{a}$ is the number $\mathtt{M}(\mathit{a})$.
@@ -123,17 +121,39 @@ A rule-based model $\mu$ is a pair $(\mathcal{R}, \mathtt{M}_0) \in 2^\Sigma \ti
 
 A rule-based model is composed from two parts -- the initial state, describing the number of occurrences of individual species in the default situation, and the set of rules which defines how the species can interact.
 
-\begin{definition}{Rule-based system semantics}
-transition system, how it is created
+An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation, or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}).
+
+In order to ...idk what..., we define \emph{explicit semantics}/discrete semantics of rule-based models. 
+
+- or: as an example of semantics...
+
+\begin{definition}{Quantitative Labelled Transition System}
+A Quantitative Labelled Transition System (qLTS) is defined as a triple $(\mathcal{S}, \mathcal{L}, \mapsto)$ where $\mathcal{S}$ is a set of states, $\mapsto: \mathcal{S} \times \mathcal{S}$ is a transition relation, and $\mathcal{L}: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{Q}$ is a labelling function which assigns each transition from $\mapsto$ a rational number.
 \end{definition}
 
+Quantitative Labelled Transition System is a natural representation of explicit semantical meaning of rule-based model. ...
+
+\begin{definition}{Semantics of rule-based model}
+Let $\mu = (\mathcal{R}, \mathtt{M}_0)$ be a rule-based model. The semantics of the model are given in terms of qLTS $(\mathcal{S}, \mathcal{L}, \mapsto)$. It is obtained by transitive closure of rule application starting from $\mathtt{M}_0$. The nodes of qLTS represent the multisets, transition relation represents the applied rules, and quantitative labels represent the evaluated rate functions.
+\end{definition}
+
+explanation that many possible semantics are possible? how to compactly describe it?
+
+- interpretation can differ? (from qLTS to ...)
+
 \begin{definition}{Stochastic simulation}
+bla
+\end{definition}
+
+\begin{definition}{Some logic}
 bla
 \end{definition}
 
 \begin{definition}{Model checking}
 bla
 \end{definition}
+
+A natural extension of the model is \emph{parametrised} rule-based model where rate functions can be enriched by unknown parameters from a known domain (usually integers or rational numbers). It is a typical case in systems biology since the actual values of reaction kinetics are often hard or even impossible to be measured. Then, to evaluate a rate function, a vector of parameter values has to be given, representing a particular biological scenario.
 
 \begin{definition}{Parameter synthesis}
 bla
