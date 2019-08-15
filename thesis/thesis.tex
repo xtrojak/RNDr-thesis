@@ -15,7 +15,7 @@
 \usepackage[resetlabels,labeled]{multibib}
 
 \newcounter{counter}[section]
-\renewcommand{\thecounter}{\thesection.\arabic{counter}}
+\renewcommand{\thecounter}{\thechapter.\arabic{counter}}
 
 \newenvironment{definition}[1]{\bigskip\refstepcounter{counter}\noindent\textbf{Definition \thecounter } \emph{#1} \par\nopagebreak\noindent \begin{itshape}}{\end{itshape}\bigskip}
 
@@ -83,79 +83,81 @@ efficient static analysis and consistency checking; \emph{universality} -- princ
 We propose a scalable approach based on formal methods to analysis of rule-based models. The emphasis is placed on parameter synthesis using a symbolic method and static analysis enabled by unique level of abstraction enabled by rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
 
 \chapter{Rule-based modelling}
-\label{formal}  
+\label{formal}
+
+Generally, a rule-based system is based on \emph{rewriting} of some structured objects called \emph{agents} according to predefined \emph{rules}. The structure defined on the agents enables varying the level of context given in the rules. The less context given, the wider is the domain the rule can be applied to. It is the key feature which supports the conciseness of rule-based approach.
+
+In this chapter, we define a simplified version of rule-based system. The defined rules are based on a simpler objects called \emph{reactions}, which are used for rewriting of of unstructured objects. Then, the rule can be seen as a set of these reactions. \textbf{TBA - has to be improved...}
 
 \begin{definition}{Multiset}
 \emph{Multiset} $\mathtt{M}$ is a pair $(\mathcal{A}, \mathtt{m})$ where $\mathcal{A}$ is a set and $ \mathtt{m} : \mathcal{A} \rightarrow \mathbb{N} $ is a function from $\mathcal{A}$ to the set of natural numbers. The set $\mathcal{A}$ is called the \emph{reference set} of elements. For each element $\mathit{a}$ in $\mathcal{A}$ the \emph{multiplicity} (that is, number of occurrences) of $\mathit{a}$ is the number $\mathtt{M}(\mathit{a})$.
 \end{definition}
 
-The elements of the multiset are often referenced as \emph{species}. We denote with $\mathbb{M}$ the set of all multisets. With $\Gamma$ we denote the set of all arbitrary rational functions over the domain of objects. The notation $\nu(\mathtt{M})$ with $\nu \in \Gamma$ and $\mathtt{M} \in \mathbb{M}$ denotes the evaluation of function $\nu$ to a rational number by substituting each variable $\mathit{a}$ by its corresponding value $\mathtt{M}(\mathit{a})$.
+The elements of the multiset are often referenced as \emph{species}. We denote with $\mathbb{M}$ the set of all multisets. With $\Gamma$ we denote the set of all arbitrary rational functions over the domain of species. The notation $\nu(\mathtt{M})$ with $\nu \in \Gamma$ and $\mathtt{M} \in \mathbb{M}$ denotes the evaluation of function $\nu$ to a rational number by substituting each variable $\mathit{a}$ by its corresponding value $\mathtt{M}(\mathit{a})$.
 
 \begin{definition}{Reaction}
-A reaction $\omega$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \nu) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\nu$ is a rate function.
+A reaction $\omega$ is a triple $(\mathtt{lhs}, \mathtt{rhs}, \nu) \in \mathbb{M} \times \mathbb{M} \times \Gamma$ where $\mathtt{lhs}$ is left-hand side, $\mathtt{rhs}$ is right-hand side, and $\nu$ is a rational rate function.
 \end{definition}
 
 Informally, a reaction states how different species interact to change the number of objects of the corresponding species in the state of the system. The state of the system is an unstructured collection (multiset) of copies of each species. By $\Omega$ we denote the set of all reactions.
 
 \begin{definition}{Reaction application}
-Let $\omega = (\mathtt{lhs}, \mathtt{rhs}, \nu)$ be a reaction and $\mathtt{M}$ be a multiset. The \emph{reaction application} on the multiset $\mathtt{M}$, written $\omega(\mathtt{M})$, is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \nu(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$; $(\mathtt{M}, 0)$ otherwise.
+Let $\omega = (\mathtt{lhs}, \mathtt{rhs}, \nu)$ be a reaction and $\mathtt{M}$ be a multiset. The \emph{reaction application} to the multiset $\mathtt{M}$, written $\omega(\mathtt{M})$, is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \nu(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$; $(\mathtt{M}, 0)$ otherwise.
 \end{definition}
 
-Qualitatively, applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side of the reaction and adding the elements that appear on the right-hand side of the reaction. Additionally, the \emph{rate function} is evaluated in the process and provides reaction rate, i.e. at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible.
+\textbf{TBA - a scheme of application}
+
+Applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side ($\mathtt{lhs}$) of the reaction and adding the elements that appear on the right-hand side ($\mathtt{rhs}$) of the reaction. Additionally, the \emph{rate function} $\nu$ is evaluated in the process and provides reaction rate, i.e. speed at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible and the rate is zero.
 
 \begin{definition}{Rule}
-A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\omega_i \in \mathcal{D}(\rho)$ we denote a reaction from the domain $\mathcal{D}$ of rule $\rho$ with index $i \in \mathbb{N}$. $\mathtt{I}_\rho$ denotes the set of all reaction indices from the domain $\mathcal{D}(\rho)$.
+A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\omega \in \rho$ we denote a reaction from the definition base of rule $\rho$.
 \end{definition}
 
 A rule is a generalisation of multiple reactions. Instead of a single possible way of application as in the case of reaction, there are multiple outcomes of the application on a given multiset. By $\Sigma$ we denote the set of all rules.
 
 \begin{definition}{Rule application}
-Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} on the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \omega_i(\mathtt{M}) ~|~ i \in \mathtt{I}_\rho \}$ of all reaction applications from the domain of the rule.
+Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} to the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \omega(\mathtt{M}) ~|~ \omega \in \rho \}$ of all reaction applications from the definition base of the rule.
 \end{definition}
 
-Given a multiset, applying a rule on it produces a set of \emph{multiset-rate} pairs. This is caused by the fact all possible reactions represented by the rule can possible produce a different outcome (some of them cannot be applied due to non-negative number of repetitions law in multisets).
+\textbf{TBA - a scheme of application: multiple output states}
+
+Given a multiset, applying a rule to it produces a set of \emph{multiset--rate} pairs. This is caused by the fact that all possible reactions represented by the rule can produce a different outcome (some of them cannot be applied due to non-negative number of repetitions requirement in reaction application).
 
 \begin{definition}{Rule-based model}
 A rule-based model $\mu$ is a pair $(\mathcal{R}, \mathtt{M}_0) \in 2^\Sigma \times \mathbb{M}$ where $\mathcal{R}$ is a set of rules and $\mathtt{M}_0$ is an initial state (multiset) of the model.
 \end{definition}
 
-A rule-based model is composed from two parts -- the initial state, describing the number of occurrences of individual species in the default situation, and the set of rules which defines how the species can interact. The semantics of the model is given in terms of rule application, which is transitively applied on the initial state.
+A rule-based model is composed from two parts -- the initial state, describing the number of occurrences of individual species in the default situation, and the set of rules which define how the species can interact. The \emph{semantics} of the model is given in terms of rule application, which is transitively applied on the initial state.
 
 A natural extension of the model is \emph{parametrised} rule-based model where rate functions can be enriched by unknown parameters from a known domain (usually integers or rational numbers). It is a typical case in systems biology since the actual values of reaction kinetics are often hard or even impossible to be measured. Then, to evaluate a rate function, a \emph{parametrisation} $p$ from the admissible parameter space has to be given, representing a particular biological scenario.
 
 An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}).
 
-This fact results in multiple possible ways how to analyse and explore the models. For example, one can be interested in bifurcation analysis~\cite{benevs2017discrete} or attractor analysis~\cite{benevs2018fully} in ODEs; robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness}; parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic} etc.
+This fact results in multiple possible ways how to analyse and explore the models. For example, one can be interested in bifurcation analysis~\cite{benevs2017discrete} or attractor analysis~\cite{benevs2018fully} in ODEs; robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness}; parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic} etc. Each of the approaches provides a unique point of view how to see the underlying model and enables ??? 
 
-The most of the mentioned analysis methods are based on \emph{model checking}~\cite{clarke2018model}, an automatic way for checking whether the model meets a given specification. For that, we need a specification language which allows us to express a property in terms of time. A suitable way is to use a \emph{temporal logic}. Examples of logics which are often used in systems biology are LTL (?), CTL (?), STL (?), or PCTL~\cite{hasson1994logic}.
+The most of the mentioned analysis methods are based on \emph{model checking}~\cite{clarke2018model}, an automatic way for checking whether the model meets a given specification. For that, we need a specification language which allows us to express a property dependent on time. A suitable tool is to use a \emph{temporal logic}. Examples of logics which are often used in systems biology are LTL (?), CTL (?), STL (?), or PCTL~\cite{hasson1994logic} and their usage depends on particular mathematical representation of use.
 
 \begin{definition}{Model checking}
 Given a rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a formula $\phi$, the \emph{problem of model checking} is to decide whether the model $\mu$ satisfies the property $\phi$.
 \end{definition}
 
-In the case of unknown parameter values in the model, we can be interested finding those parametrisations from the parameter space which satisfy the given property. For that, a method called \emph{parameter synthesis} is used.
+In the case of unknown parameter values present in the model, we can be interested in finding those parametrisations from the parameter space which satisfy the given property. For that, a method called \emph{parameter synthesis} is used. The basic principle is to search parameter space and identify regions where satisfaction is (not) guaranteed. Often regions where no guarantees are given are produced due to some computational error of used searching method.
 
 \begin{definition}{Parameter synthesis}
 Given a parametrised rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a formula $\phi$, the \emph{problem of parameter synthesis} is to compute a partitioning of the given parameter space into three disjoint subsets: $\mathsf{TRUE}$ -- the model satisfies the property, $\mathsf{FALSE}$ -- the model does \emph{not} satisfy the property, and $\mathsf{UNKNOWN}$ -- the result is not known.
 \end{definition}
 
-Additionally, instead of binary answer to satisfaction of a property, a measure of how much the property is preserved in the given parametrisation can be useful. This measure is called \emph{local robustness} $D^{s}_{\phi}(p)$ and states how much the property $\phi$ is preserved in parametrisation $p$.
+Additionally, instead of the binary answer to satisfaction of a property, a measure of how much the property is preserved in the given parametrisation can be useful. This measure is called \emph{local robustness} $D^{\mu}_{\phi}(p)$ and states how much the property $\phi$ is preserved in parametrisation $p$ of model $\mu$.
 
 \begin{definition}{Robustness analysis}
 The \emph{problem of global robustness} of a model $\mu$ is defined as 
 
-$$ R^{\mu}_{a, P} = \int_{P} \psi(p) D^{\mu}_{a}(p) dp $$
+$$ R^{\mu}_{\phi, P} = \int_{P} \psi(p) D^{\mu}_{\phi}(p) dp $$
 
 where $\phi$ is the property of the system under scrutiny, $P$ is the parametrisation space, $\psi(p)$ is the probability of the parametrisation $p$, and $D^{\mu}_{\phi}(p)$ is the local robustness.
 \end{definition}
 
-The global rubustness~\cite{kitano2007towards} defines a measure how the given property is preserved globally in the entire model with respect to the parameter space
-
----
-
-problematic parts:
-
-- domain of the reaction/rule
+The global robustness~\cite{kitano2007towards} defines a measure of how the given property is preserved globally in the entire model with respect to the parameter space.
 
 \chapter{State of the Art} \label{chap:state}
  bla
