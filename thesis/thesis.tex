@@ -119,45 +119,39 @@ Given a multiset, applying a rule on it produces a set of \emph{multiset-rate} p
 A rule-based model $\mu$ is a pair $(\mathcal{R}, \mathtt{M}_0) \in 2^\Sigma \times \mathbb{M}$ where $\mathcal{R}$ is a set of rules and $\mathtt{M}_0$ is an initial state (multiset) of the model.
 \end{definition}
 
-A rule-based model is composed from two parts -- the initial state, describing the number of occurrences of individual species in the default situation, and the set of rules which defines how the species can interact.
+A rule-based model is composed from two parts -- the initial state, describing the number of occurrences of individual species in the default situation, and the set of rules which defines how the species can interact. The semantics of the model is given in terms of rule application, which is transitively applied on the initial state.
 
-An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation, or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}).
+A natural extension of the model is \emph{parametrised} rule-based model where rate functions can be enriched by unknown parameters from a known domain (usually integers or rational numbers). It is a typical case in systems biology since the actual values of reaction kinetics are often hard or even impossible to be measured. Then, to evaluate a rate function, a \emph{parametrisation} $p$ from the admissible parameter space has to be given, representing a particular biological scenario.
 
-In order to ...idk what..., we define \emph{explicit semantics}/discrete semantics of rule-based models. 
+An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}).
 
-- or: as an example of semantics...
+This fact results in multiple possible ways how to analyse and explore the models. For example, one can be interested in bifurcation analysis~\cite{benevs2017discrete} or attractor analysis~\cite{benevs2018fully} in ODEs; robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness}; parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic} etc.
 
-\begin{definition}{Quantitative Labelled Transition System}
-A Quantitative Labelled Transition System (qLTS) is defined as a triple $(\mathcal{S}, \mathcal{L}, \mapsto)$ where $\mathcal{S}$ is a set of states, $\mapsto: \mathcal{S} \times \mathcal{S}$ is a transition relation, and $\mathcal{L}: \mathcal{S} \times \mathcal{S} \rightarrow \mathbb{Q}$ is a labelling function which assigns each transition from $\mapsto$ a rational number.
-\end{definition}
-
-Quantitative Labelled Transition System is a natural representation of explicit semantical meaning of rule-based model. ...
-
-\begin{definition}{Semantics of rule-based model}
-Let $\mu = (\mathcal{R}, \mathtt{M}_0)$ be a rule-based model. The semantics of the model are given in terms of qLTS $(\mathcal{S}, \mathcal{L}, \mapsto)$. It is obtained by transitive closure of rule application starting from $\mathtt{M}_0$. The nodes of qLTS represent the multisets, transition relation represents the applied rules, and quantitative labels represent the evaluated rate functions.
-\end{definition}
-
-explanation that many possible semantics are possible? how to compactly describe it?
-
-- interpretation can differ? (from qLTS to ...)
-
-\begin{definition}{Stochastic simulation}
-bla
-\end{definition}
-
-\begin{definition}{Some logic}
-bla
-\end{definition}
+The most of the mentioned analysis methods are based on \emph{model checking}~\cite{clarke2018model}, an automatic way for checking whether the model meets a given specification. For that, we need a specification language which allows us to express a property in terms of time. A suitable way is to use a \emph{temporal logic}. Examples of logics which are often used in systems biology are LTL (?), CTL (?), STL (?), or PCTL~\cite{hasson1994logic}.
 
 \begin{definition}{Model checking}
-bla
+Given a rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a formula $\phi$, the \emph{problem of model checking} is to decide whether the model $\mu$ satisfies the property $\phi$.
 \end{definition}
 
-A natural extension of the model is \emph{parametrised} rule-based model where rate functions can be enriched by unknown parameters from a known domain (usually integers or rational numbers). It is a typical case in systems biology since the actual values of reaction kinetics are often hard or even impossible to be measured. Then, to evaluate a rate function, a vector of parameter values has to be given, representing a particular biological scenario.
+In the case of unknown parameter values in the model, we can be interested finding those parametrisations from the parameter space which satisfy the given property. For that, a method called \emph{parameter synthesis} is used.
 
 \begin{definition}{Parameter synthesis}
-bla
+Given a parametrised rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a formula $\phi$, the \emph{problem of parameter synthesis} is to compute a partitioning of the given parameter space into three disjoint subsets: $\mathsf{TRUE}$ -- the model satisfies the property, $\mathsf{FALSE}$ -- the model does \emph{not} satisfy the property, and $\mathsf{UNKNOWN}$ -- the result is not known.
 \end{definition}
+
+Additionally, instead of binary answer to satisfaction of a property, a measure of how much the property is preserved in the given parametrisation can be useful. This measure is called \emph{local robustness} $D^{s}_{\phi}(p)$ and states how much the property $\phi$ is preserved in parametrisation $p$.
+
+\begin{definition}{Robustness analysis}
+The \emph{problem of global robustness} of a model $\mu$ is defined as 
+
+$$ R^{\mu}_{a, P} = \int_{P} \psi(p) D^{\mu}_{a}(p) dp $$
+
+where $\phi$ is the property of the system under scrutiny, $P$ is the parametrisation space, $\psi(p)$ is the probability of the parametrisation $p$, and $D^{\mu}_{\phi}(p)$ is the local robustness.
+\end{definition}
+
+The global rubustness~\cite{kitano2007towards} defines a measure how the given property is preserved globally in the entire model with respect to the parameter space
+
+---
 
 problematic parts:
 
