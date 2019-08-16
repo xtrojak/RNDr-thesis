@@ -11,6 +11,7 @@
 \usepackage{pdflscape}
 \usepackage{pythonhighlight}
 \usepackage{amssymb}
+\usepackage{braket}
 
 \usepackage[resetlabels,labeled]{multibib}
 
@@ -111,8 +112,7 @@ The long-term aim of our research is the development of Comprehensive Modelling 
 easily integrated. Moreover, mechanistic descriptions can be later used as standalone computational models having all advantages of rule-based modelling. 
 
 To that end, we have pioneered an idea of combining advantages of rule-based modelling with the simplicity of chemical reactions by introducing a rule-based language called \emph{Biochemical Space Language} (BCSL), introduced in~\cite{Ded201627}. It has the following key aspects: \emph{human-readability} -- easy to read, write, and maintain;
-\emph{executability} -- formal executable semantics is defined allowing
-efficient static analysis and consistency checking; \emph{universality} -- principally different cellular processes can be sufficiently combined in a single specification; and \emph{syntactic scalability} -- combinatorial explosion of the description is avoided. However, similarly as in any other rule-based language, the problem of the \emph{model execution scalability} is not covered efficiently.
+\emph{executability} -- formal executable semantics is defined allowing efficient static analysis and consistency checking; \emph{universality} -- principally different cellular processes can be sufficiently combined in a single specification; and \emph{syntactic scalability} -- combinatorial explosion of the description is avoided. However, similarly as in any other rule-based language, the problem of the \emph{model execution scalability} is not covered efficiently.
 
 We propose a scalable approach based on formal methods to analysis of rule-based models. The emphasis is placed on parameter synthesis using a symbolic method and static analysis enabled by unique level of abstraction enabled by rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
 
@@ -357,13 +357,26 @@ Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard est
 
 \subsection{Biochemical Space Language}
 
-- overview of the language
+Biochemical Space Language (BCSL) (\textbf{TBA: what to cite?}) is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{cs2bio2013,BCS}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations.
 
-- how it fits to the CMP ?
+The language uses a few types of agents, describing a different levels of abstraction and detail, which interact in rules. When defining a rule, identifiers of \emph{substrates} and \emph{products} are used to make the notation of the rules compact. Every agent appearing in a rule equation has to be followed by the \emph{localisation} operator associating it with a particular compartment. This is for example important for rules that act on both sides of a membrane. That way, a rule is always precisely localised in or between the compartments.
 
-- what is special about it
+A typical feature of the language is that it does not use any form of binding when it comes to complex formation. Instead, the association is considered as a form of \emph{coexistence}, the particular interpretation is left for the context of the model. (\textbf{TBA: zlepsit}) Moreover, it is possible to name a complex, which increases the readability and provides additional annotation options. This is supported by introduction of localisation operator `{::}' between the agents. The main idea is to allow zooming into individual parts of complex and structure expressions. The localisation operator naturally leads in extension by \emph{variables}, which can group several rules matching in the same modification of an agent (for an example, see Figure~\ref{BCSL_rule}).
 
-- an example of usage
+\begin{figure}
+	\begin{center}
+		$ S\{u\}{::}KaiC{::}?X{::}cyt \Leftrightarrow S\{p\}{::}KaiC{::}?X{::}cyt ~;~$
+		
+		$ ?X = \Set{
+			\begin{array}{c}
+			\mathit{KaiC6}, \mathit{KaiA2C6}, \mathit{KaiA4C6},\\
+			\mathit{KaiB6C6}, \mathit{KaiA4B6C6}, \mathit{KaiA6B6C6}
+			\end{array}
+		}$
+	\end{center}
+	\caption{Example of BCSL rule. The state of a serine residue $S$ of KaiC protein can be changed from unphosphorylated to phosphorylated whenever the KaiC protein is included in a complex. The particular allowed complexes which enable this modification are given by the variable $?X$.}
+	\label{BCSL_rule}
+\end{figure}
 
 \section{Analysis methods}
 
@@ -381,29 +394,15 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 \section{Objectives and expected results}
 
-The aim of the PhD thesis is to apply ...
-The specific steps that are to be done in order to follow this aim are
-following.
-\begin{itemize}
-\item 
-\item 
-\item 
-\item
-\end{itemize}
+\section{what is already done}
 
-\section{Expected outputs}
-Besides the TOPIC incorporating results of
-all the above objectives, I would like to provide the following outputs.
-\begin{itemize}
-\item 
-\item 
-\item
-\item 
-\end{itemize}
+- BCSL
 
 \section{Progression schedule}
+
 The plan of my future study and research activities, besides attending
 courses and teaching, is following.
+
 \begin{itemize}
 \item Doctoral exam and defence of this thesis proposal -- January 20XY
 \item Research on the  -- from now until January 20XY+2
