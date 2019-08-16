@@ -29,6 +29,40 @@
 
 \newenvironment{remark}{\bigskip\refstepcounter{counter}\noindent\textbf{Remark \thecounter~ }\nopagebreak \begin{itshape}}{\end{itshape}\bigskip}
 
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{graybright}{rgb}{0.5,0.5,0.5}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
+
+\lstdefinelanguage{LBS}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\textbf,
+  morekeywords={spec, new, comp, inside}% list your attributes here
+}
+
 \begin{document}
 
 %---------preamble generated from fithesis template
@@ -160,14 +194,15 @@ where $\phi$ is the property of the system under scrutiny, $P$ is the parametris
 The global robustness~\cite{kitano2007towards} defines a measure of how the given property is preserved globally in the entire model with respect to the parameter space.
 
 \chapter{State of the Art} \label{chap:state}
- bla
 
  - add LBS
+ - final part - add BCSL, explain more
+ - add analysis established for rule-based systems
 
 \section{Rule-based languages}
 \label{rule_based_languages}
 
-There are several rule-based languages dedicated for modelling of the biological systems. Each of them uses different features and abstractions. In this chapter, we will highlight the key features of some of the representatives. It is important to note that generally, they can be always formulated in terms defined in Chapter~\ref{formal}. A specificity of individual languages resides in the level of abstraction the use and the way how they handle the encoding of a rule such that they can avoid the explicit reaction representation.
+There are several rule-based languages dedicated for modelling of the biological systems. Each of them uses different features and abstractions. In this chapter, we will highlight the key features of some of the representatives and describe analysis established for them. It is important to note that generally, they can be always formulated in terms defined in Chapter~\ref{formal}. A specificity of individual languages resides in the level of abstraction they use and the way how they handle the encoding of a rule such that they avoid the explicit reaction representation.
 
 \subsection{Kappa language}
 \label{kappa}
@@ -186,7 +221,7 @@ The Kappa \emph{rules} are changing properties of the agents. Particularly, the 
 \caption{Example of a Kappa rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. It defines creation of bond on the sites of agents A and B such that site of agent B must be in an active state. Note the context with no importance for the interaction is omitted.}\label{kappa-rule}
 \end{figure}
 
-The general problem present in the Kappa language is too detailed description. For biological systems as defined in Chapter~\ref{Rule-based basics}, it might be often difficult to deal with all the bonds, especially in cases when we do not need such details.
+The general problem present in the Kappa language is too detailed description. For biological systems, it might be often difficult to deal with all the bonds, especially in cases when we do not need such details.
 
 \subsection{BioNetGen Language}
 \label{bngl}
@@ -199,7 +234,7 @@ The BioNetGen Language (BNGL) \cite{BNGL} is very similar to the Kappa language 
 	\item in the rules, BNGL uses `+' and `.' for expressing reaction complex and complex of agents respectively.
 \end{enumerate}
 
-Example of a rule is given in Figure~\ref{bngl-rule}.
+Example of a rule is given in Figure~\ref{bngl-rule}. Software tools have been developed to construct, visualize, simulate, and analyze BNGL models~\cite{wenskovitch2014mosbie,harris2016bionetgen,xu2011rulebender,sneddon2011efficient}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -224,7 +259,7 @@ It is important to highlight a feature which the stochastic semantics of this la
 \begin{center}
 A(a = x), A(a = y) $\xrightarrow[]{\text{f(x,y)}}$ A(a = x + y), A(a = y - 1) [g(x, y)]
 \end{center}
-\caption{Example of a Chromar rule. Arithmetic operations can be used in order to change properties of individual agents. Moreover, a rate function $f$ and conditional function $g$ increase applicability and practical use of the rule.}\label{chromar-rule}\label{chromar_rule}
+\caption{Example of a Chromar rule. Arithmetic operations can be used in order to change properties of individual agents. Moreover, a rate function f and conditional function g increase applicability and practical use of the rule.}\label{chromar-rule}\label{chromar_rule}
 \end{figure}
 
 However, when it comes to readability and presentation to the user, the language is not the best choice. All the biologically relevant terms such as states have to be encoded in natural numbers.
@@ -246,6 +281,32 @@ Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
 \end{center}
 \caption{Example of a PySB rule. The rule describes creation of a bond between agents $\mathtt{R}$ and $\mathtt{L}$.}\label{PySB-rule}\label{pysb_rule}
 \end{figure}
+
+\subsection{Language for Biochemical Systems}
+
+Language for Biochemical Systems (LBS)~\cite{Pedersen} combines rule-based approaches to modelling with modularity. The main features of the language are species expressions for manipulating large complexes in a concise manner, parameterised modules with a notion of subtyping for writing reusable modules, and nondeterminism for handling combinatorial explosion.
+
+A simple example of an LBS program is shown in Figure~\ref{LBS_example}. Species identifiers such as \emph{mrna} are here assigned to new species. The text \textbf{new{}} is formally a species expression which evaluates to a species value with no modification sites and with a globally unique name. Hence the name of the species identifier, \emph{mrna}, does not in itself hold any identity of a species, and one may bind the same identifier to an entirely different species in another part of the program. This allows different modules, possibly developed by different people, to use the same species identifier for mRNA molecules which are semantically and biologically different, and subsequently combine the modules into a single program without unintended cross-talk.
+
+\begin{figure}[!h]
+\lstset{language=LBS}
+\begin{lstlisting}[basicstyle=\scriptsize, frame=single]
+spec gene = new{}, rnap = new{}, mrna = new{}, prot = new{}; 
+comp c new comp; comp n = new comp inside c;
+c [ 
+	n [gene + rnap ->  gene + rnap + mrna ] | 
+	n  [ mrna ] -> mrna | 
+	mrna -> prot
+]
+\end{lstlisting}
+\caption{An LBS program for gene expression.}\label{LBS_example}
+\end{figure}
+
+In~\cite{Pedersen}, authors provide a nice demonstration of multiple concrete semantics defined for the rule-based description; namely basic Petri nets, coloured Petri nets, ordinary differential equations, and continuous time Markov chains. For that they usually use a reaction-based (or ground) representation of the system (except coloured Petri nets which allow most of the rule-based abstract features encode in colours).
+
+\subsection{SBML-multi package}
+
+Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard established for systems biology. A SBML-multi package~\cite{SBMLmulti} is able to describe all the necessary rule-based features and therefore it is possible to export each model in a rule-based language in this format. It is the most suitable format for exchange and storage of the models but less for analysis and direct representation to the users (it is an XML format). It serves as an intermediate language. For an example see Figure~\ref{SBML_example}.
 
 \begin{figure}[!h]
 \lstset{language=XML}
@@ -272,7 +333,7 @@ Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
             multi:compartmentReference="cr2" />
         </multi:listOfSpeciesTypeInstances>
         <multi:listOfInSpeciesTypeBonds>
-          <multi:inSpeciesTypeBond multi:bindingSite1="stiA1" multi:bindingSite2="stiA2" />
+          <multi:inSpeciesTypeBond multi:bindingSite1="stiA1" multi:bindingSite2="stiA2"/>
         </multi:listOfInSpeciesTypeBonds>
       </multi:speciesType>
     </multi:listOfSpeciesTypes>
@@ -299,10 +360,13 @@ Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
 \caption{Example of a simple SBML-multi model. The model requires specification of language level (version). In the definition, there are included SpeciesTypes, Species which belong to these types, and Reactions where those species are interacting. Additionally, all processes are encapsulated in the compartments.}\label{SBML_example}
 \end{figure}
 
-\subsection{SBML-multi package}
+\section{Analysis methods}
 
-Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard established for systems biology. A SBML-multi package~\cite{zhang2015sbml} is able to describe all the necessary rule-based features and therefore it is possible to export each model in a rule-based language in this format. It is the most suitable format for exchange and storage of the models but less for analysis and direct representation to the users (it is an XML format). It serves as an intermediate language. For an example see Figure~\ref{SBML_example}.
+The most common way how to exploit behaviour of a rule-based model is simulation. Depending on the interpretation of rule rates, we recognise stochastic or deterministic simulation. Stochastic simulation is well-established in rule-based community, either by network-free simulators such as NFsim~\cite{sneddon2011efficient} or using indirect approach on generated reactions (e.g. Gillespie algorithm~\cite{GILLESPIE1976403}). Deterministic simulation~\cite{Poole2000} is also possible by translating rules to reactions and consequently construct Ordinary Differential Equations (ODEs) from them~\cite{higham2008modeling}.
 
+NFsim explain more...
+
+- statistical model checking
 
 \chapter{Aim of the Thesis} \label{chap:aim}
 
