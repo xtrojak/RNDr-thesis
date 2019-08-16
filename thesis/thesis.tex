@@ -360,13 +360,19 @@ Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard est
 \caption{Example of a simple SBML-multi model. The model requires specification of language level (version). In the definition, there are included SpeciesTypes, Species which belong to these types, and Reactions where those species are interacting. Additionally, all processes are encapsulated in the compartments.}\label{SBML_example}
 \end{figure}
 
+\subsection{Biochemical Space Language}
+
 \section{Analysis methods}
 
-The most common way how to exploit behaviour of a rule-based model is simulation. Depending on the interpretation of rule rates, we recognise stochastic or deterministic simulation. Stochastic simulation is well-established in rule-based community, either by network-free simulators such as NFsim~\cite{sneddon2011efficient} or using indirect approach on generated reactions (e.g. Gillespie algorithm~\cite{GILLESPIE1976403}). Deterministic simulation~\cite{Poole2000} is also possible by translating rules to reactions and consequently construct Ordinary Differential Equations (ODEs) from them~\cite{higham2008modeling}.
+The most usual way how to exploit behaviour of a rule-based model is simulation. Depending on the interpretation of rule rates, we recognise stochastic or deterministic simulation. Stochastic simulation is well-established in rule-based community, either by network-free simulators such as NFsim~\cite{sneddon2011efficient} or using indirect approach on generated reactions (e.g. Gillespie algorithm~\cite{GILLESPIE1976403}). Deterministic simulation~\cite{Poole2000} is also possible by translating rules to reactions and consequently construct Ordinary Differential Equations (ODEs) from them~\cite{higham2008modeling}.
 
-NFsim explain more...
+The advantage of NFsim compared indirect approaches is that during simulation, rules operate directly on molecular objects to produce exact stochastic results with performance that scales independently of the reaction network size. Reaction rates can be defined as arbitrary functions of molecular states to provide powerful coarse-graining capabilities. NFsim enables researchers to simulate many biological systems that were previously inaccessible to general-purpose software.
 
-- statistical model checking
+Analysing the models using simulation is very useful, but not always sufficient. The models are often difficult calibrate due to many unknown parameters and limited experimental training data. A parameter estimation framework is needed in order to help modellers develop their models more efficiently. In~\cite{liu2016parameter}, authors developed a parameter estimation framework for calibrating rule-based models based on statistical model checking procedure. The desired properties are encoded in bounded linear temporal logic which are verified using sequential hypothesis testing on executions generated using stochastic simulation~\cite{clarke2008statistical}.
+
+Another well-established approach to analyse rule-based models is static analysis. It is a powerful tool preferably used to warn about potential issues in the model. There are several well-defined static analysis methods, which can be useful in finding inconsistency in the models~\cite{danos2009rule}. For example: \emph{detection of dead rules} -- a rule is called dead, if there is no trace starting from the initial state in which this rule is applied; \emph{detection of dead agents} -- an agent is called dead, if there is no trace starting from the initial state with at least one state in which this agent occurs; \emph{detection of redundant agents} -- a rule is redundant if after removing it from the model, the particular semantics do not change. These and many more methods can be run statically, proving a cheap way how to verify special types of properties before executing the model.
+
+A useful tool in the field of static analysis of rule-based models is KaSa~\cite{boutillier2018kasa}. This static analyzer abstracts the set of reachable states of models, and then uses this information to collect insightful properties. In particular, KaSa may warn about rules that may never be applied, about potential definitive transformations of proteins and about the potential formation of unbounded molecular compounds
 
 \chapter{Aim of the Thesis} \label{chap:aim}
 
