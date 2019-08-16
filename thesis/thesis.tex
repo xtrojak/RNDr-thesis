@@ -147,7 +147,7 @@ Applying a reaction to a state (multiset) means removing from the state the elem
 A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\omega \in \rho$ we denote a reaction from the definition base of rule $\rho$.
 \end{definition}
 
-A rule is a generalisation of multiple reactions. Instead of a single possible way of application as in the case of reaction, there are multiple outcomes of the application on a given multiset. By $\Sigma$ we denote the set of all rules.
+A rule is a generalisation of multiple reactions. Instead of a single possible way of application as in the case of reaction, there are multiple outcomes of the application on a given multiset. By $\Sigma$ we denote the set of all rules. A set of rules, which can be viewed as a high-level compact definition of a chemical reaction network, can be used to obtain a conventional model specification.
 
 \begin{definition}{Rule application}
 Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} to the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \omega(\mathtt{M}) ~|~ \omega \in \rho \}$ of all reaction applications from the definition base of the rule.
@@ -195,10 +195,6 @@ The global robustness~\cite{kitano2007towards} defines a measure of how the give
 
 \chapter{State of the Art} \label{chap:state}
 
- - add LBS
- - final part - add BCSL, explain more
- - add analysis established for rule-based systems
-
 \section{Rule-based languages}
 \label{rule_based_languages}
 
@@ -209,7 +205,7 @@ There are several rule-based languages dedicated for modelling of the biological
 
 The Kappa language~\cite{kappa_formal} was primary developed for the modelling of protein interactions. The key structures used in the language are \emph{agents} with \emph{binding sites}, which allow formation of \emph{bonds} between the agents. Each binding site must be unique with at most one bond. Each site can occur in one of several pre-defined states.
 
-The Kappa \emph{rules} are changing properties of the agents. Particularly, the rule might add, delete, or change a bond or a state of one or multiple agents at once. The rules are patterns with two sides where each of them is a sequence of agents delimited by a comma. Same as all the other rule-based languages, when some context is not relevant, it is omitted. Example of a rule is in Figure~\ref{kappa-rule}.
+The Kappa \emph{rules} are changing properties of the agents. Particularly, the rule might add, delete, or change a bond or a state of one or multiple agents at once. The rules are patterns with two sides where each of them is a sequence of agents delimited by a comma. The introduction of sites allows to group multiple reactions to a single rule by omitting the context which is not relevant. This is a typical way how rule-based languages encode reactions to rules and it ensures conciseness of description. Example of a rule is in Figure~\ref{kappa-rule}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -218,7 +214,7 @@ The Kappa \emph{rules} are changing properties of the agents. Particularly, the 
 (b) & A(bsa), B(bsb$\sim$a) $\rightarrow$ A(bsa!1), B(bsb$\sim$a!1) \\
 \end{tabular}
 \end{center}
-\caption{Example of a Kappa rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. It defines creation of bond on the sites of agents A and B such that site of agent B must be in an active state. Note the context with no importance for the interaction is omitted.}\label{kappa-rule}
+\caption{Example of a Kappa rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. It defines a creation of bond on the sites of agents A and B such that site of agent B must be in an active state. Note the context with no importance for the interaction is omitted, encoding multiple possible reactions.}\label{kappa-rule}
 \end{figure}
 
 The general problem present in the Kappa language is too detailed description. For biological systems, it might be often difficult to deal with all the bonds, especially in cases when we do not need such details.
@@ -226,15 +222,10 @@ The general problem present in the Kappa language is too detailed description. F
 \subsection{BioNetGen Language}
 \label{bngl}
 
-The BioNetGen Language (BNGL) \cite{BNGL} is very similar to the Kappa language and also has similar disadvantages. There are, however, a few general differences: 
+The BioNetGen Language (BNGL) \cite{BNGL} is similar to the Kappa language, but there are several differences. The basic idea of the language is to use molecules to describe the building blocks of a biological system such as proteins, genes, and metabolites respectively. Each molecule has a number of sites with associated internal states that are used to represent the status of post-translational modifications or bindings with other molecules. The rules describe the interactions among molecules including associa­tions, dissociations, modifications to the internal state of a site
+as well as the production or consumption of molecular species. Rules also provide rate laws for transformations resulting from molecular interactions. Patterns are used to identify a set of molecules that share the same internal states. The rule can be specified using patterns such that it defines not a single reaction but a potentially large class of reactions, all involving a common transformation parametrised by the  same rate law.
 
-\begin{enumerate}
-	\item it is allowed to define multiple binding sites with same name for an agent,
-	\item one binding site is allowed to have multiple bonds,
-	\item in the rules, BNGL uses `+' and `.' for expressing reaction complex and complex of agents respectively.
-\end{enumerate}
-
-Example of a rule is given in Figure~\ref{bngl-rule}. Software tools have been developed to construct, visualize, simulate, and analyze BNGL models~\cite{wenskovitch2014mosbie,harris2016bionetgen,xu2011rulebender,sneddon2011efficient}.
+BNGL rule typically represent molecular interactions and the consequences of these interactions. An example of a rule is given in Figure~\ref{bngl-rule}. Software tools have been developed to construct, visualize, simulate, and analyse BNGL models~\cite{wenskovitch2014mosbie,harris2016bionetgen,xu2011rulebender,sneddon2011efficient}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -245,6 +236,28 @@ Example of a rule is given in Figure~\ref{bngl-rule}. Software tools have been d
 \end{tabular}
 \end{center}
 \caption{Example of a BNGL rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. Note that the agents A and B must first create \emph{reaction complex} denoted by `+' (i.e., they must be close to each other) and then they create \emph{complex of agents} denoted by `.' (i.e., they are physically connected).}\label{bngl-rule}
+\end{figure}
+
+\subsection{PySB}
+
+The PySB language~\cite{Lopez646} is an open-source programming framework written in Python that allows concepts and methodologies from contemporary software engineering to be applied to the construction of transparent, extensible and reusable biological  models. It is implemented as a package in the Python programming language. 
+
+The definition of the models directly in the code allows the usage of the full syntax of Python, what significantly increases the expression power of PySB. Its widespread use in the computational biology community, support for object-oriented and functional programming, and rich ecosystem of mathematical and scientific libraries makes it an excellent choice of programming language for this purpose. On the other hand, the increased expressive power make the models harder to analyse.
+
+The core of the language is defined by translating to BNGL. PySB is closely integrated with Python numerical tools for simulation and parameter estimation and graphical tools that enable plotting of model trajectories and topologies. The main advantage of the language is that it can be used to decompose models into reusable macros that can be independently tested, and the used to generate composite models. An example of a rule is given in Figure~\ref{pysb_rule}.
+
+\begin{figure}[!h]
+\begin{center}
+\begin{python}
+# Declare the monomers
+Monomer('L', ['s'])
+Monomer('R', ['s'])
+
+# Declare the binding rule
+Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
+\end{python}
+\end{center}
+\caption{Example of a PySB rule. The rule describes creation of a bond between agents $\mathtt{R}$ and $\mathtt{L}$.}\label{PySB-rule}\label{pysb_rule}
 \end{figure}
 
 \subsection{Chromar}
@@ -263,24 +276,6 @@ A(a = x), A(a = y) $\xrightarrow[]{\text{f(x,y)}}$ A(a = x + y), A(a = y - 1) [g
 \end{figure}
 
 However, when it comes to readability and presentation to the user, the language is not the best choice. All the biologically relevant terms such as states have to be encoded in natural numbers.
-
-\subsection{PySB}
-
-The PySB language~\cite{Lopez646} works as a package in the Python programming language. The definition of the models directly in the code allows the usage of the full syntax of Python, what significantly increases the expression power of PySB. On the other hand, it might be hard to follow abstractions which are possible this way and models themselves are hard to analyse. Moreover, the core of the language is defined by translating to BNGL (Section~\ref{bngl}). An example of a rule is given in Figure~\ref{pysb_rule}.
-
-\begin{figure}[!h]
-\begin{center}
-\begin{python}
-# Declare the monomers
-Monomer('L', ['s'])
-Monomer('R', ['s'])
-
-# Declare the binding rule
-Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
-\end{python}
-\end{center}
-\caption{Example of a PySB rule. The rule describes creation of a bond between agents $\mathtt{R}$ and $\mathtt{L}$.}\label{PySB-rule}\label{pysb_rule}
-\end{figure}
 
 \subsection{Language for Biochemical Systems}
 
@@ -361,6 +356,14 @@ Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard est
 \end{figure}
 
 \subsection{Biochemical Space Language}
+
+- overview of the language
+
+- how it fits to the CMP ?
+
+- what is special about it
+
+- an example of usage
 
 \section{Analysis methods}
 
