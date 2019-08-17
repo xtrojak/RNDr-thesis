@@ -135,9 +135,14 @@ Informally, a reaction states how different species interact to change the numbe
 Let $\omega = (\mathtt{lhs}, \mathtt{rhs}, \nu)$ be a reaction and $\mathtt{M}$ be a multiset. The \emph{reaction application} to the multiset $\mathtt{M}$, written $\omega(\mathtt{M})$, is a pair $(\mathtt{M} - \mathtt{lhs} + \mathtt{rhs}, \nu(\mathtt{M}))$ if $\mathtt{M} - \mathtt{lhs} > 0$; $(\mathtt{M}, 0)$ otherwise.
 \end{definition}
 
-\textbf{TBA - a scheme of application}
+Applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side ($\mathtt{lhs}$) of the reaction and adding the elements that appear on the right-hand side ($\mathtt{rhs}$) of the reaction. Additionally, the \emph{rate function} $\nu$ is evaluated in the process and provides reaction rate, i.e. speed at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible and the rate is zero. For an example of reaction application, see Figure~\ref{reaction_example}.
 
-Applying a reaction to a state (multiset) means removing from the state the elements that appear in the left-hand side ($\mathtt{lhs}$) of the reaction and adding the elements that appear on the right-hand side ($\mathtt{rhs}$) of the reaction. Additionally, the \emph{rate function} $\nu$ is evaluated in the process and provides reaction rate, i.e. speed at which the reaction happens. In the case when the number of occurrences of some species required by $\mathtt{lhs}$ is not high enough, the application is not possible and the rate is zero.
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.2]{images/reaction.png}
+	\end{center}
+	\caption{A graphical example of reaction application. In a multiset represented by a big circle we have three kinds of agents -- {\large $\square$}, \raisebox{0.04cm}[0cm]{{$\bigcirc$}} and $\bigtriangleup$. In the reaction $\omega = (\{{\large \square}:1,\hspace{0.1cm} $\raisebox{0.04cm}[0cm]{{$\bigcirc$}}\hspace{0.1cm}$:1\}, \{\bigtriangleup:1\}, \mathtt{2}\times{\large \square}\hspace{0.05cm}\times$\hspace{0.05cm}\raisebox{0.04cm}[0cm]{{$\bigcirc$}}$)$, the agents {\large $\square$} and \raisebox{0.04cm}[0cm]{{$\bigcirc$}} are consumed and a new agent $\bigtriangleup$ is produced. The rate of the reaction is given as a function of molecular counts of both reactants. After substituting the counts to {\large $\square$} $ = \mathtt{2}$ and \raisebox{0.04cm}[0cm]{{$\bigcirc$}} $ = \mathtt{4}$, the evaluation of $\mathtt{2} \times \mathtt{2} \times \mathtt{4}$ gives the rate $\mathtt{16}$.}\label{reaction_example}
+\end{figure}
 
 \begin{definition}{Rule}
 A rule $\rho \in 2^\Omega$ is defined as a set of reactions. By $\omega \in \rho$ we denote a reaction from the definition base of rule $\rho$.
@@ -149,9 +154,14 @@ A rule is a generalisation of multiple reactions. Instead of a single possible w
 Let $\rho$ be a rule and $\mathtt{M}$ be a multiset. The \emph{rule application} to the multiset $\mathtt{M}$, written $\rho(\mathtt{M})$, is a set $\{ \omega(\mathtt{M}) ~|~ \omega \in \rho \}$ of all reaction applications from the definition base of the rule.
 \end{definition}
 
-\textbf{TBA - a scheme of application: multiple output states}
+Given a multiset, applying a rule to it produces a set of \emph{multiset--rate} pairs. This is caused by the fact that all possible reactions represented by the rule can produce a different outcome (some of them cannot be applied due to non-negative number of repetitions requirement in reaction application). An example of rule application is given in Figure~\ref{rule_example}.
 
-Given a multiset, applying a rule to it produces a set of \emph{multiset--rate} pairs. This is caused by the fact that all possible reactions represented by the rule can produce a different outcome (some of them cannot be applied due to non-negative number of repetitions requirement in reaction application).
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.2]{images/rule.png}
+	\end{center}
+	\caption{A graphical example of reaction application. In a multiset represented by a big circle we have three kinds of agents -- {\large $\square$}, \raisebox{0.04cm}[0cm]{{$\bigcirc$}} and $\bigtriangleup$. Let us have two reactions $\omega_1 = (\{{\large \square}:1,\hspace{0.1cm} $\raisebox{0.04cm}[0cm]{{$\bigcirc$}}\hspace{0.1cm}$:1\}, \{\bigtriangleup:1\}, \mathtt{2}\times{\large \square}\hspace{0.05cm}\times$\hspace{0.05cm}\raisebox{0.04cm}[0cm]{{$\bigcirc$}}$)$ and $\omega_2 = (\{\hspace{0.1cm} $\raisebox{0.04cm}[0cm]{{$\bigcirc$}}\hspace{0.1cm}$:2\}, \{\bigtriangleup:1\}, \mathtt{3}\times$\hspace{0.05cm}\raisebox{0.04cm}[0cm]{{$\bigcirc$}}$^2)$. The rule $\rho = \{ \omega_1, \omega_2 \}$ is given by both reactions. The rule application can therefore produce a different state for each reaction, each created by particular reaction application. The associated rates are $\mathtt{2} \times \mathtt{2} \times \mathtt{4} = \mathtt{16}$ and $\mathtt{3} \times \mathtt{4}^2 = \mathtt{48}$, respectively.}\label{rule_example}
+\end{figure}
 
 \begin{definition}{Rule-based model}
 A rule-based model $\mu$ is a pair $(\mathcal{R}, \mathtt{M}_0) \in 2^\Sigma \times \mathbb{M}$ where $\mathcal{R}$ is a set of rules and $\mathtt{M}_0$ is an initial state (multiset) of the model.
