@@ -365,7 +365,7 @@ Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard est
 
 \subsection{Biochemical Space Language}
 
-Biochemical Space Language (BCSL) (\textbf{TBA: what to cite?}) is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{cs2bio2013,BCS}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations. The target group of users is biologically-oriented community, therefore the emphasis is places on "helpful" (ústretový) user experience.
+Biochemical Space Language (BCSL)~\cite{trojak2018sasb} is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{cs2bio2013,BCS}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations. The target group of users is biologically-oriented community, therefore the emphasis is places on "helpful" (ústretový) user experience.
 
 The language uses a few types of agents, describing a different levels of abstraction and detail. Particularly, there is \emph{atomic} agent describing the most basic type of biological objects which have assigned a internal state. The state typically represent a modification of the objects, e.g. oxidised, reduced, methylated etc. \emph{Structure} agent represents biochemical object that is composed of several known atomic agents while we know that a composition is abstract and not necessarily complete. Since not all biochemical structures are known in detail, this feature is useful in expressing of partial knowledge. \emph{Complex} agent groups several structure or atomic agents, forming a non-trivial composite biochemical object. A typical feature of the language is that it does not use any form of binding when it comes to complex formation. Instead, the complex formation is considered as a form of \emph{coexistence}, the particular interpretation depends on the context of the model. 
 
@@ -390,6 +390,13 @@ Moreover, it is possible assign a name to complex, which increases the readabili
 
 \section{Analysis methods}
 
+\textbf{TBA: zaviest qualitative, quantitative, static podcasti, postupne v nich ist od explicitnych az po implicitne
+- ODE co sa s nimi da robit, odcitovat vsetko
+- CTMC tak isto
+- dat doraz na explicitne metody, ktore su sice pouzitelne, ale maju vela problemov voci implicitnym, vytvorit kontrast medzi explicit. a implicit.
+- pridat aj statisticke nepriame metody (Guido)}
+
+
 The most usual way how to exploit behaviour of a rule-based model is simulation. Depending on the interpretation of rule rates, we recognise stochastic or deterministic simulation. Stochastic simulation is well-established in rule-based community, either by network-free simulators such as NFsim~\cite{sneddon2011efficient} or using indirect approach on generated reactions (e.g. Gillespie algorithm~\cite{GILLESPIE1976403}). Deterministic simulation~\cite{Poole2000} is also possible by translating rules to reactions and consequently construct Ordinary Differential Equations (ODEs) from them~\cite{higham2008modeling}.
 
 The advantage of NFsim compared indirect approaches is that during simulation, rules operate directly on molecular objects to produce exact stochastic results with performance that scales independently of the reaction network size. Reaction rates can be defined as arbitrary functions of molecular states to provide powerful coarse-graining capabilities. NFsim enables researchers to simulate many biological systems that were previously inaccessible to general-purpose software.
@@ -404,6 +411,8 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 \section{Objectives and expected results}
 
+highlight what is missing in previous chapter
+
 \section{Achieved results}
 
 \textbf{TBA: fix past simple}
@@ -412,11 +421,11 @@ Firstly, I have cooperated on development of the first version of Biochemical Sp
 
 Secondly, I have contributed as the main author in~\cite{Trojak2016}. In this work, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium including the formalisation of the respective part of biochemical space in BCSL.
 
+We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise a complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the methods is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters.
+
 In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model can be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of modelled system, and we showed a static non-reachability technique which can answer some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway we demonstrated these techniques and showed how useful they can be in model building tasks.
 
 \textbf{TBA: more about BCS?}
-
-\textbf{TBA: Fully Automated Attractor Analysis}
 
 \section{Progression schedule}
 
