@@ -404,9 +404,19 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 \section{Objectives and expected results}
 
-\section{what is already done}
+\section{Achieved results}
 
-- BCSL
+\textbf{TBA: fix past simple}
+
+Firstly, I have cooperated on development of the first version of Biochemical Space Language~\cite{Ded201627}. The language was presented in its basic form with emphasis on annotation, providing a definition based for a particular biological problem. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{cs2bio2013}. Additionally, Kappa does not provide hierarchical description which is one of the key aspects of BCSL.
+
+Secondly, I have contributed as the main author in~\cite{Trojak2016}. In this work, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium including the formalisation of the respective part of biochemical space in BCSL.
+
+In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model can be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of modelled system, and we showed a static non-reachability technique which can answer some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway we demonstrated these techniques and showed how useful they can be in model building tasks.
+
+\textbf{TBA: more about BCS?}
+
+\textbf{TBA: Fully Automated Attractor Analysis}
 
 \section{Progression schedule}
 
