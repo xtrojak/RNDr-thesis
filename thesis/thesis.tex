@@ -407,12 +407,9 @@ Moreover, it is possible assign a name to complex, which increases the readabili
 
 \section{Analysis methods}
 
-\textbf{TBA: zaviest qualitative, quantitative, static podcasti, postupne v nich ist od explicitnych az po implicitne
-- ODE co sa s nimi da robit, odcitovat vsetko
-- CTMC tak isto
-- dat doraz na explicitne metody, ktore su sice pouzitelne, ale maju vela problemov voci implicitnym, vytvorit kontrast medzi explicit. a implicit.
-- pridat aj statisticke nepriame metody (Guido)
-- Prism}
+\textbf{TBD - v jednotlivych castiach ist od explicitnych az po implicitne pristupy
+- dat doraz na explicitne metody, ktore su sice pouzitelne, ale maju vela problemov voci implicitnym
+- vytvorit kontrast medzi explicit. a implicit.}
 
 -------------------------
 
@@ -424,11 +421,11 @@ Rule-based models can be translated, using different semantics, to generate othe
 
 Quantitative analysis considers the time dimension is generally used to predict the amount of a species in time. The most usual way how to exploit behaviour of a rule-based model is simulation. Depending on the interpretation of rule rates, we recognise stochastic or deterministic simulation. 
 
-Using the generated reaction network from the model rules, one can perform stochastic for example using Gillespie algorithm~\cite{GILLESPIE1976403}) or deterministic simulation~\cite{Poole2000} by consequent translation to Ordinary differential equations (ODEs)~\cite{higham2008modeling}. However, the cost of simulating the kinetics of a reaction network depends on the size of the network. Thus, if a network is large, the simulation cost can be expensive in terms of computation time and/or computer memory. To address this problem, network-free simulators such as NFsim~\cite{sneddon2011efficient} was developed based on a method of simulation that takes advantage of rules. The method generalises an agent-based kinetic Monte Carlo method that has been shown to circumvent the combinatorial bottleneck in simulations~\cite{yang2008kinetic} .
+Using the generated reaction network from the model rules, one can perform stochastic for example using Gillespie algorithm~\cite{GILLESPIE1976403}) or deterministic simulation~\cite{Poole2000} by consequent translation to Ordinary differential equations (ODEs)~\cite{higham2008modeling}. However, the cost of simulating the kinetics of a reaction network depends on the size of the network. Thus, if a network is large, the simulation cost can be expensive in terms of computation time and/or computer memory. To address this problem, network-free simulators such as NFsim~\cite{sneddon2011efficient} was developed based on a method of simulation that takes advantage of rules. The method generalises an agent-based kinetic Monte Carlo method that has been shown to circumvent the combinatorial bottleneck in simulations~\cite{yang2008kinetic}.
 
 The advantage of NFsim compared indirect approaches is that during simulation, rules operate directly on molecular objects to produce exact stochastic results with performance that scales independently of the reaction network size. Reaction rates can be defined as arbitrary functions of molecular states to provide powerful coarse-graining capabilities. NFsim enables researchers to simulate many biological systems that were previously inaccessible to general-purpose software.
 
-Analysing the models using simulation is very useful, but not always sufficient. The models are often difficult calibrate due to many unknown parameters and limited experimental training data. It is necessary to apply the powerful tools developed in the context of program verification to biological models, particularly when
+Analysing the models using simulation is very useful, but usually not sufficient. The models are often difficult calibrate due to many unknown parameters and limited experimental training data. It is necessary to apply the powerful tools developed in the context of program verification to biological models, particularly when
 they can be cast in the form of rules that are executed stochastically on the fly. The simulation will only yield a particular trajectory at each run. Even when many runs are gathered to perform a statistical analysis, observing a time series of concentrations (or molecule numbers) does not necessarily lead to an understanding of the model.
 
 Model checking is automatic formal verification technique able to perform a clever exhaustive search of the state space of a model. It operates over a discrete time model with a finite number of states (usually a Kripke structure~\cite{kripke1963semantical}), determining truth value of temporal logic formula. A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its parameters, giving rise to the state explosion problem. Therefore, the most of the model checkers usually represents the states symbolically~\cite{burch1992symbolic} such as a binary decision diagrams~\cite{bryant2001graph}. Relevant methods for analysis of continuous semantics are based on abstraction of the behaviour to a finite number of discrete states. For example, one can be interested in parallel semi-symbolic coloured model checking~\cite{benevs2016model}, bifurcation analysis~\cite{benevs2017discrete}, and attractor analysis~\cite{benevs2018fully}. 
@@ -463,7 +460,7 @@ If we succeed in constructing the complete reachability graph, are able to decid
 	\item \emph{Persistence}. A system is persistent if for any two reaction events, the firing of one reaction will not disable the other. This analysis is suitable for detecting concurrent reactions in the models, which are often responsible for some critical decision-making in biological systems.
 \end{itemize}
 
-\textbf{Qualitative model checking}
+\textbf{quantitative model checking??? tu by mal ist ten qualitativny (z hora)}
 
 \textbf{mention Petri nets, invariants}
 
