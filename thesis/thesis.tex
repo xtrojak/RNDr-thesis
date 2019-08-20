@@ -115,9 +115,15 @@ We propose a scalable approach based on formal methods to analysis of rule-based
 \chapter{Rule-based modelling}
 \label{formal}
 
-Generally, a rule-based system is based on \emph{rewriting} of some structured objects called \emph{agents} according to predefined \emph{rules}. The structure defined on the agents enables varying the level of context given in the rules. The less context given, the wider is the domain the rule can be applied to. It is the key feature which supports the conciseness of rule-based approach.
+The conventional modelling a biochemical system usually involves drawing a reaction-scheme diagram depicting the chemical species and reactions in the system and then manually translate it into a set of equations~\cite{voit2000computational} (e.g. ordinary differential equations). The limit of such approach is that the models derived in this way are usually based on assumptions and simplifications. Lifting them causes a combinatorial explosion in the number of possible reactions and species~\cite{blinov2006network}, which makes manual model specification impractical.
 
-In this chapter, we define a simplified version of rule-based system. The defined rules are based on a simpler objects called \emph{reactions}, which are used for rewriting of of unstructured objects. Then, the rule can be seen as a set of these reactions. \textbf{TBA - has to be improved...}
+A new starting point for model specification is necessary. One of the potential approaches is the idea to specify the biochemical interactions as rules that serve as generators of chemical reactions (or reaction events) and species. A rule can be viewed as a definition of a reaction class (a generalized reaction).
+
+A rule-based system is based on \emph{rewriting} of some structured objects called \emph{agents} according to predefined \emph{rules}. The structure defined on the agents is motivated enzymatic and binding activities of proteins involved in signalling tend to be localized to modular domains~\cite{pawson2003assembly}. Proteins may be composed from smaller parts, usually referenced as \emph{sites}, used for modification or molecular binding. Such structure enables varying the level of context given in the rules, which is generally used to restrict the domain the rule can be applied to. The less context is given, the more general the rule becomes and it can be used in more cases. It is the key feature which supports the conciseness of rule-based approach.
+
+\section{Formal definition}
+
+In this chapter, we define a simplified version of rule-based system. The defined rules are based on a simpler objects called \emph{reactions}, which are used for rewriting of unstructured objects composed by \emph{species}. Then, the rule is defined as a set of the reactions, encoding multiple possibilities how it can be used, depending on a particular context. First, we start with definition of a multiset as a form of unstructured object used for rewriting.
 
 \begin{definition}{Multiset}
 \emph{Multiset} $\mathtt{M}$ is a pair $(\mathcal{A}, \mathtt{m})$ where $\mathcal{A}$ is a set and $ \mathtt{m} : \mathcal{A} \rightarrow \mathbb{N} $ is a function from $\mathcal{A}$ to the set of natural numbers. The set $\mathcal{A}$ is called the \emph{reference set} of elements. For each element $\mathit{a}$ in $\mathcal{A}$ the \emph{multiplicity} (that is, number of occurrences) of $\mathit{a}$ is the number $\mathtt{M}(\mathit{a})$.
@@ -171,11 +177,13 @@ A rule-based model is composed from two parts -- the initial state, describing t
 
 A natural extension of the model is \emph{parametrised} rule-based model where rate functions can be enriched by unknown parameters from a known domain (usually integers or rational numbers). It is a typical case in systems biology since the actual values of reaction kinetics are often hard or even impossible to be measured. Then, to evaluate a rate function, a \emph{parametrisation} $p$ from the admissible parameter space has to be given, representing a particular biological scenario.
 
-An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}).
+\section{Analysis methods of interest}
 
-This fact results in multiple possible ways how to analyse and explore the models. For example, one can be interested in bifurcation analysis~\cite{benevs2017discrete} or attractor analysis~\cite{benevs2018fully} in ODEs; robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness}; parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic} etc. Each of the approaches provides a unique point of view how to see the underlying model and enables ??? 
+An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}). This fact results in multiple possible ways how to analyse and explore the models.
 
-The most of the mentioned analysis methods are based on \emph{model checking}~\cite{clarke2018model}, an automatic way for checking whether the model meets a given specification. For that, we need a specification language which allows us to express a property dependent on time. A suitable tool is to use a \emph{temporal logic}. Examples of logics which are often used in systems biology are LTL (?), CTL (?), STL (?), or PCTL~\cite{hasson1994logic} and their usage depends on particular mathematical representation of use.
+\emph{Simulation} is the most usual way how to exploit the behaviour of a model. Depending on the interpretation of rule rates, we can use numerical simulation of rule-based model for both its continuous and stochastic dynamics. Analysing the models using simulation is very useful, but does not provide a global overview of its behaviour.
+
+\emph{Model checking}~\cite{clarke2018model} is an automatic way for checking whether the model meets a given specification. For that, we need a specification language which allows us to express a property dependent on time. A suitable tool is to use a \emph{temporal logic}. Examples of logics which are often used in systems biology are LTL~\cite{pnueli1977temporal}, CTL~\cite{clarke1986automatic}, STL~\cite{maler2004monitoring}, or PCTL~\cite{hasson1994logic} and their usage depends on particular mathematical representation we use.
 
 \begin{definition}{Model checking}
 Given a rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a formula $\phi$, the \emph{problem of model checking} is to decide whether the model $\mu$ satisfies the property $\phi$.
@@ -197,9 +205,16 @@ $$ R^{\mu}_{\phi, P} = \int_{P} \psi(p) D^{\mu}_{\phi}(p) dp $$
 where $\phi$ is the property of the system under scrutiny, $P$ is the parametrisation space, $\psi(p)$ is the probability of the parametrisation $p$, and $D^{\mu}_{\phi}(p)$ is the local robustness.
 \end{definition}
 
-The global robustness~\cite{kitano2007towards} defines a measure of how the given property is preserved globally in the entire model with respect to the parameter space.
+The \emph{global robustness}~\cite{kitano2007towards} defines a measure of how the given property is preserved globally in the entire model with respect to the parameter space.
 
 \chapter{State of the Art} \label{chap:state}
+
+In this chapter we provide an insight to rule-based state-of-the-art, including its foundations, existing available formalisms, and established analysis techniques which can help in the process of model-building tasks.
+
+The formal foundation of rule-based modelling is based in process algebra that enables principled mathematical reasoning about system behaviour and its dependency on interaction capabilities of system components. One of the first used approaches is $\pi$-calculus~\cite{milner1999communicating}, a general and minimalist model-specification language originally designed to capture essential features of concurrent and distributed systems in computer science. Use of $\pi$-calculus to model biological interactions was suggested in~\cite{regev2000representation}.
+
+However, because $\pi$-calculus is a minimalist language and some of its notational features are irrelevant and even inappropriate for biological applications (for example, communication has directionality, whereas physical association does not), researchers have sought to develop a more congruent higher-level language for
+modelling biochemical systems that retains the mathematical formality of $\pi$. In the next section, we provide a list of the most established rule-based formalisms.
 
 \section{Rule-based languages}
 \label{rule_based_languages}
@@ -396,6 +411,10 @@ Moreover, it is possible assign a name to complex, which increases the readabili
 - dat doraz na explicitne metody, ktore su sice pouzitelne, ale maju vela problemov voci implicitnym, vytvorit kontrast medzi explicit. a implicit.
 - pridat aj statisticke nepriame metody (Guido)
 - Prism}
+
+ For example, one can be interested in bifurcation analysis~\cite{benevs2017discrete} or attractor analysis~\cite{benevs2018fully} in ODEs; robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness}; parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic} etc.
+
+-------------------------
 
 In the context of systems biology, the computer-aided verification methods are becoming very useful for reasoning and analysing models, validating new experimental results, automatically checking behaviours of interest, and identifying the inputs or parameters of the system enforcing a desired behaviour. The formal verification of a model consists of proving that its execution satisfies a given specification of the possible behaviours it should display.
 
