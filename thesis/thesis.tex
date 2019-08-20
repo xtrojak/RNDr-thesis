@@ -413,7 +413,7 @@ Analysing the models using simulation is very useful, but not always sufficient.
 
 Model checking is automatic formal verification technique able to check the emergence of a particular behaviour in a biological model. It operates over a discrete time model with a finite number of states, determining truth value of temporal logic formula. A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its parameters, giving rise to the state explosion problem. Therefore, the most of the model checkers usually represents the states symbolically~\cite{burch1992symbolic} such as a binary decision diagrams~\cite{bryant2001graph}.
 
-- \textbf{ODEs ??!! model checking, synteza}
+- \textbf{model checking ODEs ??!! , synteza ODEs + CTMC (citovat nieco "nase")}
 
 Model checking has been extended to many other computational models such as continuous- and discrete-time Markov chains (CTMC and DTMC) by adding probabilities~\cite{kwiatkowska2010probabilistic}. A tool used for analysing the Markov chains is PRISM~\cite{kwiatkowska2011prism}, which calculates the probability that the system model will satisfy the property of interest. It can either provide the exact solution~\cite{aziz2000model} or an approximated solution~\cite{jha2009bayesian} (using a set of samples, generated using a Monte Carlo simulation of the system model).
 
@@ -424,7 +424,7 @@ parameter uncertainty is based on statistical methods~\cite{Luck2016,Backenkohle
 
 - \textbf{vytiahnut problemy so state explosion}
 
-- \textbf{Runtime Verification/Monitoring}
+Another way to tackle the state explosion problem is the analysis of a single execution trace instead of performing an exhaustive verification. \emph{Runtime verification} (or \emph{monitoring}) aims to check whether on the current execution of a program satisfies or violates a property of interest. For example, in BIOCHAM~\cite{calzone2006biocham}, authors implemented a monitoring of numerical simulations of biological models with LTL used to specify properties of real-valued variables. Additionally, in~\cite{donze2010breach} they implemented a tool where the evaluation of the STL~\cite{maler2004monitoring} formula robustness is used for a particular trajectory through monitoring.
 
 - go from indirect to direct ...
 
@@ -432,7 +432,9 @@ parameter uncertainty is based on statistical methods~\cite{Luck2016,Backenkohle
 
 \subsection{Static analysis}
 
-Another well-established approach to analyse rule-based models is static analysis. It is a powerful tool preferably used to warn about potential issues in the model. There are several well-defined static analysis methods, which can be useful in finding inconsistency in the models~\cite{danos2009rule}. For example: \emph{detection of dead rules} -- a rule is called dead, if there is no trace starting from the initial state in which this rule is applied; \emph{detection of dead agents} -- an agent is called dead, if there is no trace starting from the initial state with at least one state in which this agent occurs; \emph{detection of redundant agents} -- a rule is redundant if after removing it from the model, the particular semantics do not change. These and many more methods can be run statically, proving a cheap way how to verify special types of properties before executing the model.
+Static analysis is performed on the static description of the model without actually executing it. While model checking generally needs to explore all the states originated by executing the semantics of the model, static analysis operates on the syntactic level of the specification or by using abstract interpretation~\cite{cousot1977abstract} over finite approximations of the possible model executions~\cite{pauleve2012static}. It is a powerful tool preferably used to detect potential issues in the model.
+
+There are several well-defined static analysis methods for rule-based systems, which can be useful in finding inconsistency in the models~\cite{danos2009rule}. For example: \emph{detection of dead rules} -- a rule is called dead, if there is no trace starting from the initial state in which this rule is applied; \emph{detection of dead agents} -- an agent is called dead, if there is no trace starting from the initial state with at least one state in which this agent occurs; \emph{detection of redundant agents} -- a rule is redundant if after removing it from the model, the particular semantics do not change. These and many more methods can be run statically, proving a cheap way how to verify special types of properties before executing the model.
 
 A useful tool in the field of static analysis of rule-based models is KaSa~\cite{boutillier2018kasa}. This static analyzer abstracts the set of reachable states of models, and then uses this information to collect insightful properties. In particular, KaSa may warn about rules that may never be applied, about potential definitive transformations of proteins and about the potential formation of unbounded molecular compounds
 
