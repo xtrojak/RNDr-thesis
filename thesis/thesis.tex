@@ -110,7 +110,7 @@ easily integrated. Moreover, mechanistic descriptions can be later used as stand
 To that end, we have pioneered an idea of combining advantages of rule-based modelling with the simplicity of chemical reactions by introducing a rule-based language called \emph{Biochemical Space Language} (BCSL), introduced in~\cite{Ded201627}. It has the following key aspects: \emph{human-readability} -- easy to read, write, and maintain;
 \emph{executability} -- formal executable semantics is defined allowing efficient static analysis and consistency checking; \emph{universality} -- principally different cellular processes can be sufficiently combined in a single specification; and \emph{syntactic scalability} -- combinatorial explosion of the description is avoided. However, similarly as in any other rule-based language, the problem of the \emph{model execution scalability} is not covered efficiently.
 
-We propose a scalable approach based on formal methods to analysis of rule-based models. The emphasis is placed on parameter synthesis using a symbolic method and static analysis enabled by unique level of abstraction enabled by rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
+The aim of the thesis is to tackle the state explosion problem in the context of rule-based models analysis. The main effort is to develop exact methods which provide global guarantees overcoming the limitations of approximative, sampling, and bounded methods. The emphasis is placed on parameter synthesis using a symbolic approach and static analysis enabled by unique level of abstraction typical for rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
 
 \chapter{Rule-based modelling}
 \label{formal}
@@ -324,7 +324,9 @@ In~\cite{Pedersen}, authors provide a nice demonstration of multiple concrete se
 
 \subsection{SBML-multi package}
 
-Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard established for systems biology based on XML. It is popular standardised format for the electronic storage, exchange, and reuse of mathematical models of biochemical systems. A SBML-multi package~\cite{SBMLmulti} is able to describe all the necessary rule-based features and therefore it is possible to export each model in a rule-based language in this format. It is the most suitable format for exchange and storage of the models but less for analysis and direct representation to the users (it is an XML format). It serves as an intermediate language. For an example see Figure~\ref{SBML_example}.
+Systems Biology Markup Language (SBML)~\cite{hucka2003systems} is a standard established for systems biology based on XML. It is popular standardised format for the electronic storage, exchange, and reuse of mathematical models of biochemical systems. However, it is based on the assumption that a model can be specified adequately in terms of a reaction scheme, which is not suitable for a rule-based model.
+
+The newest version SBML Level 3 introduced modular language extension capability, which will allows different language features to be added to a common language core. A SBML-multi package~\cite{SBMLmulti} is able to describe all the necessary rule-based features and therefore it is possible to export each model in a rule-based language in this format. It is the most suitable format for exchange and storage of the models but less for analysis and direct representation to the users. It serves as an intermediate format for model sharing. The presence of a feature tag informs a software tool reading the model that the model uses that particular feature and permits the tool to quit if it does not have the necessary interpretive capabilities. For an example, see Figure~\ref{SBML_example}.
 
 \begin{figure}[!h]
 \lstset{language=XML}
@@ -412,8 +414,6 @@ Moreover, it is possible assign a name to complex, which increases the readabili
 - pridat aj statisticke nepriame metody (Guido)
 - Prism}
 
- For example, one can be interested in bifurcation analysis~\cite{benevs2017discrete} or attractor analysis~\cite{benevs2018fully} in ODEs; robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness}; parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic} etc.
-
 -------------------------
 
 In the context of systems biology, the computer-aided verification methods are becoming very useful for reasoning and analysing models, validating new experimental results, automatically checking behaviours of interest, and identifying the inputs or parameters of the system enforcing a desired behaviour. The formal verification of a model consists of proving that its execution satisfies a given specification of the possible behaviours it should display.
@@ -431,37 +431,41 @@ The advantage of NFsim compared indirect approaches is that during simulation, r
 Analysing the models using simulation is very useful, but not always sufficient. The models are often difficult calibrate due to many unknown parameters and limited experimental training data. It is necessary to apply the powerful tools developed in the context of program verification to biological models, particularly when
 they can be cast in the form of rules that are executed stochastically on the fly. The simulation will only yield a particular trajectory at each run. Even when many runs are gathered to perform a statistical analysis, observing a time series of concentrations (or molecule numbers) does not necessarily lead to an understanding of the model.
 
-Model checking is automatic formal verification technique able to perform a clever exhaustive search of the state space of a model. It operates over a discrete time model with a finite number of states, determining truth value of temporal logic formula. A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its parameters, giving rise to the state explosion problem. Therefore, the most of the model checkers usually represents the states symbolically~\cite{burch1992symbolic} such as a binary decision diagrams~\cite{bryant2001graph}.
-
-- \textbf{here goes generally how it works (Kripke structure), cite "our" approaches on ODEs}
-
-Rule-based systems may be translated into different types of
-automata that reflect various levels of resolution. \textbf{show that therefore it can be used on rule-based models}
-
-- \textbf{here it continues to probabilistic world}
+Model checking is automatic formal verification technique able to perform a clever exhaustive search of the state space of a model. It operates over a discrete time model with a finite number of states (usually a Kripke structure~\cite{kripke1963semantical}), determining truth value of temporal logic formula. A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its parameters, giving rise to the state explosion problem. Therefore, the most of the model checkers usually represents the states symbolically~\cite{burch1992symbolic} such as a binary decision diagrams~\cite{bryant2001graph}. Relevant methods for analysis of continuous semantics are based on abstraction of the behaviour to a finite number of discrete states. For example, one can be interested in parallel semi-symbolic coloured model checking~\cite{benevs2016model}, bifurcation analysis~\cite{benevs2017discrete}, and attractor analysis~\cite{benevs2018fully}. 
 
 Model checking has been extended to many other computational models such as continuous- and discrete-time Markov chains (CTMC and DTMC) by adding probabilities~\cite{kwiatkowska2010probabilistic}. A tool used for analysing the Markov chains is PRISM~\cite{kwiatkowska2011prism}, which calculates the probability that the system model will satisfy the property of interest. It can either provide the exact solution~\cite{aziz2000model} or an approximated solution~\cite{jha2009bayesian} (using a set of samples, generated using a Monte Carlo simulation of the system model).
 
-A method \emph{parameter synthesis} based on model checking used for exploiting models with unknown parameters. The method aims at finding all parameter values for which the parametric model satisfies the specification. In practise, the unknown parameters are usually bound by an interval, providing a parameter space. Methods for parameter synthesis of pMCs have been introduced with symbolic computation of reachability properties through state elimination~\cite{daws2004symbolic,jansen2014accelerating,hahn2011probabilistic}, recently improved by parameter lifting~\cite{quatmann2016parameter} and fraction-free Gaussian elimination~\cite{hutschenreiter2017parametric}.
+\emph{Parameter synthesis} is a method based on model checking used for exploiting models with unknown parameters. The method aims at finding all parameter values for which the parametric model satisfies the specification. In practise, the unknown parameters are usually bound by an interval, providing a parameter space. Methods for parameter synthesis of pMCs have been introduced with symbolic computation of reachability properties through state elimination~\cite{daws2004symbolic,jansen2014accelerating,hahn2011probabilistic}, recently improved by parameter lifting~\cite{quatmann2016parameter} and fraction-free Gaussian elimination~\cite{hutschenreiter2017parametric}. Relevant work is also parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic}.
 
 An alternative approach to the analysis of complex stochastic models under
 parameter uncertainty is based on statistical methods~\cite{Luck2016,BackenkohlerBW18,Bortolussi2016,Bortolussi2018}. There are only a few works that bridge the rule-based framework to such techniques. In~\cite{liu2016parameter} a statistical parameter sampling method is employed to analyse unknown parameters in BNGL models represented by means of CTMCs where the rate function is limited to mass action kinetics. The recent work~\cite{KJ18} combines statistical model checking with machine learning techniques to calibration (estimation) of parameters in order to maximise probability of satisfying a given specification. In~\cite{Bock15} the authors adapt simulation-based and moment-based methods. In general, statistical techniques do not give an exact symbolic representation of satisfying parameter sets. 
-
-- \textbf{vytiahnut problemy so state explosion}
 
 Another way to tackle the state explosion problem is the analysis of a single execution trace instead of performing an exhaustive verification. \emph{Runtime verification} (or \emph{monitoring}) aims to check whether on the current execution of a program satisfies or violates a property of interest. For example, in BIOCHAM~\cite{calzone2006biocham}, authors implemented a monitoring of numerical simulations of biological models with LTL used to specify properties of real-valued variables. Additionally, in~\cite{donze2010breach} they implemented a tool where the evaluation of the STL~\cite{maler2004monitoring} formula robustness is used for a particular trajectory through monitoring.
 
 - \textbf{vytiahnut problemy so state explosion, skusit dat doraz na priame metody}
 
+\textbf{robustness}
+
+robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness};  etc.
+
 \subsection{Qualitative analysis}
 
-Basically, two different ways of qualitative net analysis can be distinguished, first,
-the static analysis, which considers the whole state space without constructing it, and
-second, the dynamic analysis, which does construct the full or partial state space for
-deciding the properties of interest.
+Basically, two different ways of qualitative net analysis can be distinguished, first,the dynamic analysis, which does construct the full or partial state space for
+deciding the properties of interest, and second, the static analysis, which considers the whole state space without constructing it.
 
+A typical approach of qualitative dynamic analysis is to compute a data structure, describing the whole system behaviour. The easiest way to do this is constructing the \emph{reachability graph}. The nodes of a reachability graph represent all possible states of modelled system and the arcs represent actions which caused the particular state change. However, reachability graphs tend to be huge, because they comprise all possible system states. The state space explosion motivates the static analyses, discussed below in this section. 
 
-...
+If we succeed in constructing the complete reachability graph, are able to decide the behavioural properties of modelled system. Here are some typical examples of qualitative dynamic analysis:
+
+\begin{itemize}
+	\item \emph{Reachability}. The reachability problem a there exists a path to a particular state from given state. The problem can be reformulated to finding a sub-state, meaning we are only interested in the molecular counts of particular species. It has been shown that the reachability problem is decidable~\cite{kosaraju1982decidability} although it takes at least exponential space (and time) to verify in the general case~\cite{lipton1976reachability}.
+	\item \emph{Boundedness}. A system is bounded if the number of molecular counts is finite for any state reachable from the given initial state. This is very useful for detection of undesirable inconsistency in the flows in the model. It is also generally required by model checking.
+	\item \emph{Persistence}. A system is persistent if for any two reaction events, the firing of one reaction will not disable the other. This analysis is suitable for detecting concurrent reactions in the models, which are often responsible for some critical decision-making in biological systems.
+\end{itemize}
+
+\textbf{Qualitative model checking}
+
+\textbf{mention Petri nets, invariants}
 
 Static analysis is performed on the static description of the model without need to actually execute it. While model checking generally needs to explore all the states originated by executing the semantics of the model, static analysis operates on the syntactic level of the specification or by using abstract interpretation~\cite{cousot1977abstract} over finite approximations of the possible model executions~\cite{pauleve2012static}. It is a powerful tool preferably used to detect potential issues in the model.
 
