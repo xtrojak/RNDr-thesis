@@ -162,7 +162,7 @@ A rule-based model is composed from two parts -- the initial state, describing t
 
 A natural extension of the model is \emph{parametrised} rule-based model where rate functions can be enriched by unknown parameters from a known domain (usually integers or rational numbers). It is a typical case in systems biology since the actual values of reaction kinetics are often hard or even impossible to be measured. Then, to evaluate a rate function, a \emph{parametrisation} $p$ from the admissible parameter space has to be given, representing a particular biological scenario.
 
-\section{Analysis methods of interest}
+\section{Analysis methods}
 
 An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}). This fact results in multiple possible ways how to analyse and explore the models.
 
@@ -400,7 +400,7 @@ Rule-based models can be translated, using different semantics, to generate othe
 
 \subsection{Simulation}
 
-The most usual way how to exploit behaviour of a rule-based model is simulation. Using the generated reaction network from the model rules, one can perform stochastic for example using Gillespie algorithm~\cite{GILLESPIE1976403}) or deterministic simulation~\cite{Poole2000} by consequent translation to Ordinary differential equations (ODEs)~\cite{higham2008modeling}. (depending on the interpretation of rule rates). However, the cost of simulating the kinetics of a reaction network depends on the size of the network. Thus, if a network is large, the simulation cost can be expensive in terms of computation time and/or computer memory. To address this problem, network-free simulators such as NFsim~\cite{sneddon2011efficient} was developed based on a method of simulation that takes advantage of rules. The method generalises an agent-based kinetic Monte Carlo method that has been shown to circumvent the combinatorial bottleneck in simulations~\cite{yang2008kinetic}.
+The most usual way how to exploit behaviour of a rule-based model is simulation. Using the generated reaction network from the model rules, one can perform stochastic for example using Gillespie algorithm~\cite{GILLESPIE1976403}) or deterministic simulation~\cite{Poole2000} by consequent translation to Ordinary differential equations (ODEs)~\cite{higham2008modeling}. However, the cost of simulating the kinetics of a reaction network depends on the size of the network. Thus, if a network is large, the simulation cost can be expensive in terms of computation time and/or computer memory. To address this problem, network-free simulators such as NFsim~\cite{sneddon2011efficient} was developed based on a method of simulation that takes advantage of rules. The method generalises an agent-based kinetic Monte Carlo method that has been shown to circumvent the combinatorial bottleneck in simulations~\cite{yang2008kinetic}.
 
 The advantage of NFsim compared indirect approaches is that during simulation, rules operate directly on molecular objects to produce exact stochastic results with performance that scales independently of the reaction network size. Reaction rates can be defined as arbitrary functions of molecular states to provide powerful coarse-graining capabilities. NFsim enables researchers to simulate many biological systems that were previously inaccessible to general-purpose software.
 
@@ -455,7 +455,7 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 One of the drawbacks of current analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are many ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them requires explicit representation of the modelled system, which debilitates the scalability of rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
 
-The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on development of algorithms for BCSL, but their application domain should be more general and applicable to any rule-based formalisms. The thesis will focus of following subtasks:
+The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on development of algorithms for BCSL, but their application domain should be more general and applicable to any rule-based formalisms. The thesis will focus on the following subtasks:
 
 \begin{enumerate}
 	\setlength\itemsep{0.001cm}
@@ -477,15 +477,15 @@ The ideal solution avoids the building of the state space completely. This is th
 
 \subsection{Parameter synthesis}
 
-- based on model checking solution (to provide the exact results)
+Parameter synthesis is a crucial branch of model analysis in the case when the parameters of modelled system are not known. However, in rule-based community, this branch is not very developed. The only known work focuses on parameter estimation using statistical model checking. Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
 
-- mention the methods can be used to generate parametrised RE
+One of the options how to solve this problem is based on model checking approach from the previous section. Once we have an efficient model checking method, the parameter synthesis can be formulated using this methods. For example, the mentioned method which constructs RE could be generalised to parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation.
 
 \subsection{Robustness analysis}
 
-measure required for local robustness (used from Dawe paper) -- easy in probabilistic setting
+Robustness analysis characterises the mean validity of a formula over all parameter values in the given perturbation set. To the best of our knowledge, this problem was not yet formulated for rule-based systems. Therefore another goal of this thesis is to formulate and solve this problem in terms similar to the previous goals. 
 
-- since we obtain function, we have global for free
+In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such function, we can integrate over the perturbation set and obtain the robustness.
 
 \subsection{BCSL development}
 
@@ -500,30 +500,35 @@ The goal is to continue in development of BCSL in context of CMP in order to imp
 Plan for future study and research activities:
 
 \begin{itemize}
-\item Doctoral exam and defence of this thesis proposal -- January 2020
-\item Research on the  -- from now until January 20XY+2
-\item A~version of the tool incorporating -- June 20XY
-\item Implementing new methods in the tool -- June 20XY+1 till January 20XY+2
-\item Final version of the tool -- January 20XY+2
-\item Writing of the PhD thesis -- January 20XY+2 till June 20XY+2
-\item Final version of the thesis -- June 20XY+2
+\item Fall 2019: Doctoral exam and defence of this thesis proposal
+\item now -- Fall 2020: Development of analysis methods.
+\item Fall 2020 -- Spring 2021: Implementation of designed methods.
+\item Spring 2021: Release of a stable version of BCSgen tool.
+\item Spring 2021 -- Fall 2021: Work on the text of the PhD thesis.
+\item Fall 2021: Thesis defence.
 \end{itemize}
 
 % ------------------------------- bibliography
 
 \chapter{Achieved results}
 
-\textbf{TBA: fix past simple}
+Our research has been primarily focus on development of new modelling approaches in systems biology. Our long-term ongoing research is focused on the development of Comprehensive Modelling Platform -- a general framework for public sharing, annotation, and visualisation of domain-specific biological models. For a selected system (e.g. an organism, particular process), the framework is instantiated as a web-based application which allows capturing several aspects of biological models. The platform is targeting biologically-oriented users and is trying to improve model-building tasks including analysis support and automatic verification of models.
 
-Firstly, I have cooperated on development of the first version of Biochemical Space Language~\cite{Ded201627}. The language was presented in its basic form with emphasis on annotation, providing a definition based for a particular biological problem. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{cs2bio2013}. Additionally, Kappa does not provide hierarchical description which is one of the key aspects of BCSL.
-
-Secondly, I have contributed as the main author in~\cite{Trojak2016}. In this work, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium including the formalisation of the respective part of biochemical space in BCSL.
+In~\cite{Trojak2016}, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium.
 
 We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise a complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the methods is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters.
 
+The core part of the platform is \emph{Biochemical Space} (BCS)~\cite{BCS}. BCS mechanistically describes modelled process with emphasis placed on precise annotation by links to existing biological ontologies and by association with experimental data. This formal description then serves as a knowledge base for all mathematical models enabled by relating model components to BCS entities. The mechanism of linking individual objects indirectly assigns biological meaning to mathematical constructs. This step is very useful in the process of analysis results interpretation.
+
+Important feature of BCS is specification language it uses for description of the processes. The key aspects necessary for such language are: human-readability -- easy
+to read, write, and maintain the description; executability -- defined semantics are needed for efficient consistency checking and analysis; universality -- multiple cellular processes with different level of detail can be sufficiently combined in a single specification; and syntactic scalability -- combinatorial explosion
+of the description is avoided.
+
+To that end, we have developed the first version of Biochemical Space Language~\cite{Ded201627}. The language was presented in its basic form with emphasis on the annotation. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{cs2bio2013}. Additionally, Kappa does not provide hierarchical description which is one of the key aspects of BCSL.
+
 In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model can be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of modelled system, and we showed a static non-reachability technique which can answer some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway we demonstrated these techniques and showed how useful they can be in model building tasks.
 
-\textbf{TBA: more about BCS?}
+The language is supported by BCSgen tool. The general goal of the tool is to provide environment suitable for editing and maintenance of the BCSL models and provide functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015 and MUNI33/062017. The main features of the tool are interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and parallel computation of state space with its visual exploration.
 
 \newpage
 \stepcounter{chapter}
