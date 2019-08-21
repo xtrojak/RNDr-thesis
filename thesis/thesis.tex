@@ -197,7 +197,7 @@ Given a parametrised rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a 
 
 Additionally, instead of the binary answer to satisfaction of a property, a measure of how much the property is preserved in the given parametrisation can be useful. This measure is called \emph{local robustness} $D^{\mu}_{\phi}(p)$ and states how much the property $\phi$ is preserved in parametrisation $p$ of model $\mu$.
 
-\begin{definition}{Robustness analysis}
+\begin{definition}{Robustness analysis}\label{robustness_def}
 The \emph{problem of global robustness} of a model $\mu$ is defined as 
 
 $$ R^{\mu}_{\phi, P} = \int_{P} \psi(p) D^{\mu}_{\phi}(p) dp $$
@@ -405,13 +405,9 @@ Moreover, it is possible assign a name to complex, which increases the readabili
 	\label{BCSL_rule}
 \end{figure}
 
-\section{Analysis methods}
+\textbf{TBA: another example demonstrating human readability}
 
-\textbf{TBD - v jednotlivych castiach ist od explicitnych az po implicitne pristupy
-- dat doraz na explicitne metody, ktore su sice pouzitelne, ale maju vela problemov voci implicitnym
-- vytvorit kontrast medzi explicit. a implicit.}
-
--------------------------
+\section{Analysis methods}\label{analysis_sec}
 
 In the context of systems biology, the computer-aided verification methods are becoming very useful for reasoning and analysing models, validating new experimental results, automatically checking behaviours of interest, and identifying the inputs or parameters of the system enforcing a desired behaviour. The formal verification of a model consists of proving that its execution satisfies a given specification of the possible behaviours it should display.
 
@@ -440,38 +436,82 @@ If we succeed in constructing the complete reachability graph, are able to decid
 
 Model checking is automatic formal verification technique able to perform a clever exhaustive search of the state space of a model. It operates over a discrete time model with a finite number of states (usually a Kripke structure~\cite{kripke1963semantical}), determining truth value of temporal logic formula. A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its parameters, giving rise to the state explosion problem. Therefore, the most of the model checkers usually represents the states symbolically~\cite{burch1992symbolic} such as a binary decision diagrams~\cite{bryant2001graph}. Relevant methods for analysis of continuous semantics are based on abstraction of the behaviour to a finite number of discrete states. For example, one can be interested in parallel semi-symbolic coloured model checking~\cite{benevs2016model}, bifurcation analysis~\cite{benevs2017discrete}, and attractor analysis~\cite{benevs2018fully}.
 
-Model checking has been extended to many other computational models such as continuous- and discrete-time Markov chains (CTMC and DTMC) by adding probabilities~\cite{kwiatkowska2010probabilistic}. A tool used for analysing the Markov chains is PRISM~\cite{kwiatkowska2011prism}, which calculates the probability that the system model will satisfy the property of interest. It can either provide the exact solution~\cite{aziz2000model} or an approximated solution~\cite{jha2009bayesian} (using a set of samples, generated using a Monte Carlo simulation of the system model). Important branch of model checking is also \emph{quantitative model checking}~\cite{huth1997quantitative}, which provides a numerical value expressing the measure of satisfaction instead of a binary decision.
+Model checking has been extended to many other computational models such as continuous- and discrete-time Markov chains (CTMC and DTMC) by adding probabilities~\cite{kwiatkowska2010probabilistic}. A tool used for analysing the Markov chains is PRISM~\cite{kwiatkowska2011prism}, which calculates the probability that the system model will satisfy the property of interest. It can either provide the exact solution~\cite{aziz2000model} or an approximated solution~\cite{jha2009bayesian} (using a set of samples, generated using a Monte Carlo simulation of the system model). 
 
-\section{Parameter synthesis}
+Another important approach for model checking are \emph{on-the-fly} algorithms that are following a top-down approach that does not require global knowledge of the complete state space~\cite{latella2014fly,bhat1995efficient,courcoubetis1992memory,gnesi2011abstract,holzmann2004spin}. Instead, the algorithms construct step by step local knowledge of the state space until it is possible to decide whether the given state satisfies the formula. An important branch of model checking is also \emph{quantitative model checking}~\cite{huth1997quantitative}, which provides a numerical value expressing the measure of satisfaction instead of a binary decision.
+
+\subsection{Parameter synthesis}
 
 \emph{Parameter synthesis} is a method based on model checking used for exploiting models with unknown parameters. The method aims at finding all parameter values for which the parametric model satisfies the specification. In practise, the unknown parameters are usually bound by an interval, providing a parameter space. Methods for parameter synthesis of pMCs have been introduced with symbolic computation of reachability properties through state elimination~\cite{daws2004symbolic,jansen2014accelerating,hahn2011probabilistic}, recently improved by parameter lifting~\cite{quatmann2016parameter} and fraction-free Gaussian elimination~\cite{hutschenreiter2017parametric}. Relevant work is also parameter synthesis in parametric discrete-time Markov chains~\cite{daws2004symbolic}.
 
 An alternative approach to the analysis of complex stochastic models under
 parameter uncertainty is based on statistical methods~\cite{Luck2016,BackenkohlerBW18,Bortolussi2016,Bortolussi2018}. There are only a few works that bridge the rule-based framework to such techniques. In~\cite{liu2016parameter} a statistical parameter sampling method is employed to analyse unknown parameters in BNGL models represented by means of CTMCs where the rate function is limited to mass action kinetics. The recent work~\cite{KJ18} combines statistical model checking with machine learning techniques to calibration (estimation) of parameters in order to maximise probability of satisfying a given specification. In~\cite{Bock15} the authors adapt simulation-based and moment-based methods. In general, statistical techniques do not give an exact symbolic representation of satisfying parameter sets. 
 
-\section{Monitoring}
+\subsection{Monitoring}
 
 Another way to tackle the state explosion problem is the analysis of a single execution trace instead of performing an exhaustive verification. \emph{Runtime verification} (or \emph{monitoring}) aims to check whether on the current execution of a program satisfies or violates a property of interest. For example, in BIOCHAM~\cite{calzone2006biocham}, authors implemented a monitoring of numerical simulations of biological models with LTL used to specify properties of real-valued variables. Additionally, in~\cite{donze2010breach} they implemented a tool where the evaluation of the STL~\cite{maler2004monitoring} formula robustness is used for a particular trajectory through monitoring.
 
-\section{Robustness analysis}
+\subsection{Robustness analysis}
 
-robustness analysis in continuous-time Markov chains~\cite{vceska2014robustness};  etc.
+According to~\cite{kitano2004biological}, ``robustness is a property that allows a system to maintain its functions against internal and external perturbations''. The formal definition of robustness is given in Definition~\ref{robustness_def}. The concept of robustness is well established for deterministic systems~\cite{donze2011robustness,rizk2009general}. The evolution of a stochastic system is given
+by a set of paths compared to a single trajectory of a deterministic system. The stochastic system at any given time is described by a probability distribution over states of the corresponding CTMC in contrast to the single state representation of a deterministic system. Therefore, the definition of robustness for stochastic systems requires a more sophisticated approach. In~\cite{vceska2014robustness}, authors developed an adaptation of the concept of robustness to stochastic systems, particularly robustness analysis in continuous-time Markov chains.
 
-\section{Static analysis}
+\subsection{Static analysis}\label{static_analysis}
 
 Static analysis is performed on the static description of the model without need to actually execute it. While model checking generally needs to explore all the states originated by executing the semantics of the model, static analysis operates on the syntactic level of the specification or by using abstract interpretation~\cite{cousot1977abstract} over finite approximations of the possible model executions~\cite{pauleve2012static}. It is a powerful tool preferably used to detect potential issues in the model.
 
 There are several well-defined static analysis methods for rule-based systems, which can be useful in finding inconsistency in the models~\cite{danos2009rule}. For example: \emph{detection of dead rules} -- a rule is called dead, if there is no trace starting from the initial state in which this rule is applied; \emph{detection of dead agents} -- an agent is called dead, if there is no trace starting from the initial state with at least one state in which this agent occurs; \emph{detection of redundant agents} -- a rule is redundant if after removing it from the model, the particular semantics do not change. These and many more methods can be run statically, proving a cheap way how to verify special types of properties before executing the model.
 
-A useful tool in the field of static analysis of rule-based models is KaSa~\cite{boutillier2018kasa}. This static analyzer abstracts the set of reachable states of models, and then uses this information to collect insightful properties. In particular, KaSa may warn about rules that may never be applied, about potential definitive transformations of proteins and about the potential formation of unbounded molecular compounds.
+A useful tool in the field of static analysis of rule-based models is KaSa~\cite{boutillier2018kasa}. This static analyser abstracts the set of reachable states of models, and then uses this information to collect insightful properties. In particular, KaSa may warn about rules that may never be applied, about potential definitive transformations of proteins, and about the potential formation of unbounded molecular compounds.
 
 \chapter{Aim of the Thesis} \label{chap:aim}
 
-\section{Objectives and expected results}
+\section{Objectives}
 
-highlight what is missing in previous chapter
+One of the drawbacks of current analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are many ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them requires explicit representation of the modelled system, which debilitates the scalability of rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
 
-\section{Achieved results}
+The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on development of algorithms for BCSL, but their application domain should be more general and applicable to any rule-based formalisms. The thesis will focus of following analysis methods:
+
+\begin{enumerate}
+	\setlength\itemsep{0.001cm}
+	\item Model checking.
+	\item Parameter synthesis.
+	\item Robustness analysis.
+	\item Static analysis.
+\end{enumerate}
+
+1. The developed model checking methods for rule-based languages use either indirect approach or statistical approach. The goal is to establish a direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on reachability problem, as one of the most important problems when it comes to analysis of biological systems.
+
+Computer science already offers several approaches how to accomplish this goal. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism. 
+
+Another option would be to use an existing indirect approach which requires complete state space and improve it to a semi-symbolic or an on-the-fly method. For example, there is a method for probabilistic reachability analysis of DTMC which constructs a regular expression (RE) which evaluation gives the probability of reaching targeted species. The algorithm for RE construction, however, does not necessarily need the explicit DTMC. We could use this fact for an on-the-fly construction of the RE, avoiding the complete state space enumeration.
+
+2. 
+
+Secondary objective is BCSL...
+
+As it was mentioned in the introduction, the general goal of Comprehensive Modelling Platform is to get as close to the users as possible. This includes the fact that the used formal language should be so-called \emph{human-readable} and simple enough to be understandable beyond computer science community. The above mentioned languages all offer interesting features when it comes to modelling, however none of them focuses on this property except BCSL. (\textbf{later has to be more commented how whole BCS works!!!}).
+
+\subsection{BCSL development}
+
+\section{Progression schedule}
+
+The plan of my future study and research activities, besides attending
+courses and teaching, is following.
+
+\begin{itemize}
+\item Doctoral exam and defence of this thesis proposal -- January 2020
+\item Research on the  -- from now until January 20XY+2
+\item A~version of the tool incorporating -- June 20XY
+\item Implementing new methods in the tool -- June 20XY+1 till January 20XY+2
+\item Final version of the tool -- January 20XY+2
+\item Writing of the PhD thesis -- January 20XY+2 till June 20XY+2
+\item Final version of the thesis -- June 20XY+2
+\end{itemize}
+
+% ------------------------------- bibliography
+
+\chapter{Achieved results}
 
 \textbf{TBA: fix past simple}
 
@@ -485,23 +525,6 @@ In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL
 
 \textbf{TBA: more about BCS?}
 
-\section{Progression schedule}
-
-The plan of my future study and research activities, besides attending
-courses and teaching, is following.
-
-\begin{itemize}
-\item Doctoral exam and defence of this thesis proposal -- January 20XY
-\item Research on the  -- from now until January 20XY+2
-\item A~version of the tool incorporating -- June 20XY
-\item Implementing new methods in the tool -- June 20XY+1 till January 20XY+2
-\item Final version of the tool -- January 20XY+2
-\item Writing of the PhD thesis -- January 20XY+2 till June 20XY+2
-\item Final version of the thesis -- June 20XY+2
-\end{itemize}
-
-% ------------------------------- bibliography
-
 \newpage
 \stepcounter{chapter}
 \addcontentsline{toc}{chapter}{Bibliography}
@@ -513,28 +536,18 @@ courses and teaching, is following.
 
 \appendix
 
-\chapter{Summary of Present Study Results}\label{app:results}
+\chapter{Summary of Author’s PhD Study}
 
-\section{Courses and Summer Schools}
-I have attended the following courses.
-\begin{itemize}
-\item 
-\item 
-\item 
-\item 
-\end{itemize}
+\section{Posters and talks}
 
-I have also participated in summer schools ...
+TBA
 
-\section{Research Results}
+\section{Teaching, supervising, and reviewing}
 
-I have participated  SOME research project of the QW Laboratory supported by grants
-GRANT NUMBER. As a~member of this team, I have ...
+TBA
 
- My publications and presentations related
-to the topic of my PhD thesis are listed below.
+\chapter{Attached publications}
 
-\subsection*{Publications}
 
 \end{document}
 
