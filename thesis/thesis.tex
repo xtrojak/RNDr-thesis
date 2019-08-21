@@ -87,12 +87,12 @@ Moreover, there are methods automatising the generation of mathematical models f
 The problem of both approaches is the \emph{scalability} which is understood at two
 different levels: scalability of the model description (avoiding combinatorial explosion at the syntactic level) and scalability of the model execution (avoiding combinatorial explosion at the semantics level). Even when the formulation of a model does not run into syntactic scalability problems, the execution or simulation might be infeasible~\cite{Romers107136}. 
 
-The so-called \emph{computational approach}~\cite{Cardelli,Henzinger} offers scalable model description by abstracting the information about individual model components and interactions. The scalability at the semantics level still remains to be a challenge. A promising computational approach is provided by \emph{rule-based modelling}~\cite{kappa_formal,harris2016bionetgen} and process-algebraic frameworks~\cite{Cardelli,BioPEPA,BioSPI}. Rule-based models make a natural extension of the mechanical reaction-based models used in chemistry. Instead of operating with \emph{objects}, rule-based frameworks operate with \emph{types} that allow to avoid the combinatorial explosion that occurs when underlying objects are specified directly. The semantics of the model is given in terms of \emph{rules} defined on given types. The rules express a high degree of modularity which help to avoid the explicit enumeration of all possible molecular species or all the states of a system. They also enable a more natural starting point for model development than making ad hoc assumptions to decide the model scope. An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, PDEs~\cite{Smoldyn}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}, reaction-diffusion systems~\cite{So2013}, etc.). 
+The so-called \emph{computational approach}~\cite{Cardelli,Henzinger} offers scalable model description by abstracting the information about individual model components and interactions. The scalability at the semantics level still remains to be a challenge. A promising computational approach is provided by \emph{rule-based modelling}~\cite{kappa_formal,harris2016bionetgen} and process-algebraic frameworks~\cite{Cardelli,BioPEPA,BioSPI}. Rule-based models make a natural extension of the mechanical reaction-based models used in chemistry. Instead of operating with \emph{objects}, rule-based frameworks operate with \emph{types} that allow to avoid the combinatorial explosion that occurs when underlying objects are specified directly. The semantics of the model is given in terms of \emph{rules} defined on given types. The rules express a high degree of modularity which help to avoid the explicit enumeration of all possible molecular species or all the states of a system. They also enable a more natural starting point for model development than making ad hoc assumptions to decide the model scope. An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{camporesi2017k}, PDEs~\cite{andrews2016smoldyn}, chemical master equation or continuous-time Markov chains~\cite{pauleve2010generic,sneddon2011efficient}, reaction-diffusion systems~\cite{sorokina2013simulator}, etc.). 
 
-The long-term aim of our research is the development of Comprehensive Modelling Platform~\cite{cs2bio2013,BCS} -- a general modelling framework that combines model building, model analysis, and annotation tasks in a single public site related to a single system. It respects the need for maintaining existing ODE models (which is still a typical scenario in systems biology) but allows to align them with a mechanistic rule-based description that is understandable by biologists, compact in size, and executable in terms of allowing basic analysis tasks ensuring consistency of the description. Such a comprehensive solution allows to support modellers effort in building mathematical models that have clear biochemical meaning and can be
+The long-term aim of our research is the development of Comprehensive Modelling Platform~\cite{klement2013comprehensive,BCS} -- a general modelling framework that combines model building, model analysis, and annotation tasks in a single public site related to a single system. It respects the need for maintaining existing ODE models (which is still a typical scenario in systems biology) but allows to align them with a mechanistic rule-based description that is understandable by biologists, compact in size, and executable in terms of allowing basic analysis tasks ensuring consistency of the description. Such a comprehensive solution allows to support modellers effort in building mathematical models that have clear biochemical meaning and can be
 easily integrated. Moreover, mechanistic descriptions can be later used as standalone computational models having all advantages of rule-based modelling. 
 
-To that end, we have pioneered an idea of combining advantages of rule-based modelling with the simplicity of chemical reactions by introducing a rule-based language called \emph{Biochemical Space Language} (BCSL), introduced in~\cite{Ded201627}. It has the following key aspects: \emph{human-readability} -- easy to read, write, and maintain;
+To that end, we have pioneered an idea of combining advantages of rule-based modelling with the simplicity of chemical reactions by introducing a rule-based language called \emph{Biochemical Space Language} (BCSL), introduced in~\cite{dved2016formal}. It has the following key aspects: \emph{human-readability} -- easy to read, write, and maintain;
 \emph{executability} -- formal executable semantics is defined allowing efficient static analysis and consistency checking; \emph{universality} -- principally different cellular processes can be sufficiently combined in a single specification; and \emph{syntactic scalability} -- combinatorial explosion of the description is avoided. However, similarly as in any other rule-based language, the problem of the \emph{model execution scalability} is not covered efficiently.
 
 The aim of the thesis is to tackle the state explosion problem in the context of rule-based models analysis. The main effort is to develop exact methods which provide global guarantees overcoming the limitations of approximative, sampling, and bounded methods. The emphasis is placed on parameter synthesis using a symbolic approach and static analysis enabled by unique level of abstraction typical for rule-based approach. The methods will be demonstrated using BCSL but their applicability should be universal across other rule-based formalisms.
@@ -164,7 +164,7 @@ A natural extension of the model is \emph{parametrised} rule-based model where r
 
 \section{Analysis methods}
 
-An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{KaDE}, chemical master equation or continuous-time Markov chains~\cite{Pauleve2010,sneddon2011efficient}). This fact results in multiple possible ways how to analyse and explore the models.
+An important advantage of rule-based approach is that mathematical models can be automatically generated from it. In particular, instead of relying on a single mathematical formalism, different mathematical models can thus be obtained for a given model (e.g., ODEs~\cite{camporesi2017k}, chemical master equation or continuous-time Markov chains~\cite{pauleve2010generic,sneddon2011efficient}). This fact results in multiple possible ways how to analyse and explore the models.
 
 \emph{Simulation} is the most usual way how to exploit the behaviour of a model. Depending on the interpretation of rule rates, we can use numerical simulation of rule-based model for both its continuous and stochastic dynamics. Analysing the models using simulation is very useful, but does not provide a global overview of its behaviour.
 
@@ -248,7 +248,7 @@ BNGL rule typically represent molecular interactions and the consequences of the
 
 \subsection{PySB}
 
-The PySB language~\cite{Lopez646} is an open-source programming framework written in Python that allows concepts and methodologies from contemporary software engineering to be applied to the construction of transparent, extensible and reusable biological  models. It is implemented as a package in the Python programming language. 
+The PySB language~\cite{lopez2013programming} is an open-source programming framework written in Python that allows concepts and methodologies from contemporary software engineering to be applied to the construction of transparent, extensible and reusable biological  models. It is implemented as a package in the Python programming language. 
 
 The definition of the models directly in the code allows the usage of the full syntax of Python, what significantly increases the expression power of PySB. Its widespread use in the computational biology community, support for object-oriented and functional programming, and rich ecosystem of mathematical and scientific libraries makes it an excellent choice of programming language for this purpose. On the other hand, the increased expressive power make the models harder to analyse.
 
@@ -270,7 +270,7 @@ Rule(L(s=None) + R(s=None) <> L(s=1) % R(s=1), kf, kr)
 
 \subsection{Chromar}
 
-The Chromar language~\cite{honorato2017chromar} allows to define attributes for agents and range them over pre-defined domains. The qualitative semantics are given by rule match on multisets composed of these agents producing a reaction. It is followed by standard application of the reaction (in the manner of multiset operations). The language is very useful when creating a model where we need to create new distinct objects and control population of these objects.
+The Chromar language~\cite{honorato2018chromar} allows to define attributes for agents and range them over pre-defined domains. The qualitative semantics are given by rule match on multisets composed of these agents producing a reaction. It is followed by standard application of the reaction (in the manner of multiset operations). The language is very useful when creating a model where we need to create new distinct objects and control population of these objects.
 
 Embedding this language into the functional programming language Haskell increases its expressive power while making the ability of some analysis more expensive. Moreover, a user needs to understand Haskell (at least its basics) in order to use Chromar.
 
@@ -367,7 +367,7 @@ The newest version SBML Level 3 introduced modular language extension capability
 
 \subsection{Biochemical Space Language}
 
-Biochemical Space Language (BCSL)~\cite{trojak2018sasb} is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{cs2bio2013,BCS}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations. The target group of users is biologically-oriented community, therefore the emphasis is places on "helpful" (ústretový) user experience.
+Biochemical Space Language (BCSL)~\cite{trojak2018sasb} is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{klement2013comprehensive,BCS}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations. The target group of users is biologically-oriented community, therefore the emphasis is places on "helpful" (ústretový) user experience.
 
 The language uses a few types of agents, describing a different levels of abstraction and detail. Particularly, there is \emph{atomic} agent describing the most basic type of biological objects which have assigned a internal state. The state typically represent a modification of the objects, e.g. oxidised, reduced, methylated etc. \emph{Structure} agent represents biochemical object that is composed of several known atomic agents while we know that a composition is abstract and not necessarily complete. Since not all biochemical structures are known in detail, this feature is useful in expressing of partial knowledge. \emph{Complex} agent groups several structure or atomic agents, forming a non-trivial composite biochemical object. A typical feature of the language is that it does not use any form of binding when it comes to complex formation. Instead, the complex formation is considered as a form of \emph{coexistence}, the particular interpretation depends on the context of the model. 
 
@@ -514,7 +514,7 @@ Plan for future study and research activities:
 
 Our research has been primarily focus on development of new modelling approaches in systems biology. Our long-term ongoing research is focused on the development of Comprehensive Modelling Platform -- a general framework for public sharing, annotation, and visualisation of domain-specific biological models. For a selected system (e.g. an organism, particular process), the framework is instantiated as a web-based application which allows capturing several aspects of biological models. The platform is targeting biologically-oriented users and is trying to improve model-building tasks including analysis support and automatic verification of models.
 
-In~\cite{Trojak2016}, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium.
+In~\cite{trojak2016cyanobacterium}, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium.
 
 We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise a complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the methods is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters.
 
@@ -524,11 +524,45 @@ Important feature of BCS is specification language it uses for description of th
 to read, write, and maintain the description; executability -- defined semantics are needed for efficient consistency checking and analysis; universality -- multiple cellular processes with different level of detail can be sufficiently combined in a single specification; and syntactic scalability -- combinatorial explosion
 of the description is avoided.
 
-To that end, we have developed the first version of Biochemical Space Language~\cite{Ded201627}. The language was presented in its basic form with emphasis on the annotation. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{cs2bio2013}. Additionally, Kappa does not provide hierarchical description which is one of the key aspects of BCSL.
+To that end, we have developed the first version of Biochemical Space Language~\cite{dved2016formal}. The language was presented in its basic form with emphasis on the annotation. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{klement2013comprehensive}. Additionally, Kappa does not provide hierarchical description which is one of the key aspects of BCSL.
 
 In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model can be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of modelled system, and we showed a static non-reachability technique which can answer some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway we demonstrated these techniques and showed how useful they can be in model building tasks.
 
 The language is supported by BCSgen tool. The general goal of the tool is to provide environment suitable for editing and maintenance of the BCSL models and provide functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015 and MUNI33/062017. The main features of the tool are interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and parallel computation of state space with its visual exploration.
+
+\chapter{Publications}
+
+\begin{itemize}
+
+\item Beneš, N., Brim, L., Pastva, S., Šafránek, D., Troják, M., Červený, J.,
+Šalagovič, J.: Fully automated attractor analysis of cyanobacteria mod-
+els. In: 2018 22nd International Conference on System Theory, Control
+and Computing (ICSTCC). pp. 354--359. IEEE (2018)
+
+(14\%) A case study paper presenting the technique from~\cite{barnat2017detecting} applied to models from the e-cyanobacterium.org repository. I helped with the experimental evaluation and contributed to the text describing the models and the
+evaluation results. The paper was awarded the best paper award in its category.
+
+\item Troják, M., Šafránek, D., Brim, L., Šalagovič, J., Červený, J.: Exe-
+cutable biochemical space for specification and analysis of biochemical
+systems. Accepted in 9th International Workshop on Static Analysis for
+Systems Biology (2018)
+
+(90\%) A conference paper presenting a new version BCSL. I formulated the formal definition of the language and static analysis including their application examples.
+
+\item Troják, M., Šafránek, D., Hrabec, J., Šalagovič, J., Romanovská, F.,
+Červený, J.: E-cyanobacterium.org: A web-based platform for systems
+biology of cyanobacteria. In: International Conference on Computational
+Methods in Systems Biology. pp. 316--322. Springer (2016)
+
+(50\%) A tool paper presenting e-cyanobacterium.org as an instance of CMP. I helped with writing most of the text and brought several ideas to the web platform development.
+
+\item Děd, T., et al.: Formal biochemical space with semantics in Kappa
+and BNGL. In the 6th International Workshop on Static Analysis and Systems Biology (SASB 2015) Electronic Notes in Theoretical Computer Science 326, 27
+(2016)
+
+(25\%) A conference paper describing the first version of BCSL defined by embedding to another language. I helped to formulate the formal definition and algorithms for the embedding.
+
+\end{itemize}
 
 \newpage
 \stepcounter{chapter}
