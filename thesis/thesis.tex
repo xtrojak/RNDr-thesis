@@ -68,21 +68,6 @@
 \pagestyle{plain}
 \pagenumbering{roman}
 
-~\vfill
-
-\section*{Acknowledgements}
-I would like to thank ...
-
-
-\newpage
-%~\vfill
-\section*{Abstract}
-My abstract is as follow
-
-\newpage
-\section*{Keywords}
-Keyword1, keyword2, keyword3...
-
 \tableofcontents
 \newpage
 
@@ -470,34 +455,49 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 One of the drawbacks of current analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are many ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them requires explicit representation of the modelled system, which debilitates the scalability of rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
 
-The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on development of algorithms for BCSL, but their application domain should be more general and applicable to any rule-based formalisms. The thesis will focus of following analysis methods:
+The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on development of algorithms for BCSL, but their application domain should be more general and applicable to any rule-based formalisms. The thesis will focus of following subtasks:
 
 \begin{enumerate}
 	\setlength\itemsep{0.001cm}
 	\item Model checking.
 	\item Parameter synthesis.
 	\item Robustness analysis.
-	\item Static analysis.
+	\item BCSL development.
 \end{enumerate}
 
-1. The developed model checking methods for rule-based languages use either indirect approach or statistical approach. The goal is to establish a direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on reachability problem, as one of the most important problems when it comes to analysis of biological systems.
+\subsection{Model checking}
 
-Computer science already offers several approaches how to accomplish this goal. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism. 
+The developed model checking methods for rule-based languages use either indirect approach or statistical approach. The goal is to establish a direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on reachability problem, as one of the most important problems when it comes to analysis of biological systems.
+
+Computer science already offers several approaches how to accomplish this goal. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism.
 
 Another option would be to use an existing indirect approach which requires complete state space and improve it to a semi-symbolic or an on-the-fly method. For example, there is a method for probabilistic reachability analysis of DTMC which constructs a regular expression (RE) which evaluation gives the probability of reaching targeted species. The algorithm for RE construction, however, does not necessarily need the explicit DTMC. We could use this fact for an on-the-fly construction of the RE, avoiding the complete state space enumeration.
 
-2. 
+The ideal solution avoids the building of the state space completely. This is the most challenging task and requires development of new symbolic and static approaches. However, as it was shown in~\cite{trojak2018sasb}, some of the model checking subtasks can be solved statically due to unique abstraction employed by rule-based languages (e.g., some forms of non-reachability).
 
-Secondary objective is BCSL...
+\subsection{Parameter synthesis}
 
-As it was mentioned in the introduction, the general goal of Comprehensive Modelling Platform is to get as close to the users as possible. This includes the fact that the used formal language should be so-called \emph{human-readable} and simple enough to be understandable beyond computer science community. The above mentioned languages all offer interesting features when it comes to modelling, however none of them focuses on this property except BCSL. (\textbf{later has to be more commented how whole BCS works!!!}).
+- based on model checking solution (to provide the exact results)
+
+- mention the methods can be used to generate parametrised RE
+
+\subsection{Robustness analysis}
+
+measure required for local robustness (used from Dawe paper) -- easy in probabilistic setting
+
+- since we obtain function, we have global for free
 
 \subsection{BCSL development}
 
+As it was mentioned in the introduction, the general goal of CMP is to get as close to the users as possible. This includes the fact that the used formal language BCSL should be so-called \emph{human-readable} and simple enough to be understandable beyond computer science community. The languages from Section... all offer interesting features when it comes to modelling, however none of them except BCSL focuses on this property.
+
+The goal is to continue in development of BCSL in context of CMP in order to improve user experience. This mostly includes extension of the language by quantitative properties which are not supported in the present version and are required in order to achieve most of the above mentioned goals; and the development of BCSgen tool package integrated in CMP, which provides user-space for maintenance and analysis of the models. All the mentioned analysis methods need to be the part of the tool so that the user has complete analysis and development tool-kit at one place.
+
+(\textbf{later has to be more commented how whole BCS works!!!}).
+
 \section{Progression schedule}
 
-The plan of my future study and research activities, besides attending
-courses and teaching, is following.
+Plan for future study and research activities:
 
 \begin{itemize}
 \item Doctoral exam and defence of this thesis proposal -- January 2020
