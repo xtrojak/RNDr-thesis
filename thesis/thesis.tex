@@ -515,13 +515,33 @@ Plan for future study and research activities:
 
 \chapter{Achieved results}
 
-Our research has been primarily focusing on the development of new modelling approaches in systems biology. Our long-term ongoing research is focused on the development of Comprehensive Modelling Platform -- a general framework for public sharing, annotation, and visualisation of domain-specific biological models. For a selected system (e.g. an organism, particular process), the framework is instantiated as a web-based application which allows capturing several aspects of biological models. The platform is targeting biologically-oriented users and is trying to improve model-building tasks, including analysis support and automatic verification of models.
+Our research has been primarily focusing on the development of new modelling approaches in systems biology. Our long-term ongoing research is focused on the development of Comprehensive Modelling Platform (CMP) -- a general framework for public sharing, annotation, and visualisation of domain-specific biological models. For a selected system (e.g. an organism, particular process), the framework is instantiated as a web-based application which allows capturing several aspects of biological models. The platform is targeting biologically-oriented users and is trying to improve model-building tasks, including analysis support and automatic verification of models.
 
-In~\cite{trojak2016cyanobacterium}, we presented e-cyanobacterium.org -- an instance of Comprehensive Modelling Platform oriented on processes of cyanobacteria. The platform is unique in focusing on domain-specific organisms, which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium.
+In~\cite{trojak2016cyanobacterium}, we presented e-cyanobacterium.org -- an instance of CMP oriented on processes of cyanobacteria. The platform is unique in focusing purely on cyanobacteria, which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium, covering environmental processes, respiration and photosynthesis, carbon concentrating mechanism, circadian clock, and metabolism.
 
-We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the methods is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters.
+We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the method is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters.
 
-The core part of the platform is \emph{Biochemical Space} (BCS)~\cite{BCS}. BCS mechanistically describes the modelled process with emphasis placed on precise annotation by links to existing biological ontologies and by association with experimental data. This formal description then serves as a knowledge base for all mathematical models enabled by relating model components to BCS entities. The mechanism of linking individual objects assigns biological meaning to mathematical constructs. This step is very useful in the process of analysis results interpretation.
+The core part of the platform is \emph{Biochemical Space} (BCS)~\cite{BCS}. BCS mechanistically describes the modelled process with emphasis placed on precise annotation by links to existing biological ontologies and by association with experimental data. This formal description then serves as a knowledge base for all mathematical models enabled by relating model components to BCS entities (for example of a BCS entity, see Figure~\ref{entity_example}). The mechanism of linking individual objects assigns biological meaning to mathematical constructs. This step is very useful in the interpretation process of analysis results.
+
+\begin{figure}[!h]
+  \begin{center}
+    \framebox{
+      {\footnotesize
+        \begin{tabular}{ l | l }
+          ID: & KaiC\\
+          Name: & circadian clock protein kinase KaiC\\
+          Compartments: & cyt\\
+          Composition: & S, T\\
+          Classification: & protein\\
+          Description: & Monomer component representing a core\\
+          & component of the circadian clock system.\\
+          Links: & UniProt::Q79PF4, CyanoBase::Synpcc7942\_1216\\
+          Organism: & Synechococcus elongatus PCC 7942
+      \end{tabular}}
+    }
+  \end{center}
+  \caption{Example of complete information given for an agent representing circadian clock protein kinase KaiC of Synechococcus elongatus PCC 7942 strain. The emphasis is placed on the annotation -- relevant data entries are \href{https://www.uniprot.org/uniprot/Q79PF4}{Q79PF4} in UniProt database and \href{http://genome.microbedb.jp/cyanobase/GCA_000012525.1/genes/Synpcc7942_1216}{Synpcc7942\_1216} in CyanoBase. Links to other databases such as KEGG, ChEBI are also supported.}\label{entity_example}
+\end{figure}
 
 An important feature of BCS is specification language it uses for the description of the processes. The key aspects necessary for such language are: human-readability -- easy to read, write, and maintain the description; executability -- defined semantics are needed for efficient consistency checking and analysis; universality -- multiple cellular processes with different level of detail can be sufficiently combined in a single specification; and syntactic scalability -- the combinatorial explosion of the description is avoided.
 
@@ -529,7 +549,7 @@ To that end, we have developed the first version of Biochemical Space Language~\
 
 In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model could be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of the modelled system, and we showed a static non-reachability technique which can answer some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway, we demonstrated these techniques and showed how useful they could be in model building tasks.
 
-The language is supported by BCSgen tool. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015 and MUNI33/062017. The main features of the tool are an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and parallel computation of state space with its visual exploration.
+The language is supported by BCSgen tool\footnote{\href{https://github.com/sybila/BCSgen}{https://github.com/sybila/BCSgen}}. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015 and MUNI33/062017. The main features of the tool are an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and parallel computation of state space with its visual exploration.
 
 \chapter{Publications}
 
