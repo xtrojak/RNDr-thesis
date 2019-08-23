@@ -458,45 +458,45 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 \section{Objectives}
 
-One of the drawbacks of current analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are many ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require an explicit representation of the modelled system, which debilitates the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
+One of the drawbacks of existing analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are multiple ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require an explicit representation of the modelled system, which debilitates the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
 
-The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on the development of algorithms for BCSL, but their application domain should be more general and applicable to any rule-based formalisms. The thesis will focus on the following subtasks:
+The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on the development of the methods for BCSL, but their application domain should be more general and applicable to any rule-based formalism. The objective of the thesis is divided to the following subtasks:
 
 \begin{enumerate}
 	\setlength\itemsep{0.001cm}
 	\item Model checking.
 	\item Parameter synthesis.
 	\item Robustness analysis.
-	\item BCSL development.
+	\item Biochemical Space Language development.
 \end{enumerate}
 
 \subsection{Model checking}
 
-To the best of our knowledge, the developed model checking methods for rule-based languages use either indirect or statistical approach. The goal is to establish a direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on the reachability problem, as one of the most important problems when it comes to the analysis of biological systems.
+To the best of our knowledge, the developed model checking methods for rule-based languages use either indirect or statistical approach. The goal is to establish a direct or a semi-direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on the reachability problem, as one of the most important problems when it comes to the analysis of biological systems.
 
 Computer science already offers several approaches on how to accomplish this goal. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism.
 
 Another option would be to use an existing indirect approach which requires complete state space and improve it to a semi-symbolic or an on-the-fly method. For example, there is a method for probabilistic reachability analysis of DTMC which constructs a regular expression (RE) which evaluation gives the probability of reaching targeted species. The algorithm for RE construction, however, does not necessarily need the explicit DTMC. We could use this fact for an on-the-fly construction of the RE, avoiding the complete state space enumeration.
 
-The ideal solution avoids the building of the state space completely. This is the most challenging task and requires the development of new symbolic and static approaches. However, as it was shown in~\cite{trojak2018sasb}, some of the model checking subtasks can be solved statically due to unique abstraction employed by rule-based languages (e.g., some forms of non-reachability).
+The ideal solution avoids the building of the state space completely. This is the most challenging task and requires the development of new symbolic and static methods. However, as it was shown in~\cite{trojak2018sasb}, some of the model checking subtasks can be solved statically due to unique abstraction employed by rule-based languages (e.g., some cases of non-reachability).
 
 \subsection{Parameter synthesis}
 
-Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not known. However, in rule-based community, this branch is not very developed. The only known work focuses on parameter estimation using statistical model checking. Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
+Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, this branch is not very developed. The only known work focuses on parameter estimation using statistical model checking. Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
 
-One of the options on how to solve this problem is based on model checking approach from the previous section. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation.
+One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation.
 
 \subsection{Robustness analysis}
 
-Robustness analysis characterises the mean validity of a formula over all parameter values in the given perturbation set. To the best of our knowledge, this problem was not yet formulated for rule-based systems. Therefore another goal of this thesis is to formulate and solve this problem in terms similar to the previous goals. 
+Robustness analysis characterises the mean validity of a formula over all parameter values in the given perturbation set. To the best of our knowledge, this problem was not yet formulated for rule-based systems. Therefore another goal of this thesis is to define and solve this problem in the context of rule-based systems. 
 
-In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such a function, we can integrate over the perturbation set and obtain the robustness.
+In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such a function, we can integrate over the perturbation set and compute the robustness.
 
-\subsection{BCSL development}
+\subsection{Biochemical Space Language development}
 
-As it was mentioned in the introduction, the general goal of CMP is to get as close to the users as possible. This includes the fact that the used formal language BCSL should be so-called \emph{human-readable} and simple enough to be understandable beyond the computer science community. The languages from Section~\ref{rule_based_languages} all offer interesting features when it comes to modelling. However, none of them except BCSL focuses on this property.
+As it was mentioned in the introduction, the general goal of CMP is to improve user's model building experience. This includes the fact that the used formal language BCSL is targeted to be so-called \emph{human-readable} and simple enough such that it is understandable beyond the computer science community. The languages from Section~\ref{rule_based_languages} all offer interesting features when it comes to modelling. However, none of them except BCSL focuses on these properties.
 
-The goal is to continue in the development of BCSL in context of CMP in order to improve user experience. This mostly includes an extension of the language by quantitative properties which are not supported in the present version and are required in order to achieve most of the above-mentioned goals; and the development of BCSgen tool package integrated into CMP, which provides user-space for maintenance and analysis of the models. All the mentioned analysis methods need to be the part of the tool so that the user has complete analysis and development tool-kit at one place.
+The goal is to continue in the development of BCSL. This among other things includes an extension of the language by quantitative properties which are not supported in the present version and are required in order to achieve most of the above-mentioned goals; and the development of BCSgen tool package integrated into CMP, which provides user-space for maintenance and analysis of the models. All the mentioned analysis methods need to be the part of the tool so that the user has complete analysis and development tool-kit at one place.
 
 \section{Progression schedule}
 
@@ -504,7 +504,7 @@ Plan for future study and research activities:
 
 \begin{itemize}
 \item Fall 2019: Doctoral exam and defence of this thesis proposal
-\item now -- Fall 2020: Development of analysis methods.
+\item Fall 2019 -- Fall 2020: Development of analysis methods.
 \item Fall 2020 -- Spring 2021: Implementation of designed methods.
 \item Spring 2021: Release of a stable version of BCSgen tool.
 \item Spring 2021 -- Fall 2021: Work on the text of the PhD thesis.
