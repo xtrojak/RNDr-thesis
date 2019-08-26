@@ -471,9 +471,17 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 \section{Objectives}
 
+\textbf{- co znamena direct a indirect : kazdemu rule-based modelu je associated transition system. Potom ze ich mozem analyzovat tak ze najprv vygenerujem transition system, tzv. "nepriamo", alebo robim analyzu priamo na urovni pravidiel (ako gramatika) tzv. "priamo". Potom mozem povedat, ze hlavnym cielom je vyvijat priame metody. Kam patria symbolicke?}
+
+\textbf{- rozdelit objectives na analyzy a vyvoj toolu (ako jazyka s nastrojom) - implementovat algoritmy pre analyzy a vtelit do nastroja pre pracu BCSL}
+
 One of the drawbacks of existing analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are multiple ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require an explicit representation of the modelled system, which debilitates the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
 
 The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on the development of the methods for BCSL, but their application domain should be more general and applicable to any rule-based formalism. The objective of the thesis is divided to the following subtasks:
+
+4.2 methods of analysis
+
+4.3 tools (ako jazyk a nastroj) - konkretna implementacia tych metod
 
 \begin{enumerate}
 	\setlength\itemsep{0.001cm}
@@ -485,7 +493,15 @@ The main objective of the thesis is to propose analysis methods for rule-based m
 
 \subsection{Model checking}
 
+\textbf{- nie je jasne co sa mysli tym ze "exact results" ani tie approximations}
+
+\textbf{- underlying mathematical representation sa musi vyjasnit, chcem zlepsit tie exactne pristupy, nie statisticke}
+
 To the best of our knowledge, the developed model checking methods for rule-based languages use either indirect or statistical approach. The goal is to establish a direct or a semi-direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on the reachability problem, as one of the most important problems when it comes to the analysis of biological systems.
+
+\textbf{- zdoraznit este raz, ze neexituju direct methods for rule-based models}
+
+\textbf{- accomplish this goal ... nie! for model checking (nejaky konkretny) a tie sa daju vyuzit na riesenie pre rule-based}
 
 Computer science already offers several approaches on how to accomplish this goal. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism.
 
@@ -495,9 +511,11 @@ The ideal solution avoids the building of the state space completely. This is th
 
 \subsection{Parameter synthesis}
 
-Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, this branch is not very developed. The only known work focuses on parameter estimation using statistical model checking. Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
+Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, this branch is not very developed (\textbf{odkazat sa na state of the art}) The only known work focuses on parameter estimation using statistical model checking. Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
 
 One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation.
+
+\textbf{-symbolicke alebo heuristiky ktore s tym pracuju bez vyuzitia model checkingu}
 
 \subsection{Robustness analysis}
 
@@ -505,9 +523,19 @@ Robustness analysis characterises the mean validity of a formula over all parame
 
 In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such a function, we can integrate over the perturbation set and compute the robustness.
 
+\textbf{-sofistikovanejsie metody ako to riesit inak}
+
 \subsection{Biochemical Space Language development}
 
+\textbf{nezacinat CMP}
+
+\textbf{-urobit jazyk, vyvinut nastroj na jeho podporu a az potom integrovat do CMP }
+
 As it was mentioned in the introduction, the general goal of CMP is to improve user's model building experience. This includes the fact that the used formal language BCSL is targeted to be so-called \emph{human-readable} and simple enough such that it is understandable beyond the computer science community. The languages from Section~\ref{rule_based_languages} all offer interesting features when it comes to modelling. However, none of them except BCSL focuses on these properties.
+
+\textbf{-otocit to -- konkretna varianta rule-based jazyka, ktora sa upravi a pre tento jazyk sa vytvori prostredie, kde sa implementiuju vsetky tieto metody}
+
+\textbf{-poriadne popisat co vsetko tool bude vediet na konci robit (editor, proste vsekto), nevadi ze v achieved results je mnoho uz urobene, to iba posobi lepsie}
 
 The goal is to continue in the development of BCSL. This among other things includes an extension of the language by quantitative properties which are not supported in the present version and are required in order to achieve most of the above-mentioned goals; and the development of BCSgen tool package integrated into CMP, which provides user-space for maintenance and analysis of the models. All the mentioned analysis methods need to be the part of the tool so that the user has complete analysis and development tool-kit in a single platform.
 
@@ -593,6 +621,10 @@ Methods in Systems Biology. pp. 316--322. Springer (2016)
 \item Děd, T., Šafránek, D., Troják, M., Klement, M., Šalagovič, J., Brim, L.: Formal biochemical space with semantics in Kappa and BNGL. Electronic Notes in Theoretical Computer Science 326, 27–49 (2016)
 
 (25\%) A conference paper describing the first version of BCSL defined by embedding to another language. I helped to formulate the formal definition and algorithms for the embedding.
+
+\textbf{- under review do Bioinformatics}
+
+\textbf{- pozriet, ci postery neboli v nejakom zborniku, ak ano hodit ich sem (ostatne tam nechat)}
 
 \end{itemize}
 
