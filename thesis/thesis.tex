@@ -438,7 +438,7 @@ Model checking has been extended to many other computational models such as cont
 
 \emph{On-the-fly} algorithms employ a top-down approach to model checking, which does not require global knowledge of the complete state space~\cite{latella2014fly,bhat1995efficient,courcoubetis1992memory,gnesi2011abstract,holzmann2004spin}. Instead, the algorithms construct step by step local knowledge of the state space until it is possible to decide whether the given state satisfies the formula. An important branch of model checking is also \emph{quantitative model checking}~\cite{huth1997quantitative}, which provides a numerical value expressing the measure of satisfaction instead of a binary decision.
 
-\subsection{Parameter synthesis}
+\subsection{Parameter synthesis}\label{synthesis}
 
 \emph{Parameter synthesis} is the inverse problem to model checking -- its goal is to find the maximal subset of parameter values such that they meet the stated dynamical constraints. In practice, the unknown parameters are usually limited by a set of admissible values, providing a parameter space. In the context of systems biology, several relevant methods which solve parameter synthesis. 
 
@@ -455,17 +455,12 @@ Another way to tackle the state explosion problem is the analysis of a single ex
 
 \subsection{Robustness analysis}
 
-According to~\cite{kitano2004biological}, ``robustness is a property that allows a system to maintain its functions against internal and external perturbations''. The formal definition of robustness is given in Definition~\ref{robustness_def}. The concept of robustness is well established for deterministic systems~\cite{donze2011robustness,rizk2009general}. The evolution of a stochastic system is given
+According to~\cite{kitano2004biological}, robustness is a property that allows a system to maintain its functions against internal and external perturbations. The formal definition of robustness is given in Definition~\ref{robustness_def}. The concept of robustness is well established for deterministic systems~\cite{donze2011robustness,rizk2009general}. The evolution of a stochastic system is given
 by a set of paths compared to a single trajectory of a deterministic system. The stochastic system at any given time is described by a probability distribution over states of the corresponding CTMC in contrast to the single state representation of a deterministic system. Therefore, the definition of robustness for stochastic systems requires a more sophisticated approach. In~\cite{vceska2014robustness}, authors developed an adaptation of the concept of robustness to stochastic systems, particularly robustness analysis in CTMCs. The method is based on a numerical approximation of the evaluation function~\cite{brim2013exploring}, which provides accuracy guarantees in contrast to existing methods employing parameter sampling and statistical techniques.
 
 \subsection{Static analysis}\label{static_analysis}
 
 Static analysis is performed on the description of the model without the need to actually execute it~\cite{nielson2015principles}. While model checking generally needs to explore all the states originated by executing the semantics of the model, static analysis operates on the syntactic level of the specification or by using abstract interpretation~\cite{cousot1977abstract} over finite approximations of the possible model executions~\cite{pauleve2012static}. It is a powerful tool preferably used to detect potential issues in the model.
-
-control flow analysis~\cite{nielson2007control} an over-approximation ?
-
-
-\textbf{TBA: more general methods for static analysis (eg petri nets)}
 
 There are several well-defined static analysis methods for rule-based systems, which can be useful in finding inconsistency in the models~\cite{danos2009rule}. For example: \emph{detection of dead rules} -- a rule is called dead, if there is no trace starting from the initial state in which this rule is applied; \emph{detection of dead agents} -- an agent is called dead, if there is no trace starting from the initial state with at least one state in which this agent occurs; \emph{detection of redundant agents} -- a rule is redundant if after removing it from the model, the particular semantics do not change. These and many more methods can be run statically, proving a cheap way how to verify special types of properties before executing the model.
 
@@ -473,75 +468,54 @@ A useful tool in the field of static analysis of rule-based models is KaSa~\cite
 
 \chapter{Aim of the Thesis} \label{chap:aim}
 
+There are a few general ways how to analyse rule-based models: (i) \emph{direct} approach operating directly on the level of the model description, (ii) \emph{indirect} approach analyses the transition system generated from the model, and (iii) \emph{semi-direct} approach which employs heuristics or symbolic representation in the process of analysis.
+
 \section{Objectives}
 
-\textbf{- co znamena direct a indirect : kazdemu rule-based modelu je associated transition system. Potom ze ich mozem analyzovat tak ze najprv vygenerujem transition system, tzv. "nepriamo", alebo robim analyzu priamo na urovni pravidiel (ako gramatika) tzv. "priamo". Potom mozem povedat, ze hlavnym cielom je vyvijat priame metody. Kam patria symbolicke?}
+One of the drawbacks of existing analysis methods of rule-based systems is the lack of direct approaches. There are multiple ways how to analyse them indirectly through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require a transition system of the modelled system, which debilitates the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding explicit representation of the transition system. 
 
-\textbf{- rozdelit objectives na analyzy a vyvoj toolu (ako jazyka s nastrojom) - implementovat algoritmy pre analyzy a vtelit do nastroja pre pracu BCSL}
-
-One of the drawbacks of existing analysis methods of rule-based systems is the lack of \emph{direct} approaches using the implicit description provided by the rule-based systems. There are multiple ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require an explicit representation of the modelled system, which debilitates the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding any explicit representation. 
-
-The main objective of the thesis is to propose analysis methods for rule-based models using their implicit representation while avoiding complete state space exploration. The focus is put on the development of the methods for BCSL, but their application domain should be more general and applicable to any rule-based formalism. The objective of the thesis is divided to the following subtasks:
-
-4.2 methods of analysis
-
-4.3 tools (ako jazyk a nastroj) - konkretna implementacia tych metod
+The main objective of the thesis is to propose direct or semi-direct analysis methods for rule-based models, which should be general and applicable to any rule-based formalism. The focus is put on the following analysis approaches:
 
 \begin{enumerate}
-	\setlength\itemsep{0.001cm}
-	\item Model checking.
-	\item Parameter synthesis.
-	\item Robustness analysis.
-	\item Biochemical Space Language development.
+  \setlength\itemsep{0.001cm}
+  \item Model checking.
+  \item Parameter synthesis.
+  \item Robustness analysis.
 \end{enumerate}
+
+The second objective of the thesis is to develop a tool to support modelling and analysis in Biochemical Space Language, which includes the implementation of the proposed analysis methods and further development of the language.
+
+\section{Analysis methods}
 
 \subsection{Model checking}
 
-\textbf{- nie je jasne co sa mysli tym ze "exact results" ani tie approximations}
+To the best of our knowledge, the developed model checking methods for rule-based languages use either indirect or semi-direct approach. Since there are no existing direct methods for model checking of rule-based models, the goal is to establish a direct method. Alternatively, an improvement of existing semi-direct approaches such that they provide exact results (no heuristics) is also possible. The emphasis is placed on the reachability problem, as one of the most important problems when it comes to the analysis of biological systems.
 
-\textbf{- underlying mathematical representation sa musi vyjasnit, chcem zlepsit tie exactne pristupy, nie statisticke}
+Computer science already offers several approaches for model checking of models, which can be potentially used in the case of rule-based models. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism.
 
-To the best of our knowledge, the developed model checking methods for rule-based languages use either indirect or statistical approach. The goal is to establish a direct or a semi-direct approach operating with rules instead of an underlying mathematical representation, which provide exact results (no approximations). The emphasis is placed on the reachability problem, as one of the most important problems when it comes to the analysis of biological systems.
+Another option would be to use an existing indirect approach which requires complete state space and improve it to a semi-symbolic or an on-the-fly method. For example, there is a method for probabilistic reachability analysis of DTMC, which constructs a regular expression (RE) using state elimination. The evaluation of RE gives the probability of reaching targeted species. The algorithm for RE construction, however, does not necessarily need the explicit DTMC. We could use this fact for an on-the-fly construction of the RE, potentially avoiding the complete state space enumeration.
 
-\textbf{- zdoraznit este raz, ze neexituju direct methods for rule-based models}
-
-\textbf{- accomplish this goal ... nie! for model checking (nejaky konkretny) a tie sa daju vyuzit na riesenie pre rule-based}
-
-Computer science already offers several approaches on how to accomplish this goal. One option is to use model checking methods developed for reaction-based systems which avoid the exploitation of entire state space. It is necessary to adapt these methods for rule-based formalism.
-
-Another option would be to use an existing indirect approach which requires complete state space and improve it to a semi-symbolic or an on-the-fly method. For example, there is a method for probabilistic reachability analysis of DTMC which constructs a regular expression (RE) using state elimination. The evaluation of RE gives the probability of reaching targeted species. The algorithm for RE construction, however, does not necessarily need the explicit DTMC. We could use this fact for an on-the-fly construction of the RE, potentially avoiding the complete state space enumeration.
-
-The ideal solution avoids the building of the state space completely. This is the most challenging task and requires the development of new symbolic and static methods. However, as it was shown in~\cite{trojak2018sasb}, some of the model checking subtasks can be solved statically due to unique abstraction employed by rule-based languages (e.g., some cases of non-reachability).
+The ideal solution avoids the building of the state space completely. It is the most challenging task and requires the development of new symbolic and static methods. However, as it was shown in~\cite{trojak2018sasb}, some of the model checking subtasks can be solved statically due to unique abstraction employed by rule-based languages (e.g., some cases of non-reachability).
 
 \subsection{Parameter synthesis}
 
-Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, this branch is not very developed (\textbf{odkazat sa na state of the art}) The only known work focuses on parameter estimation using statistical model checking. Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
+Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, this branch is not very developed. The only known work focuses on parameter estimation using statistical model checking (Section~\ref{synthesis}). Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results.
 
-One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation.
-
-\textbf{-symbolicke alebo heuristiky ktore s tym pracuju bez vyuzitia model checkingu}
+One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation. Other solutions could, for example, use some heuristic to obtain probability function, avoiding the usage of model checking, but providing only limited guarantees on the correctness of the results.
 
 \subsection{Robustness analysis}
 
 Robustness analysis characterises the mean validity of a formula over all parameter values in the given perturbation set. To the best of our knowledge, this problem was not yet formulated for rule-based systems. Therefore another goal of this thesis is to define and solve this problem in the context of rule-based systems. 
 
-In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such a function, we can integrate over the perturbation set and compute the robustness.
+In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such a function, we can integrate over the perturbation set and compute the robustness. The possible way how to achieve this goal is using heuristics to estimate the local robustness, which would provide an approximate estimation of global robustness.
 
-\textbf{-sofistikovanejsie metody ako to riesit inak}
+\section{Tool}
 
-\subsection{Biochemical Space Language development}
+The second goal is to develop tool BCSgen, which provides support for Biochemical Space Language, implementing the mentioned analysis methods. In order to enable the analysis of the models written in the language, an extension of the language by quantitative properties is necessary, which are not supported in the present version yet.
 
-\textbf{nezacinat CMP}
+BCSgen provides environment suitable for editing and maintenance of the BCSL models by providing the following functionality: an editor with syntax highlighting and error messaging in the process of model building; simulation engine offering both deterministic and stochastic simulations; reaction network generator; transition system generator; export and import of models in appropriate file format; visualisation of transition system including highlighting paths from the initial state to other states, which satisfy reachability condition; visualisation of time-series data from simulation; all the proposed techniques for model checking, parameter synthesis, and robustness analysis.
 
-\textbf{-urobit jazyk, vyvinut nastroj na jeho podporu a az potom integrovat do CMP }
-
-As it was mentioned in the introduction, the general goal of CMP is to improve user's model building experience. This includes the fact that the used formal language BCSL is targeted to be so-called \emph{human-readable} and simple enough such that it is understandable beyond the computer science community. The languages from Section~\ref{rule_based_languages} all offer interesting features when it comes to modelling. However, none of them except BCSL focuses on these properties.
-
-\textbf{-otocit to -- konkretna varianta rule-based jazyka, ktora sa upravi a pre tento jazyk sa vytvori prostredie, kde sa implementiuju vsetky tieto metody}
-
-\textbf{-poriadne popisat co vsetko tool bude vediet na konci robit (editor, proste vsekto), nevadi ze v achieved results je mnoho uz urobene, to iba posobi lepsie}
-
-The goal is to continue in the development of BCSL. This among other things includes an extension of the language by quantitative properties which are not supported in the present version and are required in order to achieve most of the above-mentioned goals; and the development of BCSgen tool package integrated into CMP, which provides user-space for maintenance and analysis of the models. All the mentioned analysis methods need to be the part of the tool so that the user has complete analysis and development tool-kit in a single platform.
+The tool will be integrated within CMP, improving the user's model building experience. It is supported by the fact that BCSL is targeted to be so-called \emph{human-readable} and simple enough such that it is understandable beyond the computer science community. The languages from Section~\ref{rule_based_languages} all offer interesting features when it comes to modelling. However, none of them except BCSL focuses on these properties.
 
 \section{Progression schedule}
 
@@ -594,7 +568,11 @@ To that end, we have developed the first version of Biochemical Space Language~\
 
 In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model could be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of the modelled system, and we showed a static non-reachability technique which can check some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway, we demonstrated these techniques and showed how useful they could be in model building tasks.
 
-The language is supported by BCSgen tool\footnote{\href{https://github.com/sybila/BCSgen}{https://github.com/sybila/BCSgen}}. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015 and MUNI33/062017. The main features of the tool are an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and parallel computation of state space with its visual exploration.
+The language is supported by BCSgen tool\footnote{\href{https://github.com/sybila/BCSgen}{https://github.com/sybila/BCSgen}}. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015, where the only functionality provided by the tool was the import of the model from a text file (in a predefined format) and enumerating entire transition system of the model. The implementation was done by translating to Kappa and there was a simple graphical user interface.
+
+The project MUNI33/062017 in the same program focused on the improvement of models maintenance, additional analysis services, and visualisation. The transition system generator was improved, using a reaction-based approach instead of translation to another language. Additionally, an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and reachability analysis were implemented. The exploration of the transition system with highlighting the chosen node and announcing the content of the node and highlighting a path from the initial state to a state satisfying reachability condition were also possible.
+
+Currently, the tool is under development for its web-based version eBCSgen\footnote{\href{https://github.com/sybila/eBCSgen}{https://github.com/sybila/eBCSgen}} using Galaxy platform, which a first step in integrating it within CMP.
 
 \chapter{Publications}
 
