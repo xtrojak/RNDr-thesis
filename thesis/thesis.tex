@@ -496,22 +496,27 @@ The ideal solution avoids the building of the state space completely. It is the 
 
 Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, the direct approach to this problem is not yet well developed. The only known work uses semi-direct approach and focuses on parameter estimation using statistical model checking (Section~\ref{synthesis}). Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results avoiding indirect approach.
 
-One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation. Other solutions could, for example, use some heuristic to obtain probability function, avoiding the usage of model checking, but providing only limited guarantees on the correctness of the results.
+One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation. 
+
+Other solutions could, for example, use some heuristic to obtain probability function, avoiding the usage of model checking, but providing only limited guarantees on the correctness of the results.
 
 \subsection{Robustness analysis}
 
 Robustness analysis characterises the mean validity of a formula over all parameter values in the given perturbation set. To the best of our knowledge, this problem was not yet formulated for rule-based systems. Another goal of this thesis is to define and solve this problem in the context of rule-based systems. 
 
-In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous goals. Having such a function, we can integrate over the perturbation set and compute the robustness. The possible way how to achieve this goal is using heuristics to estimate the local robustness, which would provide an approximate estimation of global robustness.
+In order to provide an exact solution, it is necessary to compute the function of parameters. One of the possible solutions is using RE approach mentioned in previous sections. Having such a function, we can integrate over the perturbation set and compute the robustness. 
+
+Another possible way how to achieve this goal is using heuristics to estimate the local robustness, which would provide an approximate estimation of global robustness.
 
 \section{Objective II: Software tool}
 
-The second objective of the thesis is to develop tool BCSgen to support modelling and analysis of Biochemical Space Language, which includes the implementation of the proposed analysis methods. In order to enable the analysis of the models written in the language, an extension of the language by quantitative properties is necessary, which are not supported in the present version yet.
+The second objective of the thesis is to develop tool BCSgen to support modelling and analysis of Biochemical Space Language, which includes the implementation of the proposed analysis methods. In order to enable the proposed analysis of the models written in the language, an extension of the language by quantitative properties is necessary, which are not supported in the present version yet.
 
 BCSgen implements environment suitable for editing and maintenance of the BCSL models by providing the following functionality: an editor with syntax highlighting and error messaging in the process of model building; simulation engine offering both deterministic and stochastic simulations; reaction network generator; transition system generator; export and import of models in appropriate standard file format; visualisation of transition system including highlighting paths from the initial state to other states, which satisfy reachability condition; visualisation of time-series data from simulation; all the proposed techniques for model checking, parameter synthesis, and robustness analysis.
 
 The tool will be integrated within CMP, improving the user's model building experience. It is supported by the fact that BCSL is targeted to be so-called \emph{human-readable} and simple enough such that it is understandable beyond the computer science community. The languages from Section~\ref{rule_based_languages} all offer interesting features when it comes to modelling. However, none of them except BCSL focuses on these properties.
 
+\newpage
 \section{Progression schedule}
 
 Plan for future study and research activities:
@@ -531,9 +536,24 @@ Plan for future study and research activities:
 
 Our research has been primarily focusing on the development of new modelling approaches in systems biology. Our long-term ongoing research is focused on the development of Comprehensive Modelling Platform (CMP) -- a general framework for public sharing, annotation, and visualisation of domain-specific biological models. For a selected system (e.g. an organism, particular process), the framework is instantiated as a web-based application which allows capturing several aspects of biological models. The platform is targeting biologically-oriented users and is trying to improve model-building tasks, including analysis support and automatic verification of models.
 
-In~\cite{trojak2016cyanobacterium}, we presented e-cyanobacterium.org -- an instance of CMP oriented on processes of cyanobacteria. The platform is unique in focusing purely on cyanobacteria, which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium, covering environmental processes, respiration and photosynthesis, carbon concentrating mechanism, circadian clock, and metabolism.
+In~\cite{trojak2016cyanobacterium}, we presented e-cyanobacterium.org\footnote{\href{https://www.e-cyanobacterium.org}{https://www.e-cyanobacterium.org}} -- an instance of CMP oriented on processes of cyanobacteria. The platform is unique in focusing purely on cyanobacteria, which allows integration of the knowledge and its presentation in a concise and understandable form. Several well-annotated and curated models of particular cyanobacteria processes developed by the consortium are provided within e-cyanobacterium, covering environmental processes, respiration and photosynthesis, carbon concentrating mechanism, circadian clock, and metabolism.
 
-We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the method is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters.
+We used the models from e-cyanobacterium to automatically analyse attractors~\cite{benevs2018fully}, which can characterise complex dynamics arising in biological systems. We demonstrated a novel method for detecting terminal strongly connected components in the ODE models, which can be abstracted in the form of parametrised graphs. The main advantage of the method is the ability to detect attractors without precise knowledge of systems behaviour or even its parameters. This type of analysis can be performed to discover unstable or oscillatory behaviour in a model where such behaviour is typically undesired. Some interesting results from this case study are in Figure~\ref{attractors}.
+
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+\begin{center}
+\includegraphics[scale=0.3]{images/clark_fast_vs_co2.png}
+\end{center}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\begin{center}
+\includegraphics[scale=0.3]{images/clark_fast_vs_hco3.png}
+\end{center}
+\end{minipage}
+\caption{Dependence of stable state in $CO_2$ and $HCO_3$ residing in carboxysome on the value of parameter $\mathit{fast}$ affecting the rate of carbon fixation reaction in the Clark model~\cite{clark14} studied in~\cite{benevs2018fully}.}\label{attractors}
+\end{figure}
 
 The core part of CMP is \emph{Biochemical Space} (BCS)~\cite{BCS}. BCS mechanistically describes the modelled process with emphasis placed on precise annotation by links to existing biological ontologies and by association with experimental data. This formal description then serves as a knowledge base for all mathematical models enabled by relating model components to BCS entities (for example of a BCS entity, see Figure~\ref{entity_example}). The mechanism of linking individual objects assigns biological meaning to mathematical constructs. This step is very useful in the interpretation process of analysis results.
 
@@ -561,13 +581,13 @@ An important feature of BCS is specification language it uses for the descriptio
 
 To that end, we have developed the first version of Biochemical Space Language~\cite{dved2016formal}. The language was presented in its basic form with emphasis on the annotation. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{klement2013comprehensive}. Additionally, Kappa does not provide a hierarchical description, which is one of the key aspects of BCSL.
 
-In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model could be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of the modelled system, and we showed a static non-reachability technique which can check some reachability properties without the execution of models behaviour. On a case study of fibroblast growth factor signalling pathway, we demonstrated these techniques and showed how useful they could be in model building tasks.
+In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a few static analysis techniques. Particularly, we showed how redundant rules in a model could be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of the modelled system, and we showed a static non-reachability technique which can check some reachability properties without the execution of model behaviour. On a case study of fibroblast growth factor signalling pathway, we demonstrated these techniques and showed how useful they could be in model building tasks.
 
 The language is supported by BCSgen tool\footnote{\href{https://github.com/sybila/BCSgen}{https://github.com/sybila/BCSgen}}. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015, where the only functionality provided by the tool was the import of the model from a text file (in a predefined format) and enumerating entire transition system of the model. The implementation was done by translating to Kappa and there was a simple graphical user interface.
 
-The project MUNI33/062017 in the same program focused on the improvement of models maintenance, additional analysis services, and visualisation. The transition system generator was improved, using a reaction-based approach instead of translation to another language. Additionally, an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and reachability analysis were implemented. The exploration of the transition system with highlighting the chosen node and announcing the content of the node and highlighting a path from the initial state to a state satisfying reachability condition were also implemented.
+The project MUNI33/062017 in the same program focused on the improvement of models maintenance, additional analysis services, and visualisation. The transition system generator was improved, using a reaction-based approach instead of translation to another language. Additionally, an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and reachability analysis were implemented. The graphical exploration of the transition system with highlighting the chosen node and announcing the content of the node and highlighting a path from the initial state to a state satisfying reachability condition were also implemented.
 
-Currently, the tool is under development for its web-based version eBCSgen\footnote{\href{https://github.com/sybila/eBCSgen}{https://github.com/sybila/eBCSgen}} using Galaxy platform, which a first step in integrating it within CMP.
+Currently, a web-based version eBCSgen\footnote{\href{https://github.com/sybila/eBCSgen}{https://github.com/sybila/eBCSgen}} is under development using Galaxy platform, which a first step in integrating it within CMP.
 
 \chapter{Publications}
 
@@ -592,7 +612,7 @@ evaluation results. The paper was awarded the best paper award in its category.
 
 \item Děd, T., Šafránek, D., Troják, M., Klement, M., Šalagovič, J., Brim, L.: Formal Biochemical Space with Semantics in Kappa and BNGL. Electronic Notes in Theoretical Computer Science 326, 27–49 (2016)
 
-(25\%) A conference paper describing the first version of BCSL defined by embedding to another language. I helped to formulate the formal definition and algorithms for the embedding.
+(30\%) A conference paper describing the first version of BCSL defined by embedding to another language. I helped to formulate the formal definition and algorithms for the embedding.
 
 \end{itemize}
 
