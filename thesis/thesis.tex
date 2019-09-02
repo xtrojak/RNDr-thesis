@@ -97,7 +97,7 @@ easily integrated. Moreover, mechanistic descriptions can be later used as stand
 To that end, we have pioneered an idea of combining advantages of rule-based modelling with the simplicity of chemical reactions by introducing a~rule-based language called \emph{Biochemical Space Language} (BCSL)~\cite{dved2016formal}. It has the following key aspects: \emph{human-readability} -- easy to read, write, and maintain;
 \emph{executability} -- formal executable semantics is defined allowing efficient static analysis and consistency checking; \emph{universality} -- principally different cellular processes can be sufficiently combined in a single specification; and \emph{syntactic scalability} -- the combinatorial explosion of the description is avoided. However, similarly to any other rule-based language, the problem of the \emph{model execution scalability} is not covered efficiently.
 
-The main objectives of the thesis are to develop analysis methods for rule-based models operating on the level of the model description, targeting the problem of the model execution scalability, and to develop a software tool for support of Biochemical Space Language. The main effort is to develop exact methods which provide global guarantees overcoming the limitations of approximative, sampling, and bounded methods while avoiding complete state space exploration. The emphasis is placed on model checking, parameter synthesis, and robustness analysis.
+The main objectives of the thesis are to develop analysis methods for rule-based models operating on the level of the model specification, targeting the problem of the model execution scalability; and to develop a software tool for support of Biochemical Space Language. The main effort is to develop exact methods which provide global guarantees overcoming the limitations of approximative, sampling, and bounded methods while avoiding complete state space exploration. The emphasis is placed on model checking, parameter synthesis, and robustness analysis.
 
 \chapter{Rule-based modelling}
 \label{formal}
@@ -110,7 +110,7 @@ A rule-based system is based on \emph{rewriting} of some structured objects call
 
 \section{Formal definition}
 
-In this chapter, we define a simplified version of the rule-based system. The defined rules are based on simpler objects called \emph{reactions}, which are used for rewriting of unstructured objects composed by \emph{species}. Then, the rule is defined as a set of reactions, encoding multiple possibilities how it can be used, depending on a particular context. First, we start with the definition of a multiset as a form of an unstructured object used for rewriting.
+In this chapter, we define a simplified version of the rule-based system. The defined rules are based on simpler objects called \emph{reactions}, which are used for rewriting of some data structures composed by \emph{species}. Then, the rule is defined as a set of reactions, encoding multiple possibilities how it can be used, depending on a particular context. First, we start with the definition of a multiset as a form of a data structure used for rewriting.
 
 \begin{definition}{Multiset}
 \emph{Multiset} $\mathtt{M}$ is a pair $(\mathcal{A}, \mathtt{m})$ where $\mathcal{A}$ is a set and $ \mathtt{m} : \mathcal{A} \rightarrow \mathbb{N} $ is a function from $\mathcal{A}$ to the set of natural numbers. The set $\mathcal{A}$ is called the \emph{reference set} of elements. For each element $\mathit{a}$ in $\mathcal{A}$ the \emph{multiplicity} (that is, number of occurrences) of $\mathit{a}$ is the number $\mathtt{M}(\mathit{a})$.
@@ -134,7 +134,7 @@ Applying a reaction to a state (multiset) means removing from the state the numb
 	\begin{center}
 		\includegraphics[scale=0.2]{images/reaction.png}
 	\end{center}
-	\caption{A graphical example of reaction application. In a multiset represented by a big circle we have three kinds of agents -- {\large $\square$}, \raisebox{0.04cm}[0cm]{{$\bigcirc$}} and $\bigtriangleup$. In the reaction $\omega = (\{{\large \square}:1,\hspace{0.1cm} $\raisebox{0.04cm}[0cm]{{$\bigcirc$}}\hspace{0.1cm}$:1\}, \{\bigtriangleup:1\}, \mathtt{2}\times{\large \square}\hspace{0.05cm}\times$\hspace{0.05cm}\raisebox{0.04cm}[0cm]{{$\bigcirc$}}$)$, the agents {\large $\square$} and \raisebox{0.04cm}[0cm]{{$\bigcirc$}} are consumed and a new agent $\bigtriangleup$ is produced. The rate of the reaction is given as a function of molecular counts of both reactants. After substituting the counts to {\large $\square$} $ = \mathtt{2}$ and \raisebox{0.04cm}[0cm]{{$\bigcirc$}} $ = \mathtt{4}$, the evaluation of $\mathtt{2} \times \mathtt{2} \times \mathtt{4}$ gives the rate $\mathtt{16}$.}\label{reaction_example}
+	\caption{A graphical example of reaction application. In a multiset represented by a big circle we have three kinds of agents -- {\large $\square$}, \raisebox{0.04cm}[0cm]{{$\bigcirc$}}, and $\bigtriangleup$. In the reaction $\omega = (\{{\large \square}:1,\hspace{0.1cm} $\raisebox{0.04cm}[0cm]{{$\bigcirc$}}\hspace{0.1cm}$:1\}, \{\bigtriangleup:1\}, \mathtt{2}\times{\large \square}\hspace{0.05cm}\times$\hspace{0.05cm}\raisebox{0.04cm}[0cm]{{$\bigcirc$}}$)$, the agents {\large $\square$} and \raisebox{0.04cm}[0cm]{{$\bigcirc$}} are consumed and a new agent $\bigtriangleup$ is produced. The rate of the reaction is given as a function of molecular counts of both reactants. After substituting the counts to {\large $\square$} $ = \mathtt{2}$ and \raisebox{0.04cm}[0cm]{{$\bigcirc$}} $ = \mathtt{4}$, the evaluation of $\mathtt{2} \times \mathtt{2} \times \mathtt{4}$ gives the rate $\mathtt{16}$.}\label{reaction_example}
 \end{figure}
 
 \begin{definition}{Rule}
@@ -182,7 +182,7 @@ In the case of unknown parameter values present in the model, we can be interest
 Given a parametrised rule-based model $\mu = (\mathcal{R}, \mathtt{M}_0)$ and a formula $\phi$, the \emph{problem of parameter synthesis} is to compute a partitioning of the given parameter space into three disjoint subsets: $\mathsf{TRUE}$ -- the model satisfies the property, $\mathsf{FALSE}$ -- the model does \emph{not} satisfy the property, and $\mathsf{UNKNOWN}$ -- the result is not known.
 \end{definition}
 
-Additionally, instead of the binary answer to the satisfaction of a property, a measure of how much the property is preserved in the given parametrisation can be useful. This measure is called \emph{local robustness} $D^{\mu}_{\phi}(p)$ and states how much the property $\phi$ is preserved in parametrisation $p$ of model $\mu$.
+Additionally, instead of the binary answer to the satisfaction of a property, a measure of how much the property is preserved (resp. violated) in the given parametrisation can be useful. This measure is called \emph{local robustness} $D^{\mu}_{\phi}(p)$ and states how much the property $\phi$ is preserved in parametrisation $p$ of model $\mu$.
 
 \begin{definition}{Robustness analysis}\label{robustness_def}
 The \emph{problem of global robustness} of a model $\mu$ is defined as 
@@ -208,7 +208,7 @@ modelling biochemical systems that retains the mathematical formality of $\pi$. 
 
 There are several rule-based languages dedicated to modelling of the biological systems. Each of them uses different features and abstractions. In this chapter, we will highlight the key features of some of the representatives and describe analysis established for them. It is important to note that generally, they can always be formulated in terms defined in Chapter~\ref{formal}.
 
-A specificity of individual languages resides in the level of abstraction they use and the way how they handle the encoding of a rule such that they avoid the explicit reaction network representation. The implicit representation they use includes both syntactic and semantic level, providing a direct apparatus of rules execution.
+A specificity of individual languages resides in the level of abstraction they use and the way how they handle the encoding of a rule such that they avoid the explicit reaction network representation. The implicit representation they use includes both syntactic and semantic level, providing a direct apparatus of rules application.
 
 \subsection{Kappa language}
 \label{kappa}
@@ -220,11 +220,11 @@ The Kappa \emph{rules} are changing properties of the agents. Particularly, the 
 \begin{figure}[!h]
 \begin{center}
 \begin{tabular}{c l}
-(a) & A(bsa$\sim$\{ u, p \}) ; B(bsb$\sim$\{ a, i \}) \\
-(b) & A(bsa), B(bsb$\sim$a) $\rightarrow$ A(bsa!1), B(bsb$\sim$a!1) \\
+(a) & $\mathtt{A(bsa\sim\{ u, p \}) ; B(bsb\sim\{ a, i \})}$ \\
+(b) & $\mathtt{A(bsa), B(bsb\sim\hspace*{0.01cm}a) \rightarrow A(bsa!1), B(bsb\sim\hspace*{0.01cm}a!1)}$ \\
 \end{tabular}
 \end{center}
-\caption{An example of a Kappa rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) A Kappa rule which defines a creation of bond on the sites of agents A and B such that site of agent B must be in an active state. Note the context with no importance for the interaction is omitted, encoding multiple possible reactions.}\label{kappa-rule}
+\caption{An example of a Kappa rule. (a) Definition of associated agents. There are allowed two agents, $\mathtt{A}$ and $\mathtt{B}$, both with a binding site which might occur in two possible states. (b) A Kappa rule which defines a creation of bond on the sites of agents $\mathtt{A}$ and $\mathtt{B}$ such that site of agent $\mathtt{B}$ must be in an active state. Note that the context with no importance for the interaction is omitted (in this case the state of binding site $\mathtt{bsa}$ of agent $\mathtt{A}$), encoding multiple possible reactions.}\label{kappa-rule}
 \end{figure}
 
 The general problem present in the Kappa language is too detailed description. For biological systems, it might often be difficult to manage bonds between sites, especially in cases when we do not need such details.
@@ -239,34 +239,34 @@ BNGL rule typically represent molecular interactions and the consequences of the
 \begin{figure}[!h]
 \begin{center}
 \begin{tabular}{c l}
-(a) & A(bsa$\sim$u$\sim$p) \\
-  & B(bsb$\sim$a$\sim$i) \\
-(b) & A(bsa) + B(bsb$\sim$a) $\rightarrow$ A(bsa!1).B(bsb$\sim$a!1) \\
+(a) & $\mathtt{A(bsa\sim u \sim p)}$ \\
+  & $\mathtt{B(bsb \sim a \sim i)}$ \\
+(b) & $\mathtt{A(bsa) + B(bsb \sim a) \rightarrow A(bsa!1).B(bsb \sim a!1)}$ \\
 \end{tabular}
 \end{center}
-\caption{An example of a BNGL rule. (a) Definition of associated agents. There are allowed two agents, A and B, both with a binding site which might occur in two possible states. (b) The rule itself. Note that the agents A and B must first create \emph{reaction complex} denoted by `+' (i.e., they must be close to each other) and then they create \emph{complex of agents} denoted by `.' (i.e., they are physically connected).}\label{bngl-rule}
+\caption{An example of a BNGL rule. (a) Definition of associated agents. There are allowed two agents, $\mathtt{A}$ and $\mathtt{B}$, both with a binding site which might occur in two possible states. (b) A BNGL rule which defines association of two agents. Note that the agents $\mathtt{A}$ and $\mathtt{B}$ must first create \emph{reaction complex} denoted by `$\mathtt{+}$' (i.e., they must be close to each other) and then they create \emph{complex of agents} denoted by `$\mathtt{.}$' (i.e., they are physically connected).}\label{bngl-rule}
 \end{figure}
 
 \subsection{PySB}
 
-The PySB language~\cite{lopez2013programming} is an open-source programming framework written in Python that allows concepts and methodologies from contemporary software engineering to be applied to the construction of transparent, extensible and reusable biological models. It is implemented as a package in the Python programming language. 
+The PySB language~\cite{lopez2013programming} is an open-source programming framework written in Python that allows concepts and methodologies from contemporary software engineering to be applied to the construction of transparent, extensible, and reusable biological models. It is implemented as a package in the Python programming language. 
 
-The definition of the models directly in the code allows the usage of the full syntax of Python, which significantly increases the expression power of PySB. Its widespread use in the computational biology community, support for object-oriented and functional programming, and rich ecosystem of mathematical and scientific libraries make it an excellent choice of programming language for this purpose. On the other hand, the increased expressive power make the models harder to analyse.
+The definition of the models directly in the code allows the usage of the full syntax of Python, which significantly increases the expressive power of PySB. Its widespread use in the computational biology community, support for object-oriented and functional programming, and rich ecosystem of mathematical and scientific libraries make it an excellent choice of programming language for this purpose. On the other hand, the increased expressive power make the models harder to analyse.
 
-The core of the language is defined by translating to BNGL. PySB is closely integrated with Python numerical tools for simulation and parameter estimation and graphical tools that enable plotting of model trajectories and topologies. The main advantage of the language is that it can be used to decompose models into reusable macros that can be independently tested, and the used to generate composite models. Example of a rule is given in Figure~\ref{pysb_rule}.
+The core of the language is defined by translating to BNGL. PySB is closely integrated with Python numerical tools for simulation and graphical tools that enable plotting of model trajectories and topologies. The main advantage of the language is that it can be used to decompose models into reusable macros that can be independently tested, and then used to generate composite models. Example of a rule is given in Figure~\ref{pysb_rule}.
 
 \begin{figure}[!h]
 \begin{center}
 \begin{python}
 # Declare the monomers
-Monomer('L', ['s'])
-Monomer('R', ['s'])
+Monomer('A', ['bsa'])
+Monomer('B', ['bsb'])
 
 # Declare the binding rule
-Rule(L(s=None) +  R(s=None) <> L(s=1) % R(s=1), kf, kr)
+Rule(A(bsa=None) +  B(bsb=None) <> A(bsa=1) % B(bsb=1), kf, kr)
 \end{python}
 \end{center}
-\caption{An example of a PySB rule. The rule describes creation of a bond between agents $\mathtt{R}$ and $\mathtt{L}$.}\label{PySB-rule}\label{pysb_rule}
+\caption{An example of a PySB rule. The rule describes creation of a bond between agents $\mathtt{A}$ and $\mathtt{B}$.}\label{PySB-rule}\label{pysb_rule}
 \end{figure}
 
 \subsection{Chromar}
@@ -290,7 +290,7 @@ However, when it comes to readability and presentation to the user, the language
 
 Language for Biochemical Systems (LBS)~\cite{Pedersen} combines rule-based approach-es to modelling with modularity. The main features of the language are species expressions for manipulating large complexes in a concise manner, parameterised modules with a notion of subtyping for writing reusable modules, and nondeterminism for handling combinatorial explosion.
 
-A simple example of an LBS program is shown in Figure~\ref{LBS_example}. Species identifiers such as \emph{mrna} are here assigned to new species. The text \textbf{new{}} is formally a species expression which evaluates to a species value with no modification sites and with a globally unique name. Hence the name of the species identifier, \emph{mrna}, does not in itself hold any identity of a species, and one may bind the same identifier to an entirely different species in another part of the program. This allows different modules, possibly developed by different people, to use the same species identifier for mRNA molecules which are semantically and biologically different, and subsequently combine the modules into a single program without unintended cross-talk.
+A simple example of an LBS program is shown in Figure~\ref{LBS_example}. Species identifiers such as \texttt{mrna} are here assigned to new species. The text \texttt{new\{\}} is formally a species expression which evaluates to a species value with no modification sites and with a globally unique name. Hence the name of the species identifier, \texttt{mrna}, does not in itself hold any identity of a species, and one may bind the same identifier to an entirely different species in another part of the program. This allows different modules, possibly developed by different people, to use the same species identifier for mRNA molecules which are semantically and biologically different, and subsequently combine the modules into a single program without unintended cross-talk.
 
 \begin{figure}[!h]
 \lstset{language=LBS}
@@ -312,31 +312,31 @@ Moreover, LBS-Kappa~\cite{pedersen2015high} is a modular extension of Kappa lang
 
 \subsection{Biochemical Space Language}
 
-Biochemical Space Language (BCSL)~\cite{trojak2018sasb} is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{klement2013comprehensive,BCS}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations. The target group of users is a biologically-oriented community. Therefore the emphasis is placed on usability and positive user experience.
+Biochemical Space Language (BCSL)~\cite{trojak2018sasb} is a language that combines the advantages of different approaches and thus makes an effort to overcome several problems of existing solutions. BCSL is an integral part of a general framework developed for comprehensive modelling in systems biology~\cite{BCS,klement2013comprehensive}. BCSL relies on the formal basis of the rule-based methodology while preserving user-friendly syntax of plain chemical equations. The target group of users is a biologically-oriented community. Therefore the emphasis is placed on usability and positive user experience.
 
 The language uses several types of agents, describing different levels of abstraction and detail. Particularly, there is an \emph{atomic} agent describing the most basic type of biological objects which have assigned an internal state. The state typically represents a modification of the objects, e.g. oxidised, reduced, methylated etc. \emph{Structure} agent represents a biochemical object that is composed of several known atomic agents while we know that composition is abstract and not necessarily complete. Since not all biochemical structures are known in detail, this feature is useful in expressing partial knowledge (for example, see Figure~\ref{ps2_rule}). \emph{Complex} agent groups several structure or atomic agents, forming a non-trivial composite biochemical object. A typical feature of the language is that it does not use any form of binding when it comes to complex formation. Instead, the complex formation is considered as a form of \emph{coexistence}; the particular interpretation depends on the context of the model.
 
 \begin{figure}[!h]
   \begin{center}
-    $ \mathit{ps2}(oec\{$\emph{2+}$\}, yz\{$+$\}){::}tlm \Rightarrow \mathit{ps2}(oec\{$\emph{3+}$\}, yz\{$\emph{n}$\}){::}tlm $
+    $ \mathtt{ps2(oec\{2+\}, yz\{+\}){::}tlm \Rightarrow ps2(oec\{3+\}, yz\{n\}){::}tlm} $
   \end{center}
-  \caption{An example of BCSL rule. Oxidation of S2-state of the oxygen-evolving complex $oec\{$\emph{2+}$\}$ by $Yz\{+\}$ in photosystem II ($\mathit{ps2}$). The photosystem is represented as a structure agent. There are many other subparts of photosystem II. (e.g. chlorophyl, pheophytin), but their states are not important in this case. This makes the syntax of the language very concise and readable.}\label{ps2_rule}
+  \caption{An example of BCSL rule. Oxidation of S2-state of the oxygen-evolving complex $\mathtt{oec\{2+\}}$ by $\mathtt{yz\{+\}}$ in photosystem II ($\mathtt{ps2}$). The photosystem is represented as a structure agent. There are many other subparts of photosystem II. (e.g. chlorophyl, pheophytin), but their states are not important in this case. This makes the syntax of the language very concise and readable.}\label{ps2_rule}
 \end{figure}
 
 The agents interact via rules. In the definition of a rule, identifiers of \emph{substrates} and \emph{products} are used to make the notation of the rules compact. Every agent appearing in a rule equation has to be followed by the \emph{localisation} operator associating it with a particular compartment. This is, for example, important for rules that act on both sides of a membrane. That way, a rule is always precisely localised in or between the compartments.
 
 \begin{figure}[!h]
 	\begin{center}
-		$ S\{u\}{::}KaiC{::}?X{::}cyt \Leftrightarrow S\{p\}{::}KaiC{::}?X{::}cyt ~;~$\vspace*{0.3cm}
+		$ \mathtt{S\{u\}{::}KaiC{::}?X{::}cyt \Leftrightarrow S\{p\}{::}KaiC{::}?X{::}cyt} ~;~$\vspace*{0.3cm}
 		
-		$ ?X = \Set{
+		$ \mathtt{?X} = \Set{
 			\begin{array}{c}
-			\mathit{KaiC6}, \mathit{KaiA2C6}, \mathit{KaiA4C6},\\
-			\mathit{KaiB6C6}, \mathit{KaiA4B6C6}, \mathit{KaiA6B6C6}
+			\mathtt{KaiC6}, \mathtt{KaiA2C6}, \mathtt{KaiA4C6},\\
+			\mathtt{KaiB6C6}, \mathtt{KaiA4B6C6}, \mathtt{KaiA6B6C6}
 			\end{array}
 		}$
 	\end{center}
-	\caption{An example of BCSL rule. The state of a serine residue $S$ of $KaiC$ protein can be changed from unphosphorylated to phosphorylated whenever the $KaiC$ protein is included in a complex. The particular allowed complexes which enable this modification are given by the variable $?X$. Each of them is provided in the form of a complex alias, which requires a proper complex definition in the model.}
+	\caption{An example of BCSL rule. The state of a serine residue $\mathtt{S}$ of $\mathtt{KaiC}$ protein can be changed from unphosphorylated to phosphorylated whenever the $\mathtt{KaiC}$ protein is included in a complex. The particular allowed complexes which enable this modification are given by the variable $\mathtt{?X}$. Each of them is provided in the form of a complex alias, which requires a proper complex definition in the model.}
 	\label{BCSL_rule}
 \end{figure}
 
@@ -413,7 +413,7 @@ Rule-based models can be used to generate other computational models using diffe
 
 \subsection{Simulation}
 
-The most usual way how to exploit the behaviour of a rule-based model is a~simulation. While qualitative simulation is also possible (generate a possible successor of the current state abstracting while the notion of time), more usual is a quantitative simulation. Using the generated reaction network from the model rules, one can perform stochastic simulation, for example, using Gillespie algorithm~\cite{GILLESPIE1976403}) or deterministic simulation~\cite{Poole2000} by consequent translation to Ordinary differential equations (ODEs)~\cite{higham2008modeling}. However, the cost of simulating the kinetics of a reaction network depends on the size of the network. Thus, if a network is large, the simulation cost can be expensive in terms of computation time and/or computer memory. To address this problem, network-free simulators were developed that take advantage of rules. The method generalises an agent-based kinetic Monte Carlo method that has been shown to circumvent the combinatorial bottleneck in simulations~\cite{yang2008kinetic}.
+The most usual way how to exploit the behaviour of a rule-based model is a~simulation. While qualitative simulation is also possible (generate a possible successor of the current state while abstracting the notion of time), more usual is a quantitative simulation. Using the generated reaction network from the model rules, one can perform stochastic simulation, for example, using Gillespie algorithm~\cite{GILLESPIE1976403}, or deterministic simulation~\cite{Poole2000} by consequent translation to Ordinary differential equations (ODEs)~\cite{higham2008modeling}. However, the cost of simulating the kinetics of a reaction network depends on the size of the network. Thus, if a network is large, the simulation cost can be expensive in terms of computation time or computer memory. To address this problem, network-free simulators were developed that take advantage of rules. The method generalises an agent-based kinetic Monte Carlo method that has been shown to circumvent the combinatorial bottleneck in simulations~\cite{yang2008kinetic}.
 
 An example of a network-free simulator is NFsim~\cite{sneddon2011efficient}. The advantage of NFsim compared to reaction-based approaches is that during simulation, rules operate directly on molecular objects to produce exact stochastic results with the performance that scales independently of the reaction network size. Reaction rates can be defined as arbitrary functions of molecular states to provide powerful coarse-graining capabilities. NFsim enables researchers to simulate many biological systems that were previously inaccessible to general-purpose software.
 
@@ -422,7 +422,7 @@ they can be cast in the form of rules that are executed stochastically on the fl
 
 \subsection{Model checking}
 
-A typical approach of dynamic analysis is to compute a data structure, describing the whole system behaviour. The easiest way to do this is by constructing the \emph{reachability graph} (also called state space). The nodes of a~reachability graph represent all possible states of the modelled system and the arcs represent actions which caused the particular state change. However, reachability graphs tend to be extremely large because they comprise all possible system states. The state space explosion motivates the static analyses discussed below in this section. 
+A typical approach of dynamic analysis is to compute a data structure, describing the whole system behaviour. The easiest way to do this is by constructing the \emph{reachability graph} (also called transition system). The nodes of a~reachability graph represent all possible states of the modelled system and the arcs represent actions which caused the particular state change. However, reachability graphs tend to be extremely large because they comprise all possible system states. The state space explosion motivates the static analyses discussed below in this section. 
 
 If we succeed in constructing the complete reachability graph, we can decide the behavioural properties of the modelled system. Here are some typical examples of qualitative dynamic analysis:
 
@@ -434,9 +434,9 @@ If we succeed in constructing the complete reachability graph, we can decide the
 
 Generally, checking a property of a model is called \emph{model checking}. Model checking is an automatic formal verification technique able to perform a~clever exhaustive search of the state space of a model. It operates over a discrete-time model with a finite number of states (usually a Kripke structure~\cite{kripke1963semantical}), determining the truth value of a temporal logic formula which specifies desired property of the modelled system. Examples of logics which are often used in systems biology are LTL~\cite{pnueli1977temporal}, CTL~\cite{clarke1986automatic}, STL~\cite{maler2004monitoring}, or PCTL~\cite{hasson1994logic}, depending on the particular mathematical formalism.
 
-A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its parameters, giving rise to the state explosion problem. Additionally, in the general case, a state space of the rule-based is infinite, making the analysis even harder to handle. For this reason, there are often some limitations in the application of the rules which bound possible state space (e.g. global bound on allowed molecular counts in states), abstracting some information and providing a way how to create a finite state space.
+A rule-based model can be translated to such a formalism and analysed by an efficient model checker such as~\cite{cimatti2002nusmv}. An important issue with this technique is that the number of states of a model usually grows exponentially in the number of its variables, giving rise to the state explosion problem. Additionally, in the general case, a state space of the rule-based is infinite, making the analysis even harder to handle. For this reason, there are often some limitations in the application of the rules which bound possible state space (e.g. global bound on allowed molecular counts in states), abstracting some information and providing a way how to create a finite state space.
 
-For these reasons, most of the model checkers usually represent the states symbolically~\cite{burch1992symbolic} such as binary decision diagrams~\cite{bryant2001graph}. Relevant methods for the analysis of continuous semantics are based on the abstraction of the behaviour to a finite number of discrete states. For example, one can be interested in parallel semi-symbolic coloured model checking~\cite{benevs2016model}, bifurcation analysis~\cite{benevs2017discrete}, and attractor analysis~\cite{benevs2018fully}.
+For these reasons, most of the model checkers usually represent the states symbolically~\cite{burch1992symbolic}, such as binary decision diagrams~\cite{bryant2001graph}. Relevant methods for the analysis of continuous semantics are based on the abstraction of the behaviour to a finite number of discrete states. For example, one can be interested in parallel semi-symbolic coloured model checking~\cite{benevs2016model}, bifurcation analysis~\cite{benevs2017discrete}, and attractor analysis~\cite{benevs2018fully}.
 
 Model checking has been extended to many other computational models such as continuous- and discrete-time Markov chains (CTMC and DTMC) by adding probabilities~\cite{kwiatkowska2010probabilistic}. A tool used for analysing the Markov chains is PRISM~\cite{kwiatkowska2011prism}, which calculates the probability that the model will satisfy the property of interest. It can either provide the exact solution~\cite{aziz2000model} or an~approximated solution~\cite{jha2009bayesian} (using a set of samples, generated using a Monte Carlo simulation of the model). Moreover, it is also possible to compute a~numerical value expressing the measure of satisfaction instead of a binary decision, often referred to as \emph{quantitative model checking}~\cite{huth1997quantitative}.
 
@@ -451,7 +451,7 @@ In~\cite{barnat2011parameter}, the authors present an algorithm for parameter sy
 In~\cite{jha2011synthesis}, algorithms for studying the parameter space of stochastic biochemical models were presented. Methods for parameter synthesis of parametric Markov chains have been introduced with symbolic computation of reachability properties through state elimination~\cite{daws2004symbolic,jansen2014accelerating,hahn2011probabilistic}, recently improved by parameter lifting~\cite{quatmann2016parameter} and fraction-free Gaussian elimination~\cite{hutschenreiter2017parametric}.
 
 An alternative approach to the analysis of complex stochastic models under
-parameter uncertainty is based on statistical methods~\cite{Luck2016,BackenkohlerBW18,Bortolussi2016,Bortolussi2018}. There are only a few works that bridge the rule-based framework to such techniques. In~\cite{liu2016parameter}, a statistical parameter sampling method is employed to analyse unknown parameters in BNGL models represented by means of CTMCs where the rate function is limited to mass action kinetics. The recent work~\cite{KJ18} combines statistical model checking with machine learning techniques to calibration (estimation) of parameters in order to maximise the probability of satisfying a given specification. In~\cite{Bock15} the authors adapt simulation-based and moment-based methods. In general, statistical techniques do not give an exact symbolic representation of satisfying parameter sets. 
+parameter uncertainty is based on statistical methods~\cite{Luck2016,BackenkohlerBW18,Bortolussi2016,Bortolussi2018}. There are only a few works that bridge the rule-based framework to such techniques. In~\cite{liu2016parameter}, a statistical parameter sampling method is employed to analyse unknown parameters in BNGL models represented by means of CTMCs where the rate function is limited to mass action kinetics. The recent work~\cite{KJ18} combines statistical model checking with machine learning techniques to calibration (estimation) of parameters in order to maximise the probability of satisfying a given specification. In~\cite{Bock15}, the authors adapt simulation-based and moment-based methods. In general, statistical techniques do not give an exact symbolic representation of satisfying parameter sets. 
 
 \subsection{Monitoring}
 
@@ -464,7 +464,7 @@ by a set of paths compared to a single trajectory of a deterministic system. The
 
 \subsection{Static analysis}\label{static_analysis}
 
-Static analysis is performed on the description of the model without the need to actually execute it~\cite{nielson2015principles}. While model checking generally needs to explore all the states originated by executing the semantics of the model, static analysis operates on the syntactic level of the specification or by using abstract interpretation~\cite{cousot1977abstract} over finite approximations of the possible model executions~\cite{pauleve2012static}. It is a powerful tool preferably used to detect potential issues in the model.
+Static analysis is performed on the specification of the model without the need to actually execute it~\cite{nielson2015principles}. While model checking generally needs to explore all the states originated by executing the semantics of the model, static analysis operates on the syntactic level of the specification or by using abstract interpretation~\cite{cousot1977abstract} over finite approximations of the possible model executions~\cite{pauleve2012static}. It is a powerful tool preferably used to detect potential issues in the model.
 
 There are several well-defined static analysis methods for rule-based systems, which can be useful in finding inconsistency in the models~\cite{danos2009rule}. For example: \emph{detection of dead rules} -- a rule is called dead, if there is no trace starting from the initial state in which this rule is applied; \emph{detection of dead agents} -- an agent is called dead, if there is no trace starting from the initial state with at least one state in which this agent occurs; \emph{detection of redundant rules} -- a rule is redundant if after removing it from the model, the particular semantics do not change. These and many more methods can be run statically, providing an efficient way of how to verify special types of properties before executing the model.
 
@@ -472,9 +472,9 @@ To the best of our knowledge, the only tool dedicated to static analysis of rule
 
 \chapter{Aim of the Thesis} \label{chap:aim}
 
-In general, there exist three approaches to analysis of rule-based models: (i) \emph{direct} approach operating on the level of the model specification, (ii) \emph{indirect} approach analysing the transition system generated from the model, and (iii) \emph{semi-direct} approach employing heuristics or a symbolic representation in the process of analysis.
+In general, there exist three approaches to analysis of rule-based models: (i)~\emph{direct} approach operating on the level of the model specification, (ii)~\emph{indirect} approach analysing the transition system generated from the model, and (iii)~\emph{semi-direct} approach employing heuristics or a symbolic representation in the process of analysis.
 
-One of the drawbacks of existing analysis methods of rule-based systems is the lack of direct approaches. There are multiple ways how to analyse them indirectly through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require a transition system of the modelled system, which opposes the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other symbolic methods, utilise the abstractions of the approach, avoiding explicit representation of the transition system. 
+One of the drawbacks of existing analysis methods of rule-based systems is the lack of direct approaches. There are multiple ways how to analyse them indirectly through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require a transition system of the modelled system, which opposes the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other semi-direct methods, utilise the abstractions of the approach, avoiding explicit representation of the transition system. 
 
 The main objectives of the thesis are to develop analysis methods for rule-based models using either direct or semi-direct approach and to develop a software tool for support of Biochemical Space Language, as a representative of rule-based languages suitable for modelling in systems biology.
 
@@ -494,7 +494,7 @@ The ideal solution avoids the building of the state space completely. It is the 
 
 \subsection{Parameter synthesis}
 
-Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, the direct approach to this problem is not yet well developed. The only known work uses the semi-direct approach and focuses on parameter estimation using statistical model checking (Section~\ref{synthesis}). Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models which provides exact results avoiding the indirect approach.
+Parameter synthesis is a crucial branch of model analysis in the case when the parameters of the modelled system are not completely known. However, in rule-based community, the direct approach to this problem is not yet well developed. The only known work uses the semi-direct approach and focuses on parameter estimation using statistical model checking (Section~\ref{synthesis}). Therefore another goal of this thesis is to develop parameter synthesis algorithm for rule-based models, which provides exact results avoiding the indirect approach.
 
 One of the options on how to solve this problem is based on model checking approach from the previous subsection. Once we have an efficient model checking method, the parameter synthesis can be formulated using this method. For example, the mentioned method which constructs RE could be generalised to the parametrised case. Instead of a single probability evaluation, we obtain a probability function of parameters, which can be then used for parameter space exploitation. 
 
@@ -510,7 +510,7 @@ Another possible way how to achieve this goal is by using heuristics to estimate
 
 \section{Objective II: Software tool}
 
-The second objective of the thesis is to develop tool BCSgen to support modelling and analysis of Biochemical Space Language, which includes the implementation of the proposed analysis methods. In order to enable the proposed analysis of the models written in the language, an extension of the language by quantitative properties is necessary, which are not supported in the present version yet.
+The second objective of the thesis is to develop tool BCSgen to support modelling and analysis of Biochemical Space Language, which includes the implementation of the proposed analysis methods. In order to enable the proposed analysis of the models specified in the language, an extension of the language by quantitative properties is necessary, which are not supported in the present version yet.
 
 BCSgen implements environment suitable for editing and maintenance of the BCSL models by providing the following functionality: an editor with syntax highlighting and error messaging in the process of model building; simulation engine offering both deterministic and stochastic simulations; reaction network generator; transition system generator; export and import of models in appropriate standard file format; visualisation of transition system including highlighting paths from the initial state to other states, which satisfy reachability condition; visualisation of time-series data from simulation; all the proposed techniques for model checking, parameter synthesis, and robustness analysis.
 
@@ -574,16 +574,16 @@ The core part of CMP is \emph{Biochemical Space} (BCS)~\cite{BCS}. BCS mechanist
       \end{tabular}}
     }
   \end{center}
-  \caption{An example of complete information given for an agent representing circadian clock protein kinase KaiC of Synechococcus elongatus PCC 7942 strain. The emphasis is placed on the annotation -- relevant data entries are \href{https://www.uniprot.org/uniprot/Q79PF4}{Q79PF4} in UniProt database and \href{http://genome.microbedb.jp/cyanobase/GCA_000012525.1/genes/Synpcc7942_1216}{Synpcc7942\_1216} in CyanoBase. Links to other databases such as KEGG~\cite{KEGG} and ChEBI~\cite{ChEBI} are also supported.}\label{entity_example}
+  \caption{An example of complete information given for an agent representing circadian clock protein kinase KaiC of Synechococcus elongatus PCC 7942 strain. The emphasis is placed on the annotation -- relevant data entries are \href{https://www.uniprot.org/uniprot/Q79PF4}{Q79PF4} in UniProt database~\cite{uniprot2016uniprot} and \href{http://genome.microbedb.jp/cyanobase/GCA_000012525.1/genes/Synpcc7942_1216}{Synpcc7942\_1216} in CyanoBase~\cite{nakao2009cyanobase}. Links to other databases such as KEGG~\cite{KEGG} and ChEBI~\cite{ChEBI} are also supported.}\label{entity_example}
 \end{figure}
 
 An important feature of BCS is specification language it uses for the description of the processes. The key aspects necessary for such language are: human-readability -- easy to read, write, and maintain the description; executability -- defined semantics are needed for efficient consistency checking and analysis; universality -- multiple cellular processes with different level of detail can be sufficiently combined in a single specification; and syntactic scalability -- the combinatorial explosion of the description is avoided.
 
 To that end, we have developed the first version of Biochemical Space Language~\cite{dved2016formal}. The language was presented in its basic form with emphasis on the annotation. The semantics of the language was defined indirectly by embedding to Kappa~\cite{kappa_formal}. However, BCSL aims at higher-level abstraction than Kappa that focuses on morphisms between protein binding sites. Therefore the Kappa-based formulation of BCSL has limited expressiveness and does not fit well the aims of our general modelling framework~\cite{klement2013comprehensive}. Additionally, Kappa does not provide a hierarchical description, which is one of the key aspects of BCSL.
 
-In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided a~few static analysis techniques. Particularly, we showed how redundant rules in a model could be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of the modelled system, and we showed a static non-reachability technique which can check some reachability properties without the execution of model behaviour. On a case study of fibroblast growth factor signalling pathway, we demonstrated these techniques and showed how useful they could be in model building tasks.
+In~\cite{trojak2018sasb}, we introduced a significantly improved version of BCSL with respect to the primary prototype. The new key aspects are: hierarchical and composable object types and rules are defined without the need to encode them in an existing rule-based framework thus avoiding any loss of information; executable semantics of rules is defined directly at the level of the language thus making a base for unique analysis tasks specific for the considered level of abstraction. Together with the formal definition, we provided several static analysis techniques. Particularly, we showed how redundant rules in a model could be detected and automatically eliminated without loss of information, we provided a context-based reduction technique which produces an over-approximation of the modelled system, and we showed a static non-reachability technique which can check some reachability properties without the execution of model behaviour. On a case study of fibroblast growth factor signalling pathway, we demonstrated these techniques and showed how useful they could be in model building tasks.
 
-The language is supported by BCSgen tool\footnote{\href{https://github.com/sybila/BCSgen}{https://github.com/sybila/BCSgen}}. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015, where the only functionality provided by the tool was the import of the model from a text file (in a predefined format) and enumerating entire transition system of the model. The implementation was done by translating to Kappa and there was a simple graphical user interface.
+The language is supported by BCSgen tool\footnote{\href{https://github.com/sybila/BCSgen}{https://github.com/sybila/BCSgen}}. The general goal of the tool is to provide the environment suitable for editing and maintenance of the BCSL models and provide the functionality to analyse the models. The tool was developed as a part of Dean's Program of the Faculty of Informatics MU for support of student research and development projects MUNI33/092015, where the only functionality provided by the tool was the import of the model from a text file (in a predefined format) and enumeration of the entire transition system of the model. The implementation was done by translating to Kappa and there was a simple graphical user interface.
 
 The project MUNI33/062017 in the same program focused on the improvement of models maintenance, additional analysis services, and visualisation. The transition system generator was improved, using a reaction-based approach instead of translation to another language. Additionally, an interactive editor with automatic syntax highlighting and error messaging, import and export of the models, and reachability analysis were implemented. The graphical exploration of the transition system with highlighting the chosen node and announcing the content of the node and highlighting a~path from the initial state to a state satisfying reachability condition were also implemented.
 
