@@ -472,11 +472,11 @@ To the best of our knowledge, the only tool dedicated to static analysis of rule
 
 \chapter{Aim of the Thesis} \label{chap:aim}
 
-In general, there exist three approaches to analysis of rule-based models: (i)~\emph{direct} approach operating on the level of the model specification, (ii)~\emph{indirect} approach analysing the transition system generated from the model, and (iii)~\emph{semi-direct} approach employing heuristics or a symbolic representation in the process of analysis.
+In general, there exist three approaches to analysis of rule-based models: (i)~\emph{direct} approach operating on the level of the model (set of rules), (ii)~\emph{indirect} approach analysing the transition system generated from the model, and (iii)~\emph{semi-direct} approach analysing the transition system while avoiding its explicit generation (e.g. using heuristics or a symbolic representation).
 
-One of the drawbacks of existing analysis methods of rule-based systems is the lack of direct approaches. There are multiple ways how to analyse them indirectly through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, most of them require a transition system of the modelled system, which opposes the scalability of the rule-based approach. Direct methods, like those provided by static analysis (Section~\ref{static_analysis}) or some other semi-direct methods, utilise the abstractions of the approach, avoiding explicit representation of the transition system. 
+There are multiple ways how to analyse them \emph{indirectly} through existing computational methods established in computer science (Section~\ref{analysis_sec}). However, the general drawback of indirect methods is that they are not scalable in the context of model execution. \emph{Direct} methods, like those provided by static analysis (Section~\ref{static_analysis}), or some \emph{semi-direct} methods (e.g. Section~\ref{synthesis}), provide a scalable approach and avoid explicit representation of the transition system.
 
-The main objectives of the thesis are to develop analysis methods for rule-based models using either direct or semi-direct approach and to develop a software tool for support of Biochemical Space Language, as a representative of rule-based languages suitable for modelling in systems biology.
+The main objectives of the thesis are to develop analysis methods for rule-based models using either direct or semi-direct approach, targeting the problem of the model execution scalability; and to develop a software tool for support of Biochemical Space Language, as a rule-based language suitable for modelling in systems biology.
 
 \section{Objective I: Analysis methods}
 
