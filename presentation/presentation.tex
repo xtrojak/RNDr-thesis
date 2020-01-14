@@ -7,6 +7,9 @@
 
 \usepackage[normalem]{ulem}
 \usepackage{soul}
+\usepackage{pifont}
+
+\definecolor{mygreen}{RGB}{51, 169, 54}
 
 \newcommand{\tabitem}{~~\llap{\textbullet}~~}
 
@@ -207,6 +210,51 @@ Models\\ in Systems Biology}
 
 \end{frame}
 
+
+% --------------------------------------------------------
+
+\begin{frame}[fragile]{Examples of rules}
+
+\begin{itemize}
+
+\item \textbf{State change}
+
+\begin{enumerate}
+
+\item S\{\textcolor{mygreen}{u}\}::cell $\Rightarrow$ S\{\textcolor{mygreen}{p}\}::cell
+
+\item E.S\{\textcolor{mygreen}{u}\}::cell $\Rightarrow$ E.S\{\textcolor{mygreen}{p}\}::cell
+
+\item R\textcolor{red}{(}$\mathtt{active}$\{\textcolor{mygreen}{off}\}\textcolor{red}{)}::cyt $\Rightarrow$ R\textcolor{red}{(}$\mathtt{active}$\{\textcolor{mygreen}{on}\}\textcolor{red}{)}::cyt
+
+\end{enumerate}
+
+\item \textbf{Complex formation}
+
+\begin{enumerate}
+\setcounter{enumi}{3}
+
+\item E::cell + S\{\textcolor{mygreen}{u}\}::cell $\Rightarrow$ E.S\{\textcolor{mygreen}{u}\}::cell
+
+\item $\alpha.\alpha$::out + $\beta.\beta$::out $\Rightarrow$ $\alpha.\alpha.\beta.\beta$::out
+
+\end{enumerate}
+
+\item \textbf{Transport}
+
+\begin{enumerate}
+\setcounter{enumi}{5}
+
+\item Prot::cell $\Rightarrow$ Prot::out
+
+\item $\Rightarrow$ mRNA::nuc
+
+\end{enumerate}
+
+\end{itemize}
+
+\end{frame}
+
 % --------------------------------------------------------
 
 \begin{frame}[fragile]{Analysis of rule-based models}
@@ -296,19 +344,53 @@ Plan for future study and research activities:
 
 % --------------------------------------------------------
 
-\begin{frame}[fragile]{Summary}
+\begin{frame}[fragile]{Aims of the thesis}
 
-\begin{itemize}
-\item TBA
-\end{itemize}
+\begin{enumerate}
+	\item[I.] Analysis methods for rule-based formalisms
+
+	\begin{itemize}
+		\item general for rule-based approach
+		\item efficient methods based on symbolic or static methods
+		\item solve model checking, parameter synthesis, robustness analysis in particular
+	\end{itemize}
+
+	\item[II.] Software tool
+
+	\begin{itemize}
+		\item apply the developed methods to BCSL
+		\item software support for maintenance and analysis of models in BCSL
+	\end{itemize}
+\end{enumerate}
 
 \end{frame}
 
 \appendix
 
+\backupbegin
+
 % --------------------------------------------------------
 
-\backupbegin
+\begin{frame}
+\thispagestyle{empty}
+  {\huge Backup slides \\}
+\end{frame}
+
+% --------------------------------------------------------
+
+\begin{frame}[fragile]{Kappa vs. BNGL}
+
+\begin{itemize}
+\item syntactically very similar but with several differences
+\item in BNGL, it is not necessary to specify \emph{how} exactly two molecules are connected
+\item BNGL allows one binding site to have multiple bonds
+\item in BNGL, two sites in one species can have the same name
+\end{itemize}
+
+\end{frame}
+
+% --------------------------------------------------------
+
 \begin{frame}[fragile]{Analysis methods in particular}
 
 {\small
@@ -327,6 +409,89 @@ where $\phi$ is the property of the system under scrutiny, $P$ is the parameter 
 }
 
 \end{frame}
+
+% --------------------------------------------------------
+
+\begin{frame}[fragile]{Compatibility}
+
+\begin{itemize}
+	\item degree of specificity
+	\item allows to compare groups of agents
+\end{itemize}
+
+Examples
+
+\begin{itemize}
+\item Ser\{\textcolor{mygreen}{p}\} $\lhd$ Ser
+\item Prot\textcolor{red}{(}Ser\{\textcolor{mygreen}{p}\}, Cys\{\textcolor{mygreen}{u}\}\textcolor{red}{)} $\lhd$ Prot\textcolor{red}{(}Cys\{\textcolor{mygreen}{u}\}\textcolor{red}{)} 
+\item E.S\{\textcolor{mygreen}{u}\} $\lhd$ E.S
+\end{itemize}
+
+\end{frame}
+
+% --------------------------------------------------------
+
+\begin{frame}[fragile]{Rule redundancy elimination}
+
+\begin{itemize}
+	\item identifies potentially useless rules (in the qualitative context)
+	\item these can be removed with no semantic loss
+\end{itemize}
+
+Example
+
+\begin{itemize}
+  \item[\ding{51}] K\textcolor{red}{(}S\{\textcolor{mygreen}{u}\}\textcolor{red}{)}.K::cell $\Rightarrow$ K\textcolor{red}{(}S\{\textcolor{mygreen}{p}\}\textcolor{red}{)}.K::cell
+  \item[\ding{55}] K\textcolor{red}{(}S\{\textcolor{mygreen}{u}\}, T\{\textcolor{mygreen}{i}\}\textcolor{red}{)}.K::cell $\Rightarrow$ K\textcolor{red}{(}S\{\textcolor{mygreen}{p}\}, T\{\textcolor{mygreen}{i}\}\textcolor{red}{)}.K::cell
+\end{itemize}
+
+\end{frame}
+
+% --------------------------------------------------------
+
+\begin{frame}[fragile]{Context-based reduction}
+
+\begin{itemize}
+	\item remove all states from the rules
+	\item analyse simplified network 
+	\item some rules are incorrect
+\end{itemize}
+
+  \begin{center}
+    \includegraphics[width=\textwidth]{pics/reduction_example}
+  \end{center}
+
+\end{frame}
+
+% --------------------------------------------------------
+
+\begin{frame}[fragile]{Static non-reachability analysis}
+
+\begin{itemize}
+	\item at some point, we have to create a compatible agent in order to reach desired agent
+	\item (if it is not already in the initial state)
+	\item there has to exist a compatible agent on the right-hand side of a rule
+\end{itemize}
+
+Example
+
+\begin{itemize}
+	\item desired agent: E\{\textcolor{mygreen}{i}\}.S\{\textcolor{mygreen}{p}\}::cyt
+
+	\item candidate rules: 
+	
+	E\{\textcolor{mygreen}{a}\}.S\{\textcolor{mygreen}{u}\}::cyt $\Rightarrow$ E\{\textcolor{mygreen}{i}\}.S\{\textcolor{mygreen}{p}\}::cyt
+
+	E.S\{\textcolor{mygreen}{u}\}::cyt $\Rightarrow$ E.S\{\textcolor{mygreen}{p}\}::cyt
+
+	\hspace*{2cm}\vdots
+
+	E::cyt + S::cyt $\Rightarrow$ E.S::cyt
+
+\end{itemize}
+
+\end{frame}
+
 \backupend
 
 % --------------------------------------------------------
